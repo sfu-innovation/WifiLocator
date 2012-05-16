@@ -3,5 +3,8 @@
 
     <string name="hello">Woah!  WiFi Locator Bitches!</string>
     <string name="app_name">WifiLocator</string>
+    <string name="bssid_label">Current BSSID:</string>
+    <string name="mac_label">MAC Address:</string>
+    <string name="poll_button_label">Poll Router Info</string>
 
 </resources>
