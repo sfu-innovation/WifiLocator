@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private WifiInfo info;
 	private TextView bssidText, macText;
 	private Button pollButton;
+	private Handler handler;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -28,6 +30,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         bssidText = (TextView)this.findViewById(R.id.bssidText);
         macText   = (TextView)this.findViewById(R.id.macText);
         pollButton = (Button)this.findViewById(R.id.pollButton);
+        handler = new Handler();
         
         pollButton.setOnClickListener(this);
         
@@ -41,6 +44,24 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	super.onStart();
     	bssidText.setText(bssid);
     	macText.setText(macAddr);
+    	
+    	new Thread(new Runnable(){
+    		public void run(){
+    			while(true){
+    				try {
+    					Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+    				handler.post(new Runnable(){
+    					public void run(){
+    						poll();
+    					}
+    				});
+    			}
+    		}
+    	}).start();
     }
     
     public void poll(){
