@@ -6,5 +6,6 @@
     <string name="bssid_label">Current BSSID:</string>
     <string name="mac_label">MAC Address:</string>
     <string name="poll_button_label">Poll Router Info</string>
+    <string name="zone_label">Zone:</string>
 
 </resources>
