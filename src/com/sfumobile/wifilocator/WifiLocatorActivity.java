@@ -45,8 +45,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     
     public void poll(){
         info = wm.getConnectionInfo();
-        bssid = info.getBSSID();
-        bssidText.setText(bssid);
+        
+        //Alert user of hand-offs
+        if(bssid.compareTo(info.getBSSID()) != 0){
+        	bssid = info.getBSSID();
+            bssidText.setText(bssid);
+
+			int duration = Toast.LENGTH_SHORT;
+			Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
+			toast.show();
+        }
+        macAddr = info.getMacAddress();
         macText.setText(macAddr);
     }
 
@@ -54,10 +63,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		switch(src.getId()){
 		case R.id.pollButton:
 			poll();
-			int duration = Toast.LENGTH_SHORT;
-
-			Toast toast = Toast.makeText(this.getApplicationContext(), "Info Updated", duration);
-			toast.show();
 			break;
 		}
 		
