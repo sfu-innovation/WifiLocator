@@ -32,18 +32,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         setContentView(R.layout.main);
         
         db = new DBAdapter(this.getApplicationContext());
-        //db.insertAP("00:1f:45:6c:fe:1a", "3");
-        //db.insertAP("00:1f:45:6c:fe:1a", "3");
-        
-        
-
-        Cursor c = db.getAP();
-        c.moveToFirst();
-        for(int i=0; i<c.getCount(); i++){
-        	Log.d("SQL QUERY", c.getString(c.getColumnIndex("bssid")));
-        	c.moveToNext();
-        }
-        
+        db.createDatabase();
+        db.openDataBase();
+             
         bssidText  = (TextView)this.findViewById(R.id.bssidText);
         macText    = (TextView)this.findViewById(R.id.macText);
         zoneText   = (TextView)this.findViewById(R.id.zoneText);
