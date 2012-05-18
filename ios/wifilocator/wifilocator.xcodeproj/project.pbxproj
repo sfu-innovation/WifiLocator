@@ -1,0 +1,458 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CEF432FE15658A19004EA106 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FD15658A19004EA106 /* UIKit.framework */; };
+		CEF4330015658A19004EA106 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FF15658A19004EA106 /* Foundation.framework */; };
+		CEF4330215658A19004EA106 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF4330115658A19004EA106 /* CoreGraphics.framework */; };
+		CEF4330815658A19004EA106 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEF4330615658A19004EA106 /* InfoPlist.strings */; };
+		CEF4330A15658A19004EA106 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF4330915658A19004EA106 /* main.m */; };
+		CEF4330E15658A19004EA106 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF4330D15658A19004EA106 /* AppDelegate.m */; };
+		CEF4331115658A19004EA106 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEF4330F15658A19004EA106 /* MainStoryboard_iPhone.storyboard */; };
+		CEF4331415658A19004EA106 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEF4331215658A19004EA106 /* MainStoryboard_iPad.storyboard */; };
+		CEF4331715658A19004EA106 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF4331615658A19004EA106 /* ViewController.m */; };
+		CEF4331F15658A19004EA106 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF4331E15658A19004EA106 /* SenTestingKit.framework */; };
+		CEF4332015658A19004EA106 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FD15658A19004EA106 /* UIKit.framework */; };
+		CEF4332115658A19004EA106 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FF15658A19004EA106 /* Foundation.framework */; };
+		CEF4332915658A19004EA106 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEF4332715658A19004EA106 /* InfoPlist.strings */; };
+		CEF4332C15658A19004EA106 /* wifilocatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF4332B15658A19004EA106 /* wifilocatorTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CEF4332215658A19004EA106 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CEF432F015658A19004EA106 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CEF432F815658A19004EA106;
+			remoteInfo = wifilocator;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CEF432F915658A19004EA106 /* wifilocator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wifilocator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEF432FD15658A19004EA106 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CEF432FF15658A19004EA106 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CEF4330115658A19004EA106 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CEF4330515658A19004EA106 /* wifilocator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wifilocator-Info.plist"; sourceTree = "<group>"; };
+		CEF4330715658A19004EA106 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CEF4330915658A19004EA106 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CEF4330B15658A19004EA106 /* wifilocator-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wifilocator-Prefix.pch"; sourceTree = "<group>"; };
+		CEF4330C15658A19004EA106 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CEF4330D15658A19004EA106 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CEF4331015658A19004EA106 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		CEF4331315658A19004EA106 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		CEF4331515658A19004EA106 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CEF4331615658A19004EA106 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CEF4331D15658A19004EA106 /* wifilocatorTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wifilocatorTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEF4331E15658A19004EA106 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		CEF4332615658A19004EA106 /* wifilocatorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wifilocatorTests-Info.plist"; sourceTree = "<group>"; };
+		CEF4332815658A19004EA106 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CEF4332A15658A19004EA106 /* wifilocatorTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wifilocatorTests.h; sourceTree = "<group>"; };
+		CEF4332B15658A19004EA106 /* wifilocatorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wifilocatorTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CEF432F615658A19004EA106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF432FE15658A19004EA106 /* UIKit.framework in Frameworks */,
+				CEF4330015658A19004EA106 /* Foundation.framework in Frameworks */,
+				CEF4330215658A19004EA106 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEF4331915658A19004EA106 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF4331F15658A19004EA106 /* SenTestingKit.framework in Frameworks */,
+				CEF4332015658A19004EA106 /* UIKit.framework in Frameworks */,
+				CEF4332115658A19004EA106 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CEF432EE15658A19004EA106 = {
+			isa = PBXGroup;
+			children = (
+				CEF4330315658A19004EA106 /* wifilocator */,
+				CEF4332415658A19004EA106 /* wifilocatorTests */,
+				CEF432FC15658A19004EA106 /* Frameworks */,
+				CEF432FA15658A19004EA106 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CEF432FA15658A19004EA106 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CEF432F915658A19004EA106 /* wifilocator.app */,
+				CEF4331D15658A19004EA106 /* wifilocatorTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CEF432FC15658A19004EA106 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CEF432FD15658A19004EA106 /* UIKit.framework */,
+				CEF432FF15658A19004EA106 /* Foundation.framework */,
+				CEF4330115658A19004EA106 /* CoreGraphics.framework */,
+				CEF4331E15658A19004EA106 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CEF4330315658A19004EA106 /* wifilocator */ = {
+			isa = PBXGroup;
+			children = (
+				CEF4330C15658A19004EA106 /* AppDelegate.h */,
+				CEF4330D15658A19004EA106 /* AppDelegate.m */,
+				CEF4330F15658A19004EA106 /* MainStoryboard_iPhone.storyboard */,
+				CEF4331215658A19004EA106 /* MainStoryboard_iPad.storyboard */,
+				CEF4331515658A19004EA106 /* ViewController.h */,
+				CEF4331615658A19004EA106 /* ViewController.m */,
+				CEF4330415658A19004EA106 /* Supporting Files */,
+			);
+			path = wifilocator;
+			sourceTree = "<group>";
+		};
+		CEF4330415658A19004EA106 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CEF4330515658A19004EA106 /* wifilocator-Info.plist */,
+				CEF4330615658A19004EA106 /* InfoPlist.strings */,
+				CEF4330915658A19004EA106 /* main.m */,
+				CEF4330B15658A19004EA106 /* wifilocator-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CEF4332415658A19004EA106 /* wifilocatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				CEF4332A15658A19004EA106 /* wifilocatorTests.h */,
+				CEF4332B15658A19004EA106 /* wifilocatorTests.m */,
+				CEF4332515658A19004EA106 /* Supporting Files */,
+			);
+			path = wifilocatorTests;
+			sourceTree = "<group>";
+		};
+		CEF4332515658A19004EA106 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CEF4332615658A19004EA106 /* wifilocatorTests-Info.plist */,
+				CEF4332715658A19004EA106 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CEF432F815658A19004EA106 /* wifilocator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEF4332F15658A19004EA106 /* Build configuration list for PBXNativeTarget "wifilocator" */;
+			buildPhases = (
+				CEF432F515658A19004EA106 /* Sources */,
+				CEF432F615658A19004EA106 /* Frameworks */,
+				CEF432F715658A19004EA106 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = wifilocator;
+			productName = wifilocator;
+			productReference = CEF432F915658A19004EA106 /* wifilocator.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CEF4331C15658A19004EA106 /* wifilocatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEF4333215658A19004EA106 /* Build configuration list for PBXNativeTarget "wifilocatorTests" */;
+			buildPhases = (
+				CEF4331815658A19004EA106 /* Sources */,
+				CEF4331915658A19004EA106 /* Frameworks */,
+				CEF4331A15658A19004EA106 /* Resources */,
+				CEF4331B15658A19004EA106 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CEF4332315658A19004EA106 /* PBXTargetDependency */,
+			);
+			name = wifilocatorTests;
+			productName = wifilocatorTests;
+			productReference = CEF4331D15658A19004EA106 /* wifilocatorTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CEF432F015658A19004EA106 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = CEF432F315658A19004EA106 /* Build configuration list for PBXProject "wifilocator" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CEF432EE15658A19004EA106;
+			productRefGroup = CEF432FA15658A19004EA106 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CEF432F815658A19004EA106 /* wifilocator */,
+				CEF4331C15658A19004EA106 /* wifilocatorTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEF432F715658A19004EA106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF4330815658A19004EA106 /* InfoPlist.strings in Resources */,
+				CEF4331115658A19004EA106 /* MainStoryboard_iPhone.storyboard in Resources */,
+				CEF4331415658A19004EA106 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEF4331A15658A19004EA106 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF4332915658A19004EA106 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CEF4331B15658A19004EA106 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CEF432F515658A19004EA106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF4330A15658A19004EA106 /* main.m in Sources */,
+				CEF4330E15658A19004EA106 /* AppDelegate.m in Sources */,
+				CEF4331715658A19004EA106 /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CEF4331815658A19004EA106 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CEF4332C15658A19004EA106 /* wifilocatorTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CEF4332315658A19004EA106 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CEF432F815658A19004EA106 /* wifilocator */;
+			targetProxy = CEF4332215658A19004EA106 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CEF4330615658A19004EA106 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEF4330715658A19004EA106 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CEF4330F15658A19004EA106 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEF4331015658A19004EA106 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		CEF4331215658A19004EA106 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEF4331315658A19004EA106 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		CEF4332715658A19004EA106 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEF4332815658A19004EA106 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CEF4332D15658A19004EA106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CEF4332E15658A19004EA106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CEF4333015658A19004EA106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wifilocator/wifilocator-Prefix.pch";
+				INFOPLIST_FILE = "wifilocator/wifilocator-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CEF4333115658A19004EA106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wifilocator/wifilocator-Prefix.pch";
+				INFOPLIST_FILE = "wifilocator/wifilocator-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		CEF4333315658A19004EA106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wifilocator.app/wifilocator";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wifilocator/wifilocator-Prefix.pch";
+				INFOPLIST_FILE = "wifilocatorTests/wifilocatorTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		CEF4333415658A19004EA106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/wifilocator.app/wifilocator";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wifilocator/wifilocator-Prefix.pch";
+				INFOPLIST_FILE = "wifilocatorTests/wifilocatorTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CEF432F315658A19004EA106 /* Build configuration list for PBXProject "wifilocator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEF4332D15658A19004EA106 /* Debug */,
+				CEF4332E15658A19004EA106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CEF4332F15658A19004EA106 /* Build configuration list for PBXNativeTarget "wifilocator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEF4333015658A19004EA106 /* Debug */,
+				CEF4333115658A19004EA106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CEF4333215658A19004EA106 /* Build configuration list for PBXNativeTarget "wifilocatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEF4333315658A19004EA106 /* Debug */,
+				CEF4333415658A19004EA106 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CEF432F015658A19004EA106 /* Project object */;
+}
