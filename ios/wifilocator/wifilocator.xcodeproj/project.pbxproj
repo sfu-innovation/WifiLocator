@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E9F553E1566C5B50051653F /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E9F553D1566C5B50051653F /* TestViewController.m */; };
+		1EC5419E1566F59D005FFF9A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EC5419D1566F59D005FFF9A /* Twitter.framework */; };
+		1EC541A21567013D005FFF9A /* TweetTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC541A11567013D005FFF9A /* TweetTestViewController.m */; };
 		CEF432FE15658A19004EA106 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FD15658A19004EA106 /* UIKit.framework */; };
 		CEF4330015658A19004EA106 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF432FF15658A19004EA106 /* Foundation.framework */; };
 		CEF4330215658A19004EA106 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF4330115658A19004EA106 /* CoreGraphics.framework */; };
@@ -34,6 +37,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E9F553C1566C5B50051653F /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		1E9F553D1566C5B50051653F /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		1EC5419D1566F59D005FFF9A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		1EC541A01567013D005FFF9A /* TweetTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetTestViewController.h; sourceTree = "<group>"; };
+		1EC541A11567013D005FFF9A /* TweetTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetTestViewController.m; sourceTree = "<group>"; };
 		CEF432F915658A19004EA106 /* wifilocator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wifilocator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF432FD15658A19004EA106 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CEF432FF15658A19004EA106 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -61,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EC5419E1566F59D005FFF9A /* Twitter.framework in Frameworks */,
 				CEF432FE15658A19004EA106 /* UIKit.framework in Frameworks */,
 				CEF4330015658A19004EA106 /* Foundation.framework in Frameworks */,
 				CEF4330215658A19004EA106 /* CoreGraphics.framework in Frameworks */,
@@ -83,6 +92,7 @@
 		CEF432EE15658A19004EA106 = {
 			isa = PBXGroup;
 			children = (
+				1EC5419D1566F59D005FFF9A /* Twitter.framework */,
 				CEF4330315658A19004EA106 /* wifilocator */,
 				CEF4332415658A19004EA106 /* wifilocatorTests */,
 				CEF432FC15658A19004EA106 /* Frameworks */,
@@ -120,6 +130,10 @@
 				CEF4331515658A19004EA106 /* ViewController.h */,
 				CEF4331615658A19004EA106 /* ViewController.m */,
 				CEF4330415658A19004EA106 /* Supporting Files */,
+				1E9F553C1566C5B50051653F /* TestViewController.h */,
+				1E9F553D1566C5B50051653F /* TestViewController.m */,
+				1EC541A01567013D005FFF9A /* TweetTestViewController.h */,
+				1EC541A11567013D005FFF9A /* TweetTestViewController.m */,
 			);
 			path = wifilocator;
 			sourceTree = "<group>";
@@ -264,6 +278,8 @@
 				CEF4330A15658A19004EA106 /* main.m in Sources */,
 				CEF4330E15658A19004EA106 /* AppDelegate.m in Sources */,
 				CEF4331715658A19004EA106 /* ViewController.m in Sources */,
+				1E9F553E1566C5B50051653F /* TestViewController.m in Sources */,
+				1EC541A21567013D005FFF9A /* TweetTestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +459,7 @@
 				CEF4333115658A19004EA106 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CEF4333215658A19004EA106 /* Build configuration list for PBXNativeTarget "wifilocatorTests" */ = {
 			isa = XCConfigurationList;
@@ -451,6 +468,7 @@
 				CEF4333415658A19004EA106 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
