@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="tB6-I2-APj">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Test View Controller-->
         <scene sceneID="5">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
-                <viewController id="2" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TestViewController" id="2" customClass="TestViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -53,7 +53,57 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="grW-hI-AuX" kind="modal" id="32c-Xm-DbQ"/>
+                                    <segue destination="grW-hI-AuX" kind="modal" modalTransitionStyle="flipHorizontal" id="32c-Xm-DbQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="E0M-R9-Ush">
+                                <rect key="frame" x="165" y="348" width="72" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Info">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="pageInfo" destination="2" eventType="touchUpInside" id="HGW-Ti-9kT"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" style="gray" id="Roz-7f-Abx">
+                                <rect key="frame" x="269" y="348" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-660" y="-243"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="zTb-2e-FT2">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vEo-n1-tYR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="tB6-I2-APj" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XZY-7n-l2k">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="x4g-8e-vQl">
+                                <rect key="frame" x="81" y="299" width="72" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="2" kind="modal" id="ZHA-Hp-Rxt"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -61,7 +111,7 @@
                     </view>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-660" y="-243"/>
+            <point key="canvasLocation" x="-598" y="362"/>
         </scene>
         <!--View Controller - Item 2-->
         <scene sceneID="YX1-9Z-9QK">
@@ -147,7 +197,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zsa-fQ-ikg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tabBarController definesPresentationContext="YES" id="grW-hI-AuX" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="JXM-HD-3pG"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="qMZ-KG-RPG">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -156,15 +206,43 @@
                     <connections>
                         <segue destination="cp0-5E-Uos" kind="relationship" relationship="viewControllers" id="gLo-5G-ADn"/>
                         <segue destination="4VE-2Z-EKh" kind="relationship" relationship="viewControllers" id="w0k-EC-YgZ"/>
+                        <segue destination="oCT-Gb-Q33" kind="relationship" relationship="viewControllers" id="WoB-0q-MBR"/>
                     </connections>
                 </tabBarController>
             </objects>
             <point key="canvasLocation" x="-258" y="-243"/>
         </scene>
+        <!--View Controller - Item-->
+        <scene sceneID="cWC-CS-vPi">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fD0-cT-qqZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="oCT-Gb-Q33" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cik-g9-YLV">
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Item 3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="qth-2k-85x">
+                                <rect key="frame" x="115" y="65" width="48" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="GQK-w2-xA0"/>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-225" y="336"/>
+        </scene>
     </scenes>
     <classes>
-        <class className="ViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
+        <class className="TestViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TestViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="pageInfo"/>
+            </relationships>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
