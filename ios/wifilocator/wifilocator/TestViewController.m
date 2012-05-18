@@ -7,7 +7,7 @@
 //
 
 #import "TestViewController.h"
-
+#import <Twitter/Twitter.h>
 @interface TestViewController ()
 
 @end
@@ -21,6 +21,7 @@
                                                    delegate:self
                                           cancelButtonTitle:@"OK"
                                            otherButtonTitles:nil];
+   // TWRequest* request;
     [alert show];
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
