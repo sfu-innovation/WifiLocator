@@ -22,6 +22,7 @@ public class TwitterActivity extends Activity{
 	private Twitter twitter;
 	private SimpleCursorAdapter adapter;
 	private ListView tweetListView;
+	private String zone;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,11 @@ public class TwitterActivity extends Activity{
 		
 		tweetListView = (ListView)this.findViewById(R.id.TweetListView);
 		twitter = new TwitterFactory().getInstance();
+		
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+        	zone = extras.getString("zone");
+        }
 	}
 
 	@Override
@@ -39,12 +45,18 @@ public class TwitterActivity extends Activity{
 		super.onStart();
 		
 		try {
-			QueryResult result = twitter.search(new Query("SFU"));
+			QueryResult result = twitter.search(new Query(zone.replaceAll(" ", "")));
+			Log.d("ZONE",zone.replaceAll(" ", ""));
 			List<Tweet> tweets = result.getTweets();
 			ArrayList<String> tweet_text = new ArrayList<String>();
 			for(Tweet tweet : tweets){
 				tweet_text.add("@" + tweet.getFromUser() + " - " + tweet.getText());
 			}
+			
+			if(tweet_text.size() < 1){
+				tweet_text.add("No Tweets");
+			}
+			
 			ArrayAdapter a = new ArrayAdapter(this.getApplicationContext(), R.layout.tweet_row, R.id.tweetText, tweet_text);
 			tweetListView.setAdapter((ListAdapter)a);
 		} catch (TwitterException e) {

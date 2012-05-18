@@ -125,6 +125,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterActivity.class);
+			myIntent.putExtra("zone", zone);
 			startActivity(myIntent);
 			break;
 		}
