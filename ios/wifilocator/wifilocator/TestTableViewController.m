@@ -69,10 +69,10 @@
     UITableViewCell *cell = [tableView
                              dequeueReusableCellWithIdentifier:@"TweetCell"];
     SFUMobileTweet *player = [self.players objectAtIndex:indexPath.row];
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:100];
+    UILabel *nameLabel = (UILabel *)[cell viewWithTag:101];
     nameLabel.text = player.name;
     
-    UILabel *gameLabel = (UILabel *)[cell viewWithTag:101];
+    UILabel *gameLabel = (UILabel *)[cell viewWithTag:100];
     gameLabel.text = player.game;
     return cell;
 }
@@ -136,7 +136,7 @@
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
             [tweetSheet setInitialText:
-             @"#SFUZone5"];
+             @"#Zone6"];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
@@ -157,22 +157,18 @@
         
     }
 }
-/*
- - (id)fetchSSIDInfo
- {
- NSArray *ifs = (id)CNCopySupportedInterfaces();
- NSLog(@"%s: Supported interfaces: %@", __func__, ifs);
- id info = nil;
- for (NSString *ifnam in ifs) {
- info = (id)CNCopyCurrentNetworkInfo((CFStringRef)ifnam);
- NSLog(@"%s: %@ => %@", __func__, ifnam, info);
- if (info && [info count]) {
- break;
- }
- [info release];
- }
- [ifs release];
- return [info autorelease];
- }
- */
+
+-(IBAction)refreshTweets:(id)sender{
+     WLANContext* context = [[WLANContext alloc] init];
+    NSLog(@" This is players before -> %@", players);
+    self.players = [[context getData] copy];
+    NSLog(@" the data %@", [context getData]);
+    NSLog(@" The BSSID ---> %@", [context getBSSID]);
+    NSLog(@" This is players after -> %@", players);
+    SFUMobileTweet* player ;
+    for( int i = 0; i < [players count]; i++){
+        player = (SFUMobileTweet*)[players objectAtIndex:i];
+        NSLog(@" Player - name : %@ game %@ ", [player name], [player game]);
+    }
+}
 @end
