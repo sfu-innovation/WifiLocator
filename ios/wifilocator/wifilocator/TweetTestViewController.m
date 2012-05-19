@@ -14,6 +14,8 @@
 
 @implementation TweetTestViewController
 
+
+
 - (IBAction)tweetTapped:(id)sender { 
     {
         if ([TWTweetComposeViewController canSendTweet])
@@ -21,7 +23,7 @@
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
             [tweetSheet setInitialText:
-             @"[SFU-Burnaby Library]"];
+             @"#SFU-zone6"];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
