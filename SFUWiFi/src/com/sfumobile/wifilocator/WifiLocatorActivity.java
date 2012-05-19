@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.widget.Button;
 import com.sfumobile.wifilocator.DBAdapter;
@@ -51,6 +52,13 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         handler = new Handler();
          
         pollButton.setOnClickListener(this);
+        
+        friendButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View arg0) {
+        		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
+        		startActivity(nextScreen);
+        	}
+        });
         
         wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         info = wm.getConnectionInfo();
@@ -107,17 +115,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         
     }
     
-    public void friend(){
+  /*  public void friend(){
     	Intent i = new Intent(getApplicationContext(), Friends.class);
-    	StartActivity(i)
+    	startActivity(i);
     }
-
+*/
 	public void onClick(View src) {
 		switch(src.getId()){
 		case R.id.pollButton:
 			poll();
-		case R.id.friendButton:
-			friend();
+	//	case R.id.friendButton:
+	//		friend();
 			break;
 		}
 		
