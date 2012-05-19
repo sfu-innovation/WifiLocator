@@ -21,7 +21,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private WifiManager wm;
 	private WifiInfo info;
 	private TextView bssidText, macText, zoneText;
-	private Button pollButton;
+	private Button pollButton, friendButton;
 	private Handler handler;
 	private DBAdapter db;
 	
@@ -47,8 +47,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         macText    = (TextView)this.findViewById(R.id.macText);
         zoneText   = (TextView)this.findViewById(R.id.zoneText);
         pollButton = (Button)this.findViewById(R.id.pollButton);
+        friendButton = (Button)this.findViewById(R.id.friendButton);
         handler = new Handler();
-        
+         
         pollButton.setOnClickListener(this);
         
         wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
@@ -73,12 +74,13 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 					e.printStackTrace();
-					}
+					
     				handler.post(new Runnable(){
     					public void run(){
     						poll();
     					}
     				});
+					}
     			}
     		}
     	}).start();
@@ -104,11 +106,18 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         macText.setText(macAddr);
         
     }
+    
+    public void friend(){
+    	Intent i = new Intent(getApplicationContext(), Friends.class);
+    	StartActivity(i)
+    }
 
 	public void onClick(View src) {
 		switch(src.getId()){
 		case R.id.pollButton:
 			poll();
+		case R.id.friendButton:
+			friend();
 			break;
 		}
 		
