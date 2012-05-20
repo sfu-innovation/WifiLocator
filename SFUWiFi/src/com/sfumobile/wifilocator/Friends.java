@@ -87,7 +87,7 @@ public class Friends extends ExpandableListActivity {
 			inflatedView.setPadding(50, 0, 0, 0);
 			TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
 				
-			txtView.setTextSize(15);
+			txtView.setTextSize(17);
 			txtView.setText(getChild(groupPosition, childPosition).toString());
 			return inflatedView;
 		}
