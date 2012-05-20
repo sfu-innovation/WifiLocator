@@ -1,5 +1,6 @@
 package com.sfumobile.wifilocator;
 
+import java.util.List;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -14,78 +15,75 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-public class TwitterSignInActivity extends Activity{
-	
-	private final static String CONSUMER_KEY    = "5wNUxrYGUQ2SiPYrUB1w";
-	private final static String CONSUMER_SECRET = "49CfLOBUnvIubWwh37FgcWJZR3SqxXkgooHHvnRF4s";
-	private final String CALLBACK_URI    = "SFUMobile://twittersigninactivity?";
-	private Twitter twitter;
+public class TwitterSignInActivity extends Activity {
+	/** Called when the activity is first created. */
+
+	Twitter twitter;
 	RequestToken requestToken;
-	
+	public final static String consumerKey = "5wNUxrYGUQ2SiPYrUB1w";
+	public final static String consumerSecret = "49CfLOBUnvIubWwh37FgcWJZR3SqxXkgooHHvnRF4s"; 
+	private final String CALLBACKURL = "SFUMobile://wifilocator";
+	private String zone;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.tweets);
+		setContentView(R.layout.sign_in);
+		
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+        	zone = extras.getString("zone");
+        }
+        
 		login();
 	}
-		
-	    
-	    /*
-	             accessToken = twitter.getOAuthAccessToken(requestToken, pin);
 
-	      //persist to the accessToken for future reference.
-	      try {
-			storeAccessToken(twitter.verifyCredentials().getId() , accessToken);
-		} catch (TwitterException e1) {
-			e1.printStackTrace();
-		}
-	      try {
-			Status status = twitter.updateStatus("Test Status");
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
-		*/
-	
-	void login() {
+	public void login() {
 		try {
 			twitter = new TwitterFactory().getInstance();
-			twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
-			requestToken = twitter.getOAuthRequestToken(CALLBACK_URI);
-			String authUrl = requestToken.getAuthenticationURL();
+			twitter.setOAuthConsumer(consumerKey, consumerSecret);
+			requestToken = twitter.getOAuthRequestToken(CALLBACKURL);
+			String authUrl = requestToken.getAuthorizationURL();
 			this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl)));
-		} catch (TwitterException ex) {
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-			Log.e("in login", ex.getMessage());
+		} catch (TwitterException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("Login", e.getMessage());
 		}
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		Intent intent = this.getIntent();
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Uri uri = intent.getData();
+		Log.d("RESUME", "Resuming!");
 		try {
-			Uri uri = intent.getData();
 			if(uri != null){
 				String verifier = uri.getQueryParameter("oauth_verifier");
-				AccessToken accessToken = twitter.getOAuthAccessToken(requestToken,
-						verifier);
-				String token = accessToken.getToken(), secret = accessToken
-						.getTokenSecret();
+				AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+				displayTimeLine(accessToken);
+				Intent myIntent = new Intent(this.getApplicationContext(), TwitterActivity.class);
+				myIntent.putExtra("zone", zone);
+				startActivity(myIntent);
 			}
-		} catch (TwitterException ex) {
-			Log.e("Main.onNewIntent", "" + ex.getMessage());
+		} catch (TwitterException e) {
+			Log.e("onNewIntent", "" + e.getMessage());
 		}
-
-	}
-	
-	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-	
-	private static void storeAccessToken(long l, AccessToken accessToken){
-		//store accessToken.getToken()
-		//store accessToken.getTokenSecret()
 	}
 
+	void displayTimeLine(AccessToken token) {
+		if (token != null) {
+			List<Status> statuses = null;
+			try {
+				twitter.setOAuthAccessToken(token);
+				statuses = twitter.getHomeTimeline();
+				Toast.makeText(this, statuses.get(0).getText(), Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+				Toast.makeText(this, "Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
+				Log.d("Timeline",""+e.getMessage());
+			}
+			
+		} else {
+			Toast.makeText(this, "Not Verified", Toast.LENGTH_LONG).show();
+		}
+	}
 }

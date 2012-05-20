@@ -10,12 +10,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Tweet;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 
 public class TwitterActivity extends Activity{
 
@@ -64,6 +66,19 @@ public class TwitterActivity extends Activity{
 			Log.e("Twitter", e.getMessage());
 		}
 		
+	}
+	
+	void tweet (AccessToken token, String message){
+		Log.d("TWEET", "Tweeting!");
+		if (token != null) {
+			try {
+				twitter.setOAuthAccessToken(token);
+				twitter.updateStatus(message);
+			} catch (Exception e) {
+				Toast.makeText(this, "Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
+				Log.d("Timeline",""+e.getMessage());
+			}
+		}
 	}
 
 }
