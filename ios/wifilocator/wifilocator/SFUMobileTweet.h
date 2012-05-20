@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SFUMobileTweet : NSObject
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *game;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *text;
+@property (nonatomic, retain) NSString *image;
+@property (nonatomic, retain) NSString *time;
 @end

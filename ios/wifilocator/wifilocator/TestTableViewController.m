@@ -73,7 +73,13 @@
     nameLabel.text = player.name;
     
     UILabel *gameLabel = (UILabel *)[cell viewWithTag:100];
-    gameLabel.text = player.game;
+    gameLabel.text = player.text;
+    
+    UILabel *timeLabel = (UILabel *)[cell viewWithTag:102];
+    timeLabel.text = player.time;
+    
+    UIImageView *imageLabel = (UIImageView *)[cell viewWithTag:103];
+    imageLabel.image =  [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:player.image]]];
     return cell;
 }
 
@@ -129,6 +135,7 @@
      */
 }
 
+
 - (IBAction)tweetTapped:(id)sender { 
     {
         if ([TWTweetComposeViewController canSendTweet])
@@ -136,7 +143,7 @@
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
             [tweetSheet setInitialText:
-             @"#Zone6"];
+             @"#SFUZone6 "];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
@@ -159,16 +166,52 @@
 }
 
 -(IBAction)refreshTweets:(id)sender{
-     WLANContext* context = [[WLANContext alloc] init];
-    NSLog(@" This is players before -> %@", players);
-    self.players = [[context getData] copy];
-    NSLog(@" the data %@", [context getData]);
-    NSLog(@" The BSSID ---> %@", [context getBSSID]);
-    NSLog(@" This is players after -> %@", players);
-    SFUMobileTweet* player ;
-    for( int i = 0; i < [players count]; i++){
-        player = (SFUMobileTweet*)[players objectAtIndex:i];
-        NSLog(@" Player - name : %@ game %@ ", [player name], [player game]);
-    }
+    //WLANContext* context = [[WLANContext alloc] init];
+    
+
+   
+    
+    NSString* temp = @"SFUZone6";
+    NSString* urlString = [NSString stringWithFormat:@"%@%@",
+                           @"http://search.twitter.com/search.json?q=%23",
+                           temp];
+    
+    TWRequest *request = [[TWRequest alloc] initWithURL:[NSURL URLWithString:
+                                                         urlString] 
+                                             parameters:nil requestMethod:TWRequestMethodGET];
+    
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         if ([urlResponse statusCode] == 200) 
+         {
+             // The response from Twitter is in JSON format
+             // Move the response into a dictionary and print
+             NSError *error;        
+             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+             NSArray* results = [dict objectForKey:@"results"];
+             NSDictionary* temp;
+             NSMutableArray* tweets = [NSMutableArray arrayWithCapacity:20];
+             for(int i = 0; i < [results count]; i++){
+                 temp = (NSDictionary*)[results objectAtIndex:i];
+                 SFUMobileTweet* tweet = [[SFUMobileTweet alloc] init];
+                /* NSLog(@"Name = %@\nText = %@\nImage = %@\nTime = %@",
+                       [temp objectForKey:@"from_user"],
+                       [temp objectForKey:@"text"],
+                       [temp objectForKey:@"profile_image_url"],
+                       [temp objectForKey:@"created_at"]);*/
+                 tweet.name = [temp objectForKey:@"from_user"];
+                 tweet.text = [temp objectForKey:@"text"];
+                 tweet.image = [temp objectForKey:@"profile_image_url"];
+                 tweet.time = [temp objectForKey:@"created_at"];
+                 [tweets addObject:tweet];
+                 NSLog(@" The size of tweets = %d", [tweets count]);
+             }
+             self.players = tweets;
+             [self.tableView reloadData];
+         }
+         else
+             NSLog(@"Twitter error, HTTP response: %i", [urlResponse statusCode]);
+     }];
+
 }
 @end

@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359148402.45985"
+         timestampString = "359182134.045406"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "154"
-         endingLineNumber = "154"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
          landmarkName = "-tweetTapped:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,37 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359148402.45985"
+         timestampString = "359182134.045406"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
+         startingLineNumber = "168"
+         endingLineNumber = "168"
+         landmarkName = "-refreshTweets:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "wifilocator/TestTableViewController.m"
+         timestampString = "359182245.002788"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "195"
+         endingLineNumber = "195"
+         landmarkName = "-refreshTweets:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "wifilocator/TestTableViewController.m"
+         timestampString = "359183783.251258"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "206"
+         endingLineNumber = "206"
          landmarkName = "-refreshTweets:"
          landmarkType = "5">
       </FileBreakpoint>
