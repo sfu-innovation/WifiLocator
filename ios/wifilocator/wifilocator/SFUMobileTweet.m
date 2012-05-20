@@ -10,6 +10,5 @@
 
 @implementation SFUMobileTweet
 
-@synthesize name;
-@synthesize game;
+@synthesize name, text, image, time;
 @end

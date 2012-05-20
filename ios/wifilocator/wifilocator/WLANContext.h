@@ -10,4 +10,5 @@
 
 @interface WLANContext : NSObject
 -(NSString*)getBSSID;
+-(NSMutableArray*)getData;
 @end

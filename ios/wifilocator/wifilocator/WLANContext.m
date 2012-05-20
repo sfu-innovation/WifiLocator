@@ -7,14 +7,16 @@
 //
 
 #import "WLANContext.h"
-
+#import "SFUMobileTweet.h"
 @implementation WLANContext
 -(NSString*)getBSSID{
     CFArrayRef myArray = CNCopySupportedInterfaces();
     if(myArray!=nil){
-        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo(CFArrayGetValueAtIndex(myArray, 0));
+        CFDictionaryRef myDict = CNCopyCurrentNetworkInfo(/*CFArrayGetValueAtIndex(myArray, 0)*/CFSTR("en0"));
         return (__bridge_transfer NSString *)CFDictionaryGetValue( myDict, CFSTR("BSSID"));
 
     }
 }
+
+
 @end
