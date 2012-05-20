@@ -24,6 +24,17 @@
             android:name=".TwitterActivity"
             android:label="@string/app_name" >   
         </activity>
+        <activity 
+            android:name=".TwitterSignInActivity"
+            android:label="@string/app_name" >
+            
+            <intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="SFUMobile" android:host="twittersigninactivity" />
+			</intent-filter>
+        </activity>
     </application>
 
 </manifest>
