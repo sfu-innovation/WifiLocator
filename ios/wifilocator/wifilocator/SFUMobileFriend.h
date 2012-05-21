@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface SFUMobileFriend : NSObject
-
+{
+    NSString* name;
+    NSString* location;
+    NSString* time;
+}
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *time;

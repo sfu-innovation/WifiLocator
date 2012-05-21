@@ -9,14 +9,16 @@
 #import "TestTableViewController.h"
 #import "SFUMobileTweet.h"
 #import "WLANContext.h"
+#import "NSRequestResponseWrapper.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "SFUMobileParserUtils.h"
 @interface TestTableViewController ()
 
 @end
 
 @implementation TestTableViewController
 
-@synthesize players, responseData, connection;
+@synthesize players, responseData, connection, currentLocation;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -31,6 +33,15 @@
 {
     [super viewDidLoad];
     responseData = [[NSMutableData alloc] init];
+    
+     WLANContext* context = [[WLANContext alloc] init];
+    
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                           [context getBSSID]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -142,8 +153,11 @@
         {
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
+            NSString* prependTweetString = [NSString stringWithFormat:@"%@%@ ",
+                                      @"#",
+                                      self.currentLocation];
             [tweetSheet setInitialText:
-             @"#SFUZone6 "];
+             prependTweetString];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
@@ -163,25 +177,25 @@
     }
 }
 
+-(NSString*)getZone:(int)zoneID{
+    
+}
 -(IBAction)refreshTweets:(id)sender{
     WLANContext* context = [[WLANContext alloc] init];
     [context getBSSID];
     
     NSString* macString = [NSString stringWithFormat:@"%@%@",
                            @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
-                          /* @"00:1f:45:64:17:08"*/
-                          [context getBSSID]];
-    NSLog(@" The url I am sending is %@", macString);
-    NSURLRequest *request2 = [NSURLRequest requestWithURL:[NSURL URLWithString:macString]];
+                           /* @"00:1f:45:64:17:08"*/
+                           [context getBSSID]];
+  
+   NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
     
     
-    
-	connection = [[NSURLConnection alloc] initWithRequest:request2 delegate:self];
-    
-    NSString* temp = @"SFUZone6";
     NSString* urlString = [NSString stringWithFormat:@"%@%@",
                            @"http://search.twitter.com/search.json?q=%23",
-                           temp];
+                           self.currentLocation];
     
     TWRequest *request = [[TWRequest alloc] initWithURL:[NSURL URLWithString:
                                                          urlString] 
@@ -220,7 +234,22 @@
      }];
 
 }
+- (void)testFunction2:(NSData*) responseData{
+     self.currentLocation = [SFUMobileParserUtils 
+                                  parseZoneName:responseData];
+    if ( [self.currentLocation length] == 0){
+        self.currentLocation = @"SFU";
+    }
+}
+- (void)testFunction:(NSData*) responseData{
+    NSString* zoneIDString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/ZoneNames?feq_zone_id=",
+                           [SFUMobileParserUtils parseZone:responseData]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:zoneIDString withTarget:self onAction:@selector(testFunction2:)];
 
+}
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
 	[responseData setLength:0];
 }
@@ -238,14 +267,7 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    NSError *error; 
-	 NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
-    NSDictionary* list = [dict objectForKey:@"list"];
-    NSDictionary* zone = [list objectForKey:@"Zones"];
-    NSString* area = [zone objectForKey:@"zone_id"];
-    NSLog(@"%@", area);
-    self.navigationItem.prompt = area;
+    
 /*	NSMutableString *text = [NSMutableString stringWithString:@"Lucky numbers:\n"];
     
 	for (int i = 0; i < [luckyNumbers count]; i++)

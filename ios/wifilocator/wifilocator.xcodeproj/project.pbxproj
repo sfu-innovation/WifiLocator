@@ -12,6 +12,9 @@
 		1E4733AB15696995002FC4B0 /* SFUMobileFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733AA15696995002FC4B0 /* SFUMobileFriend.m */; };
 		1E4733AF15696A0C002FC4B0 /* FriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733AE15696A0C002FC4B0 /* FriendsTableViewController.m */; };
 		1E4733B215696DCA002FC4B0 /* TestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733B115696DCA002FC4B0 /* TestTableViewController.m */; };
+		1E4733C1156ABE29002FC4B0 /* NSRequestResponseWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733C0156ABE28002FC4B0 /* NSRequestResponseWrapper.m */; };
+		1E4733C5156AD979002FC4B0 /* SFUMobileParserUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733C4156AD979002FC4B0 /* SFUMobileParserUtils.m */; };
+		1E4733C8156AEA82002FC4B0 /* FriendDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733C7156AEA82002FC4B0 /* FriendDetailViewController.m */; };
 		1E9F553E1566C5B50051653F /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E9F553D1566C5B50051653F /* TestViewController.m */; };
 		1EC5419E1566F59D005FFF9A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EC5419D1566F59D005FFF9A /* Twitter.framework */; };
 		1EC541A21567013D005FFF9A /* TweetTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC541A11567013D005FFF9A /* TweetTestViewController.m */; };
@@ -52,6 +55,12 @@
 		1E4733AE15696A0C002FC4B0 /* FriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsTableViewController.m; sourceTree = "<group>"; };
 		1E4733B015696DC9002FC4B0 /* TestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestTableViewController.h; sourceTree = "<group>"; };
 		1E4733B115696DCA002FC4B0 /* TestTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestTableViewController.m; sourceTree = "<group>"; };
+		1E4733BF156ABE28002FC4B0 /* NSRequestResponseWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRequestResponseWrapper.h; sourceTree = "<group>"; };
+		1E4733C0156ABE28002FC4B0 /* NSRequestResponseWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRequestResponseWrapper.m; sourceTree = "<group>"; };
+		1E4733C3156AD979002FC4B0 /* SFUMobileParserUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFUMobileParserUtils.h; sourceTree = "<group>"; };
+		1E4733C4156AD979002FC4B0 /* SFUMobileParserUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFUMobileParserUtils.m; sourceTree = "<group>"; };
+		1E4733C6156AEA82002FC4B0 /* FriendDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendDetailViewController.h; sourceTree = "<group>"; };
+		1E4733C7156AEA82002FC4B0 /* FriendDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendDetailViewController.m; sourceTree = "<group>"; };
 		1E9F553C1566C5B50051653F /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		1E9F553D1566C5B50051653F /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		1EC5419D1566F59D005FFF9A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
@@ -142,11 +151,13 @@
 		CEF4330315658A19004EA106 /* wifilocator */ = {
 			isa = PBXGroup;
 			children = (
-				1E4733B015696DC9002FC4B0 /* TestTableViewController.h */,
 				1E4733B115696DCA002FC4B0 /* TestTableViewController.m */,
+				1E4733B015696DC9002FC4B0 /* TestTableViewController.h */,
 				CEF4330C15658A19004EA106 /* AppDelegate.h */,
 				CEF4330D15658A19004EA106 /* AppDelegate.m */,
 				CEF4330F15658A19004EA106 /* MainStoryboard_iPhone.storyboard */,
+				1E4733C6156AEA82002FC4B0 /* FriendDetailViewController.h */,
+				1E4733C7156AEA82002FC4B0 /* FriendDetailViewController.m */,
 				1E4733AD15696A0C002FC4B0 /* FriendsTableViewController.h */,
 				1E4733AE15696A0C002FC4B0 /* FriendsTableViewController.m */,
 				CEF4331215658A19004EA106 /* MainStoryboard_iPad.storyboard */,
@@ -163,6 +174,10 @@
 				1E12A78C1567E4EA0072FF22 /* WLANContext.m */,
 				1E4733A915696995002FC4B0 /* SFUMobileFriend.h */,
 				1E4733AA15696995002FC4B0 /* SFUMobileFriend.m */,
+				1E4733BF156ABE28002FC4B0 /* NSRequestResponseWrapper.h */,
+				1E4733C0156ABE28002FC4B0 /* NSRequestResponseWrapper.m */,
+				1E4733C3156AD979002FC4B0 /* SFUMobileParserUtils.h */,
+				1E4733C4156AD979002FC4B0 /* SFUMobileParserUtils.m */,
 			);
 			path = wifilocator;
 			sourceTree = "<group>";
@@ -314,6 +329,9 @@
 				1E4733AB15696995002FC4B0 /* SFUMobileFriend.m in Sources */,
 				1E4733AF15696A0C002FC4B0 /* FriendsTableViewController.m in Sources */,
 				1E4733B215696DCA002FC4B0 /* TestTableViewController.m in Sources */,
+				1E4733C1156ABE29002FC4B0 /* NSRequestResponseWrapper.m in Sources */,
+				1E4733C5156AD979002FC4B0 /* SFUMobileParserUtils.m in Sources */,
+				1E4733C8156AEA82002FC4B0 /* FriendDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

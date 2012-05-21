@@ -8,6 +8,8 @@
 
 #import "FriendsTableViewController.h"
 #import "SFUMobileFriend.h"
+#import "NSRequestResponseWrapper.h"
+#import "SFUMobileParserUtils.h"
 @interface FriendsTableViewController ()
 
 @end
@@ -27,6 +29,9 @@
 {
     [super viewDidLoad];
 
+    NSString* friendString = @"http://wifi-location.appspot.com/rest/Friends?feq_user_name=Alex";
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:friendString withTarget:self onAction:@selector(loadRefreshedFriendsList:)];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -128,39 +133,19 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 }
-
+-(void)loadRefreshedFriendsList:(NSData*)data{
+    friends = [SFUMobileParserUtils parseFriends:data];
+    [self.tableView reloadData];
+}
 -(IBAction)refreshFriends:(id)sender{
     
+    NSString* friendString = @"http://wifi-location.appspot.com/rest/Friends?feq_user_name=Alex";
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:friendString withTarget:self onAction:@selector(loadRefreshedFriendsList:)];
+
+ 
     
-    
-    NSMutableArray* tempFriends = [[NSMutableArray alloc]initWithCapacity:20];
-    SFUMobileFriend* mike = [[SFUMobileFriend alloc] init];
-    mike.name = @"Mike";
-    mike.location = @"SFUZone1";
-    mike.time = @"2 hours ago";
-    
-    SFUMobileFriend* hedy = [[SFUMobileFriend alloc] init];
-    hedy.name = @"Hedy";
-    hedy.location = @"SFUZone2";
-    hedy.time = @"5 minutes ago";
-    
-    SFUMobileFriend* catherine = [[SFUMobileFriend alloc] init];
-    catherine.name = @"Catherine";
-    catherine.location = @"SFUZone6";
-    catherine.time = @"1 hour ago";
-    
-    SFUMobileFriend* jordan = [[SFUMobileFriend alloc] init];
-    jordan.name = @"Jordan";
-    jordan.location = @"SFUZone7";
-    catherine.time = @"5 minutes ago";
-    
-    [tempFriends addObject:mike];
-    [tempFriends addObject:catherine];
-    [tempFriends addObject:hedy];
-    [tempFriends addObject:jordan];
-    
-    friends = tempFriends;
-    [self.tableView reloadData];
+  
     
 }
 @end

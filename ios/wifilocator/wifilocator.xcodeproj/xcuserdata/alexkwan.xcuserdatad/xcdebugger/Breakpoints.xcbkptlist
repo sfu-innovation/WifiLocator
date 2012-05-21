@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359238316.252874"
+         timestampString = "359329224.754256"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "-tweetTapped:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359238316.252874"
+         timestampString = "359329224.754256"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
+         startingLineNumber = "183"
+         endingLineNumber = "183"
          landmarkName = "-refreshTweets:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359255205.178485"
+         timestampString = "359329951.147019"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "202"
-         endingLineNumber = "202"
+         startingLineNumber = "216"
+         endingLineNumber = "216"
          landmarkName = "-refreshTweets:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359255205.178485"
+         timestampString = "359329951.147019"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "213"
-         endingLineNumber = "213"
+         startingLineNumber = "227"
+         endingLineNumber = "227"
          landmarkName = "-refreshTweets:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -99,25 +99,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359255205.178485"
+         timestampString = "359329951.147019"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "186"
-         endingLineNumber = "186"
+         startingLineNumber = "200"
+         endingLineNumber = "200"
          landmarkName = "-refreshTweets:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "wifilocator/TestTableViewController.m"
-         timestampString = "359255205.178485"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "241"
-         endingLineNumber = "241"
-         landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

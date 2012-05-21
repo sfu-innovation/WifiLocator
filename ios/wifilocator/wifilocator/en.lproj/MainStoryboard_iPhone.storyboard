@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11E53" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="grW-hI-AuX">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
@@ -11,7 +12,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="skn-Mh-uZy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="bsC-dF-ldc" customClass="TestTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="78" sectionHeaderHeight="22" sectionFooterHeight="22" id="cJO-y9-hYh">
-                        <rect key="frame" x="0.0" y="94" width="320" height="337"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="337"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -57,7 +58,7 @@
                             <outlet property="delegate" destination="bsC-dF-ldc" id="LBe-4s-JgV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="TweetChat" prompt="Zone6" id="IXZ-Zd-Onr">
+                    <navigationItem key="navigationItem" title="TweetChat" prompt="" id="IXZ-Zd-Onr">
                         <barButtonItem key="leftBarButtonItem" title="Refresh" id="1vK-5x-g0l">
                             <connections>
                                 <action selector="refreshTweets:" destination="bsC-dF-ldc" id="LXn-nY-Jrq"/>
@@ -99,7 +100,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cAs-0K-Tv5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="5SW-Pm-xia" customClass="FriendsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="71" sectionHeaderHeight="22" sectionFooterHeight="22" id="EHZ-hE-t8Q">
-                        <rect key="frame" x="0.0" y="94" width="320" height="337"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -134,19 +135,71 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <connections>
+                                    <segue destination="Yli-kx-8BV" kind="modal" modalTransitionStyle="flipHorizontal" id="UZU-E4-kGk"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Friends" prompt="Zone6" id="dgB-ey-5dE">
-                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="ycK-gW-rey">
+                    <navigationItem key="navigationItem" title="Friends" prompt="" id="dgB-ey-5dE"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" barStyle="blackTranslucent"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="804" y="397"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vtT-TW-oeK">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="28c-ca-M9a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController definesPresentationContext="YES" id="Yli-kx-8BV" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="blackOpaque" id="Vfd-ly-3tG">
+                        <rect key="frame" x="0.0" y="-74" width="0.0" height="74"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="82m-hc-lFl" kind="relationship" relationship="rootViewController" id="1Ws-A9-fj9"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="1818" y="121"/>
+        </scene>
+        <!--Friend Detail View Controller - Friend name-->
+        <scene sceneID="5Ej-Zj-gU7">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VTQ-7N-riD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="82m-hc-lFl" customClass="FriendDetailViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hf1-7r-u8a">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="Dtc-Rd-Qkv">
+                                <rect key="frame" x="20" y="20" width="66" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="0re-DI-UEr">
+                                <rect key="frame" x="103" y="20" width="206" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Friend name" id="0Ng-vn-Fnj">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="80o-lY-Fu4">
                             <connections>
-                                <action selector="refreshFriends:" destination="5SW-Pm-xia" id="b4C-b7-Yh6"/>
+                                <segue destination="grW-hI-AuX" kind="modal" modalTransitionStyle="flipHorizontal" id="QwN-Uo-HmP"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                </tableViewController>
+                </viewController>
             </objects>
-            <point key="canvasLocation" x="688" y="163"/>
+            <point key="canvasLocation" x="2258" y="119"/>
         </scene>
         <!--Navigation Controller - Friends-->
         <scene sceneID="0zd-Jw-nUY">
@@ -154,7 +207,9 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mu2-Op-sKD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="fPL-dp-jsZ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Friends" id="OhY-He-e43"/>
-                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="W7M-DG-77F">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackOpaque" prompted="NO"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="blackOpaque" id="W7M-DG-77F">
+                        <rect key="frame" x="0.0" y="-44" width="0.0" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -185,6 +240,9 @@
         </scene>
     </scenes>
     <classes>
+        <class className="FriendDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/FriendDetailViewController.h"/>
+        </class>
         <class className="FriendsTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/FriendsTableViewController.h"/>
             <relationships>

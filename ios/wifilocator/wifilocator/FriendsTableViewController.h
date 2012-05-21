@@ -10,5 +10,6 @@
 
 @interface FriendsTableViewController : UITableViewController
 @property (nonatomic, retain) NSMutableArray* friends;
+-(void)loadRefreshedFriendsList:(NSData*)data;
 -(IBAction)refreshFriends:(id)sender;
 @end
