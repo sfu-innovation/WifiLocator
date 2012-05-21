@@ -16,7 +16,7 @@
 
 @implementation TestTableViewController
 
-@synthesize players;
+@synthesize players, responseData, connection;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    responseData = [[NSMutableData alloc] init];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -159,17 +159,24 @@
             [alertView show];
         
         }
-        WLANContext* context = [[WLANContext alloc] init];
-        NSLog(@" This is the BSSID %@", [context getBSSID]);
         
     }
 }
 
 -(IBAction)refreshTweets:(id)sender{
-    //WLANContext* context = [[WLANContext alloc] init];
+    WLANContext* context = [[WLANContext alloc] init];
+    [context getBSSID];
     
-
-   
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                          /* @"00:1f:45:64:17:08"*/
+                          [context getBSSID]];
+    NSLog(@" The url I am sending is %@", macString);
+    NSURLRequest *request2 = [NSURLRequest requestWithURL:[NSURL URLWithString:macString]];
+    
+    
+    
+	connection = [[NSURLConnection alloc] initWithRequest:request2 delegate:self];
     
     NSString* temp = @"SFUZone6";
     NSString* urlString = [NSString stringWithFormat:@"%@%@",
@@ -204,7 +211,6 @@
                  tweet.image = [temp objectForKey:@"profile_image_url"];
                  tweet.time = [temp objectForKey:@"created_at"];
                  [tweets addObject:tweet];
-                 NSLog(@" The size of tweets = %d", [tweets count]);
              }
              self.players = tweets;
              [self.tableView reloadData];
@@ -213,5 +219,38 @@
              NSLog(@"Twitter error, HTTP response: %i", [urlResponse statusCode]);
      }];
 
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    if (responseData == nil ) {
+        NSLog(@"responseData was null :(");
+    }
+	[responseData appendData:data];
+    NSLog(@"We got data :D length = %d", [responseData length]);
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	//label.text = [NSString stringWithFormat:@"Connection failed: %@", [error //description]];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+	NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSError *error; 
+	 NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+    NSDictionary* list = [dict objectForKey:@"list"];
+    NSDictionary* zone = [list objectForKey:@"Zones"];
+    NSString* area = [zone objectForKey:@"zone_id"];
+    NSLog(@"%@", area);
+    self.navigationItem.prompt = area;
+/*	NSMutableString *text = [NSMutableString stringWithString:@"Lucky numbers:\n"];
+    
+	for (int i = 0; i < [luckyNumbers count]; i++)
+		[text appendFormat:@"%@\n", [luckyNumbers objectAtIndex:i]];
+    
+	label.text =  text;*/
 }
 @end

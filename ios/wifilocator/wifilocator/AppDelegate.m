@@ -8,7 +8,6 @@
 // testing
 #import "AppDelegate.h"
 #import "SFUMobileTweet.h"
-#import "TestTableViewController.h"
 @implementation AppDelegate
 NSMutableArray *players;
 @synthesize window = _window;
@@ -17,15 +16,6 @@ NSMutableArray *players;
 {
     // Override point for customization after application launch.
     
-    
-    
-	UITabBarController *tabBarController = 
-    (UITabBarController *)self.window.rootViewController;
-	UINavigationController *navigationController = 
-    [[tabBarController viewControllers] objectAtIndex:0];
-	TestTableViewController *playersViewController = 
-    [[navigationController viewControllers] objectAtIndex:0];
-	playersViewController.players = players;
     return YES;
 }
 							

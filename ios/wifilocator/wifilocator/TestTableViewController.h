@@ -11,6 +11,9 @@
 #import "WLANContext.h"
 @interface TestTableViewController : UITableViewController
 @property (nonatomic, strong) NSMutableArray *players;
+@property (nonatomic, retain) NSMutableData* responseData;
+@property (nonatomic, retain) NSURLConnection* connection;
 - (IBAction)tweetTapped:(id)sender;
 - (IBAction)refreshTweets:(id)sender;
+
 @end

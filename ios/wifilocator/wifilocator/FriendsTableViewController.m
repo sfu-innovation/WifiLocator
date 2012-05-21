@@ -130,6 +130,9 @@
 }
 
 -(IBAction)refreshFriends:(id)sender{
+    
+    
+    
     NSMutableArray* tempFriends = [[NSMutableArray alloc]initWithCapacity:20];
     SFUMobileFriend* mike = [[SFUMobileFriend alloc] init];
     mike.name = @"Mike";
