@@ -14,6 +14,6 @@ public final class MyScreen extends MainScreen
     public MyScreen()
     {        
         // Set the displayed title of the screen       
-        setTitle("MyTitle");
+        setTitle("Hello World");
     }
 }
