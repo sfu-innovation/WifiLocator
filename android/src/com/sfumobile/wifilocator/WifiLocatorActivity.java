@@ -23,7 +23,7 @@ import com.sfumobile.wifilocator.HttpGET;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
-	private String bssid, macAddr, zone, address;
+	private String bssid, zone, address;
 	private WifiManager wm;
 	private WifiInfo info;
 	private TextView bssidText, macText, zoneText;
@@ -58,6 +58,10 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         friendButton = (Button)this.findViewById(R.id.friendButton);
       //  handler = new Handler();
         
+        pollButton.setOnClickListener(this);
+        twitterIcon.setOnClickListener(this);
+        friendButton.setOnClickListener(this);
+        
         try{
 			poll();
 		} catch (Exception e){
@@ -66,13 +70,11 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         info = wm.getConnectionInfo();
         bssid = info.getBSSID();
-        macAddr = info.getMacAddress();
     }
     
     public void onStart(){
     	super.onStart();
     	bssidText.setText(bssid);
-    	macText.setText(macAddr);
     	
     	//zone = db.getZone(bssid);
     	zoneText.setText("-1");
@@ -107,16 +109,15 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
      //   String test = "{\"list\": { \"Zones\": { \"zone_id\": \"2\", \"mac_address\": \"test\"} } }";
         //Alert user of hand-offs
    //     if(bssid.compareTo(info.getBSSID()) != 0){
-        	//bssid = "00:1f:45:6c:9e:e9";//info.getBSSID();
+        	bssid = info.getBSSID();
             bssidText.setText(bssid);
-            address = "http://wifi-location.appspot.com/rest/Zones?feq_mac_address=" + bssid;
+            address = "http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=" + bssid;
             
            // JSONObject json = new JSONObject(test);
             JSONObject json = HttpGET.connect(address);
             JSONObject lists = json.getJSONObject("list");
-            JSONObject zone = lists.getJSONObject("Zones");
-            String zone_id = zone.getString("zone_id");
-            String macAddr = zone.getString("mac_address");
+            JSONObject zone = lists.getJSONObject("BSSIDZones");
+            String zone_id = zone.getString("zones");
 
         	//zone = db.getZone(bssid);
         	zoneText.setText(zone_id);
@@ -126,8 +127,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			//toast.show();
       //  }
      
-       // macAddr = info.getMacAddress();
-        macText.setText(macAddr);
 
     }
 
