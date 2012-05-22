@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,9 +19,6 @@ public class DBAdapter extends SQLiteOpenHelper{
 	private static final String TABLE_ACCESSPOINTS = "access_points";
 	private static final int DATABASE_VERSION = 1;
 	private final Context context;
-	
-	private static final String DBCREATE_TABLE = "create table " + TABLE_ACCESSPOINTS + " ("
-			+ " bssid string not null, zone string not null);";
 	
 	private SQLiteDatabase db;
 	
@@ -92,7 +88,8 @@ public class DBAdapter extends SQLiteOpenHelper{
 	}
 	
 	public String getZone(String bssid){
-		Cursor c = db.query(TABLE_ACCESSPOINTS, new String[]{"bssid","zone"}, "bssid='" + bssid + "'", null, null, null, null);
+		String bssid_upper = bssid.toUpperCase();
+		Cursor c = db.query(TABLE_ACCESSPOINTS, new String[]{"bssid","zone"}, "bssid in ('" + bssid + "', '" + bssid_upper + "')", null, null, null, null);
 		if(c.getCount()<1){
 			return "-1";
 		}

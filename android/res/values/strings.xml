@@ -33,5 +33,7 @@
         <item>On Campus</item>
         <item>Not on Campus</item>
     </string-array>
+    <string name="cancel">Cancel</string>
+    <string name="tweet">Tweet</string>
 
 </resources>

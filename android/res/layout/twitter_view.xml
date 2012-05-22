@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/tweetText"
+        android:layout_width="fill_parent"
+        android:layout_height="96dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Tweet" >
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" android:layout_gravity="right"/>
+
+        <Button
+            android:id="@+id/tweetButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tweet" android:layout_gravity="right"/>
+
+    </LinearLayout>
+    
+    <ListView android:layout_width="fill_parent"
+			  android:layout_height="fill_parent"
+			  xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:id="@+id/TweetListView">
+	</ListView>
+
+</LinearLayout>
