@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 //import android.widget.Toast;
 import android.content.Context;
@@ -29,6 +30,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private Button pollButton, friendButton;
 	private Handler handler;
 	private DBAdapter db;
+	private ImageView twitterIcon;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -39,6 +41,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         db = new DBAdapter(this.getApplicationContext());
         db.createDatabase();
         db.openDataBase();
+
         
         Cursor c = db.getAP();
         c.moveToFirst();
@@ -48,14 +51,18 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         }
         c.close();
         */
-        bssidText  = (TextView)this.findViewById(R.id.bssidText);
-        macText    = (TextView)this.findViewById(R.id.macText);
-        zoneText   = (TextView)this.findViewById(R.id.zoneText);
-        pollButton = (Button)this.findViewById(R.id.pollButton);
+              
+        bssidText   = (TextView)this.findViewById(R.id.bssidText);
+        macText     = (TextView)this.findViewById(R.id.macText);
+        zoneText    = (TextView)this.findViewById(R.id.zoneText);
+        pollButton  = (Button)this.findViewById(R.id.pollButton);
         friendButton = (Button)this.findViewById(R.id.friendButton);
-      //  handler = new Handler();
-         
+        twitterIcon = (ImageView)this.findViewById(R.id.twitterIcon);
+        
+        handler = new Handler();
+        
         pollButton.setOnClickListener(this);
+        twitterIcon.setOnClickListener(this);
         
         friendButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View arg0) {
@@ -82,6 +89,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	
     	//zone = db.getZone(bssid);
     	zoneText.setText("-1");
+
+    	
     	/*
     	new Thread(new Runnable(){
     		public void run(){
@@ -135,9 +144,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
        // macAddr = info.getMacAddress();
         macText.setText(macAddr);
 
+
     }
 
 	public void onClick(View src) {
+		@SuppressWarnings("unused")
+		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
 			try{
@@ -147,7 +159,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			}
 
 			break;
-		}
 		
+		case R.id.twitterIcon:
+			myIntent = new Intent(src.getContext(), TwitterSignInActivity.class);
+			myIntent.putExtra("zone", zone);
+			startActivity(myIntent);
+			break;
+		}
+	}
+	
+	public void onStop(){
+		super.onStop();
+		db.close();
 	}
 }
