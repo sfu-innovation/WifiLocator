@@ -9,14 +9,16 @@
 #import "TestTableViewController.h"
 #import "SFUMobileTweet.h"
 #import "WLANContext.h"
+#import "NSRequestResponseWrapper.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "SFUMobileParserUtils.h"
 @interface TestTableViewController ()
 
 @end
 
 @implementation TestTableViewController
 
-@synthesize players;
+@synthesize players, responseData, connection, currentLocation;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,7 +32,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    responseData = [[NSMutableData alloc] init];
+    
+     WLANContext* context = [[WLANContext alloc] init];
+    
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                           [context getBSSID]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -69,11 +80,17 @@
     UITableViewCell *cell = [tableView
                              dequeueReusableCellWithIdentifier:@"TweetCell"];
     SFUMobileTweet *player = [self.players objectAtIndex:indexPath.row];
-    UILabel *nameLabel = (UILabel *)[cell viewWithTag:100];
+    UILabel *nameLabel = (UILabel *)[cell viewWithTag:101];
     nameLabel.text = player.name;
     
-    UILabel *gameLabel = (UILabel *)[cell viewWithTag:101];
-    gameLabel.text = player.game;
+    UILabel *gameLabel = (UILabel *)[cell viewWithTag:100];
+    gameLabel.text = player.text;
+    
+    UILabel *timeLabel = (UILabel *)[cell viewWithTag:102];
+    timeLabel.text = player.time;
+    
+    UIImageView *imageLabel = (UIImageView *)[cell viewWithTag:103];
+    imageLabel.image =  [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:player.image]]];
     return cell;
 }
 
@@ -129,14 +146,18 @@
      */
 }
 
+
 - (IBAction)tweetTapped:(id)sender { 
     {
         if ([TWTweetComposeViewController canSendTweet])
         {
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
+            NSString* prependTweetString = [NSString stringWithFormat:@"%@%@ ",
+                                      @"#",
+                                      self.currentLocation];
             [tweetSheet setInitialText:
-             @"#SFUZone5"];
+             prependTweetString];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
@@ -152,27 +173,106 @@
             [alertView show];
         
         }
-        WLANContext* context = [[WLANContext alloc] init];
-        NSLog(@" This is the BSSID %@", [context getBSSID]);
         
     }
 }
-/*
- - (id)fetchSSIDInfo
- {
- NSArray *ifs = (id)CNCopySupportedInterfaces();
- NSLog(@"%s: Supported interfaces: %@", __func__, ifs);
- id info = nil;
- for (NSString *ifnam in ifs) {
- info = (id)CNCopyCurrentNetworkInfo((CFStringRef)ifnam);
- NSLog(@"%s: %@ => %@", __func__, ifnam, info);
- if (info && [info count]) {
- break;
- }
- [info release];
- }
- [ifs release];
- return [info autorelease];
- }
- */
+
+-(NSString*)getZone:(int)zoneID{
+    
+}
+-(IBAction)refreshTweets:(id)sender{
+    WLANContext* context = [[WLANContext alloc] init];
+    [context getBSSID];
+    
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                           /* @"00:1f:45:64:17:08"*/
+                           [context getBSSID]];
+  
+   NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
+    
+    
+    NSString* urlString = [NSString stringWithFormat:@"%@%@",
+                           @"http://search.twitter.com/search.json?q=%23",
+                           self.currentLocation];
+    
+    TWRequest *request = [[TWRequest alloc] initWithURL:[NSURL URLWithString:
+                                                         urlString] 
+                                             parameters:nil requestMethod:TWRequestMethodGET];
+    
+    [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+     {
+         if ([urlResponse statusCode] == 200) 
+         {
+             // The response from Twitter is in JSON format
+             // Move the response into a dictionary and print
+             NSError *error;        
+             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+             NSArray* results = [dict objectForKey:@"results"];
+             NSDictionary* temp;
+             NSMutableArray* tweets = [NSMutableArray arrayWithCapacity:20];
+             for(int i = 0; i < [results count]; i++){
+                 temp = (NSDictionary*)[results objectAtIndex:i];
+                 SFUMobileTweet* tweet = [[SFUMobileTweet alloc] init];
+                /* NSLog(@"Name = %@\nText = %@\nImage = %@\nTime = %@",
+                       [temp objectForKey:@"from_user"],
+                       [temp objectForKey:@"text"],
+                       [temp objectForKey:@"profile_image_url"],
+                       [temp objectForKey:@"created_at"]);*/
+                 tweet.name = [temp objectForKey:@"from_user"];
+                 tweet.text = [temp objectForKey:@"text"];
+                 tweet.image = [temp objectForKey:@"profile_image_url"];
+                 tweet.time = [temp objectForKey:@"created_at"];
+                 [tweets addObject:tweet];
+             }
+             self.players = tweets;
+             [self.tableView reloadData];
+         }
+         else
+             NSLog(@"Twitter error, HTTP response: %i", [urlResponse statusCode]);
+     }];
+
+}
+- (void)testFunction2:(NSData*) responseData{
+     self.currentLocation = [SFUMobileParserUtils 
+                                  parseZoneName:responseData];
+    if ( [self.currentLocation length] == 0){
+        self.currentLocation = @"SFU";
+    }
+}
+- (void)testFunction:(NSData*) responseData{
+    NSString* zoneIDString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/ZoneNames?feq_zone_id=",
+                           [SFUMobileParserUtils parseZone:responseData]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:zoneIDString withTarget:self onAction:@selector(testFunction2:)];
+
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    if (responseData == nil ) {
+        NSLog(@"responseData was null :(");
+    }
+	[responseData appendData:data];
+    NSLog(@"We got data :D length = %d", [responseData length]);
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	//label.text = [NSString stringWithFormat:@"Connection failed: %@", [error //description]];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    
+/*	NSMutableString *text = [NSMutableString stringWithString:@"Lucky numbers:\n"];
+    
+	for (int i = 0; i < [luckyNumbers count]; i++)
+		[text appendFormat:@"%@\n", [luckyNumbers objectAtIndex:i]];
+    
+	label.text =  text;*/
+}
 @end

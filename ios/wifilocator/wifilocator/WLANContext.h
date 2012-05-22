@@ -10,4 +10,6 @@
 
 @interface WLANContext : NSObject
 -(NSString*)getBSSID;
+
+@property (nonatomic, retain) NSString *currentLocation;
 @end

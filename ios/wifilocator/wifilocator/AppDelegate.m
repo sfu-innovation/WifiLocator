@@ -8,7 +8,6 @@
 // testing
 #import "AppDelegate.h"
 #import "SFUMobileTweet.h"
-#import "TestTableViewController.h"
 @implementation AppDelegate
 NSMutableArray *players;
 @synthesize window = _window;
@@ -16,27 +15,7 @@ NSMutableArray *players;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    players = [NSMutableArray arrayWithCapacity:20];
-	SFUMobileTweet *player = [[SFUMobileTweet alloc] init];
-	player.name = @"Bill Evans";
-	player.game = @"Tic-Tac-Toe";
-	[players addObject:player];
-	player = [[SFUMobileTweet alloc] init];
-	player.name = @"Oscar Peterson";
-	player.game = @"Spin the Bottle";
-	[players addObject:player];
-	player = [[SFUMobileTweet alloc] init];
-	player.name = @"Dave Brubeck";
-	player.game = @"Texas Hold’em Poker";
-	[players addObject:player];
     
-	UITabBarController *tabBarController = 
-    (UITabBarController *)self.window.rootViewController;
-	UINavigationController *navigationController = 
-    [[tabBarController viewControllers] objectAtIndex:1];
-	TestTableViewController *playersViewController = 
-    [[navigationController viewControllers] objectAtIndex:0];
-	playersViewController.players = players;
     return YES;
 }
 							
