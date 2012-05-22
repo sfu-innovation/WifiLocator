@@ -45,7 +45,7 @@ public class TwitterSignInActivity extends Activity {
 	}
 
 	public void login() {
-		if(prefs.equals(0)){
+		if(!prefs.contains("token") | !prefs.contains("secret")){
 			try {
 				twitter = new TwitterFactory().getInstance();
 				twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);

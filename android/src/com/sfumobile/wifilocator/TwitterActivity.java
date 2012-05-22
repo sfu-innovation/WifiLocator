@@ -66,6 +66,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
         }
 		twitter.setOAuthConsumer(TwitterSignInActivity.CONSUMER_KEY, TwitterSignInActivity.CONSUMER_SECRET);
         token = new AccessToken(prefs.getString("token", ""), prefs.getString("secret", ""));
+
 		twitter.setOAuthAccessToken(token);
 	}
 
