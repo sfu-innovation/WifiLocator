@@ -38,6 +38,8 @@ public class TwitterActivity extends Activity implements OnClickListener{
 	private ArrayAdapter<String> adapter;
 	private AccessToken token;
 	private SharedPreferences prefs;
+	private List<Tweet> tweets;
+	private QueryResult result;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,8 @@ public class TwitterActivity extends Activity implements OnClickListener{
 		tweetButton.setOnClickListener(this);
 		
 		twitter = new TwitterFactory().getInstance();
-		
+		tweets = null;
+		tweet_text = new ArrayList<String>();
 		tweetText.setTextColor(Color.GRAY);
 		
         Bundle extras = getIntent().getExtras();
@@ -66,6 +69,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
         }
 		twitter.setOAuthConsumer(TwitterSignInActivity.CONSUMER_KEY, TwitterSignInActivity.CONSUMER_SECRET);
         token = new AccessToken(prefs.getString("token", ""), prefs.getString("secret", ""));
+
 		twitter.setOAuthAccessToken(token);
 	}
 
@@ -75,20 +79,23 @@ public class TwitterActivity extends Activity implements OnClickListener{
 		super.onStart();
 		
 		try {
-			Log.d("ZONE",zone.replaceAll(" ", ""));
-			QueryResult result = twitter.search(new Query(zone.replaceAll(" ", "")));
-			List<Tweet> tweets = result.getTweets();
-			tweet_text = new ArrayList<String>();
-			for(Tweet tweet : tweets){
-				tweet_text.add("@" + tweet.getFromUser() + " - " + tweet.getText());
+			if(zone!=null){
+				result = twitter.search(new Query(zone.replaceAll(" ", "")));
+				tweets = result.getTweets();
+				
+				for(Tweet tweet : tweets){
+					tweet_text.add("@" + tweet.getFromUser() + " - " + tweet.getText());
+				}
 			}
 			
+				
 			if(tweet_text.size() < 1){
 				tweet_text.add("No Tweets");
 			}
-			
+				
 			adapter = new ArrayAdapter<String>(this.getApplicationContext(), R.layout.tweet_row, R.id.tweetText, tweet_text);
 			tweetListView.setAdapter((ListAdapter)adapter);
+			
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
 			Log.e("Twitter", e.getMessage());

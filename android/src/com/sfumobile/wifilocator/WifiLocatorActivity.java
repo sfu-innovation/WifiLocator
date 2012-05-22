@@ -50,8 +50,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         }
         c.close();
         */
-         
-              
         bssidText   = (TextView)this.findViewById(R.id.bssidText);
         macText     = (TextView)this.findViewById(R.id.macText);
         zoneText    = (TextView)this.findViewById(R.id.zoneText);
@@ -59,16 +57,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         twitterIcon = (ImageView)this.findViewById(R.id.twitterIcon);
         friendButton = (Button)this.findViewById(R.id.friendButton);
       //  handler = new Handler();
-        
-        pollButton.setOnClickListener(this);
-        twitterIcon.setOnClickListener(this);
-        
-        friendButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View arg0) {
-        		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
-        		startActivity(nextScreen);
-        	}
-        });
         
         try{
 			poll();
@@ -155,7 +143,10 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			}
 
 			break;
-		
+		case R.id.friendButton:
+    		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
+    		startActivity(nextScreen);
+    		break;
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterSignInActivity.class);
 			myIntent.putExtra("zone", zone);
@@ -166,6 +157,5 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	
 	public void onStop(){
 		super.onStop();
-		db.close();
 	}
 }
