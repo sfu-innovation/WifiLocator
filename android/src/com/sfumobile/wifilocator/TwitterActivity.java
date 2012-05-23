@@ -126,8 +126,9 @@ public class TwitterActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.tweetText:
-			tweetText.setText("");
+			tweetText.setText("#" + zone + " ");
 			tweetText.setTextColor(Color.BLACK);
+			tweetText.setSelection(zone.length() + 2);
 			break;
 		case R.id.cancelButton:
 			tweetText.setText("Tweet");
@@ -135,7 +136,13 @@ public class TwitterActivity extends Activity implements OnClickListener{
 			break;
 	
 		case R.id.tweetButton:
-			tweet("#" + zone + " " + tweetText.getText().toString());
+			String text = tweetText.getText().toString();
+			if(text.compareTo("Tweet")!=0){
+				tweet(tweetText.getText().toString());
+			}
+			else{
+				Toast.makeText(this, "Enter some text",Toast.LENGTH_SHORT).show();
+			}
 			break;
 		}
 	}

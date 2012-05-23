@@ -103,7 +103,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	}).start();*/
     }
     
-    public void poll() throws Exception {
+    public void poll(){
     	
         info = wm.getConnectionInfo();
 
@@ -111,23 +111,29 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
             bssidText.setText(bssid);
             address = "http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=" + bssid;
             
-           // JSONObject json = new JSONObject(test);
-            JSONObject json1 = HttpGET.connect(address);
-            JSONObject lists = json1.getJSONObject("list");
-            JSONObject zone = lists.getJSONObject("BSSIDZones");
-            String zone_key = zone.getString("zones");
-            
-            address = "http://wifi-location.appspot.com/rest/Areas/" + zone_key;
-            
-            JSONObject json2 = HttpGET.connect(address);
-            JSONObject areas = json2.getJSONObject("Areas");
-            String zone_name = areas.getString("zone_name");
-            String zone_id = areas.getString("zone_id");
-
-
-        	//zone = db.getZone(bssid);
-        	zoneText.setText(zone_id);
+            try{
+            	// JSONObject json = new JSONObject(test);
+                JSONObject json1 = HttpGET.connect(address);
+                JSONObject lists = json1.getJSONObject("list");
+                JSONObject zones = lists.getJSONObject("BSSIDZones");
+                String zone_key = zones.getString("zones");
+                
+                address = "http://wifi-location.appspot.com/rest/Areas/" + zone_key;
+                
+                JSONObject json2 = HttpGET.connect(address);
+                JSONObject areas = json2.getJSONObject("Areas");
+                String zone_name = areas.getString("zone_name");
+                zone = areas.getString("zone_id");
+	            
+	        	zoneText.setText(zone);
+            }
+            catch(JSONException e){
+            	Log.e("JSON Error:", e.getLocalizedMessage());
+            	zone = "Unknown";
+	        	zoneText.setText(zone);
+            }
         	
+
             
 			//int duration = Toast.LENGTH_SHORT;
 			//Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
