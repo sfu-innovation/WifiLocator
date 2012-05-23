@@ -77,7 +77,6 @@ public class TwitterActivity extends Activity implements OnClickListener{
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		
 		try {
 			if(zone!=null){
 				result = twitter.search(new Query(zone.replaceAll(" ", "")));
@@ -93,7 +92,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
 				tweet_text.add("No Tweets");
 			}
 				
-			adapter = new ArrayAdapter<String>(this.getApplicationContext(), R.layout.tweet_row, R.id.tweetText, tweet_text);
+			adapter = new ArrayAdapter<String>(this, R.layout.tweet_row, R.id.tweetText, tweet_text);
 			tweetListView.setAdapter((ListAdapter)adapter);
 			
 		} catch (TwitterException e) {
@@ -102,7 +101,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
 			
 			tweet_text = new ArrayList<String>();
 			tweet_text.add("No Tweets");
-			adapter = new ArrayAdapter<String>(this.getApplicationContext(), R.layout.tweet_row, R.id.tweetText, tweet_text);
+			adapter = new ArrayAdapter<String>(this, R.layout.tweet_row, R.id.tweetText, tweet_text);
 			tweetListView.setAdapter((ListAdapter)adapter);
 		}
 		

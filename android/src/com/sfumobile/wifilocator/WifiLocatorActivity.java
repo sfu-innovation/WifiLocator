@@ -33,6 +33,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
         bssidText   = (TextView)this.findViewById(R.id.bssidText);
         zoneText    = (TextView)this.findViewById(R.id.zoneText);
         zoneName    = (TextView)this.findViewById(R.id.zoneName);
@@ -51,7 +52,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     
     public void onStart(){
     	super.onStart();
-    	bssidText.setText("0");
+    	//bssidText.setText("0");
     	auto = new AutoPoll();
     	auto.execute();
     }
