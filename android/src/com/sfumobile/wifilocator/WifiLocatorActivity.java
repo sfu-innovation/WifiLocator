@@ -106,21 +106,28 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     public void poll() throws Exception {
     	
         info = wm.getConnectionInfo();
-     //   String test = "{\"list\": { \"Zones\": { \"zone_id\": \"2\", \"mac_address\": \"test\"} } }";
-        //Alert user of hand-offs
-   //     if(bssid.compareTo(info.getBSSID()) != 0){
+
         	bssid = info.getBSSID();
             bssidText.setText(bssid);
             address = "http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=" + bssid;
             
            // JSONObject json = new JSONObject(test);
-            JSONObject json = HttpGET.connect(address);
-            JSONObject lists = json.getJSONObject("list");
+            JSONObject json1 = HttpGET.connect(address);
+            JSONObject lists = json1.getJSONObject("list");
             JSONObject zone = lists.getJSONObject("BSSIDZones");
-            String zone_id = zone.getString("zones");
+            String zone_key = zone.getString("zones");
+            
+            address = "http://wifi-location.appspot.com/rest/Areas/" + zone_key;
+            
+            JSONObject json2 = HttpGET.connect(address);
+            JSONObject areas = json2.getJSONObject("Areas");
+            String zone_name = areas.getString("zone_name");
+            String zone_id = areas.getString("zone_id");
+
 
         	//zone = db.getZone(bssid);
         	zoneText.setText(zone_id);
+        	
             
 			//int duration = Toast.LENGTH_SHORT;
 			//Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
