@@ -103,7 +103,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	}).start();*/
     }
     
-    public void poll() throws Exception {
+    public void poll(){
     	
         info = wm.getConnectionInfo();
      //   String test = "{\"list\": { \"Zones\": { \"zone_id\": \"2\", \"mac_address\": \"test\"} } }";
@@ -113,14 +113,22 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
             bssidText.setText(bssid);
             address = "http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=" + bssid;
             
-           // JSONObject json = new JSONObject(test);
-            JSONObject json = HttpGET.connect(address);
-            JSONObject lists = json.getJSONObject("list");
-            JSONObject zone = lists.getJSONObject("BSSIDZones");
-            String zone_id = zone.getString("zones");
+            try{
+	           // JSONObject json = new JSONObject(test);
+	            JSONObject json = HttpGET.connect(address);
+	            JSONObject lists = json.getJSONObject("list");
+	            JSONObject zones = lists.getJSONObject("BSSIDZones");
+	            zone = zones.getString("zones");
+	            
+	        	zoneText.setText(zone);
+            }
+            catch(JSONException e){
+            	Log.e("JSON Error:", e.getLocalizedMessage());
+            	zone = "Unknown";
+	        	zoneText.setText(zone);
+            }
+        	
 
-        	//zone = db.getZone(bssid);
-        	zoneText.setText(zone_id);
             
 			//int duration = Toast.LENGTH_SHORT;
 			//Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
