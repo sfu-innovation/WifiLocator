@@ -26,7 +26,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
 	private static String url = "http://wifi-location.appspot.com/getzone/";
-	AutoPoll auto;
+	private AutoPoll auto;
 	
 	/** Called when the activity is first created. */
     @Override
