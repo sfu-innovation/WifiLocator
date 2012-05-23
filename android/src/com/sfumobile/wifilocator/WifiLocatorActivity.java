@@ -55,6 +55,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	//bssidText.setText("0");
     	auto = new AutoPoll();
     	auto.execute();
+    	pollButton.setTag(1);
     }
     
     public void poll(){
@@ -66,7 +67,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
-			poll();
+			final int status = (Integer) src.getTag();
+			if(status ==1){
+				pollButton.setText("Auto Poll");
+				poll();
+				src.setTag(0);
+			}else{
+				pollButton.setText("Stop Polling");
+				auto = new AutoPoll();
+		    	auto.execute();
+				src.setTag(1);
+			}
 			break;
 		case R.id.friendButton:
     		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
@@ -92,7 +103,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				info = wm.getConnectionInfo();
 		    	bssid =  info.getBSSID(); //"00:1f:45:64:12:f1"; 
 		        address =  url + bssid;
-		        
 		        try{
 		            JSONObject zone_info = HttpGET.connect(address);
 		            publishProgress(zone_info);
@@ -116,6 +126,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 				zoneText.setText("Unknown");
+				bssidText.setText(bssid);
 			}
 		}
 
