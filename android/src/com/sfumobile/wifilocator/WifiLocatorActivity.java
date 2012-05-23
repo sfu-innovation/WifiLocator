@@ -106,19 +106,24 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     public void poll(){
     	
         info = wm.getConnectionInfo();
-     //   String test = "{\"list\": { \"Zones\": { \"zone_id\": \"2\", \"mac_address\": \"test\"} } }";
-        //Alert user of hand-offs
-   //     if(bssid.compareTo(info.getBSSID()) != 0){
+
         	bssid = info.getBSSID();
             bssidText.setText(bssid);
             address = "http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=" + bssid;
             
             try{
-	           // JSONObject json = new JSONObject(test);
-	            JSONObject json = HttpGET.connect(address);
-	            JSONObject lists = json.getJSONObject("list");
-	            JSONObject zones = lists.getJSONObject("BSSIDZones");
-	            zone = zones.getString("zones");
+            	// JSONObject json = new JSONObject(test);
+                JSONObject json1 = HttpGET.connect(address);
+                JSONObject lists = json1.getJSONObject("list");
+                JSONObject zones = lists.getJSONObject("BSSIDZones");
+                String zone_key = zones.getString("zones");
+                
+                address = "http://wifi-location.appspot.com/rest/Areas/" + zone_key;
+                
+                JSONObject json2 = HttpGET.connect(address);
+                JSONObject areas = json2.getJSONObject("Areas");
+                String zone_name = areas.getString("zone_name");
+                zone = areas.getString("zone_id");
 	            
 	        	zoneText.setText(zone);
             }
