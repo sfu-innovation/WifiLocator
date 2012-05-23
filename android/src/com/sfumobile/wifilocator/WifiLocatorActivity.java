@@ -125,7 +125,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        zoneName.setText(zone_name);
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				zoneText.setText("Unknown");
+				zone = "Unknown";
+				zoneText.setText(zone);
 				bssidText.setText(bssid);
 			}
 		}
