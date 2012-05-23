@@ -10,18 +10,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
 import android.content.Intent;
 import android.widget.Button;
-import com.sfumobile.wifilocator.HttpGET;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
-	private String bssid, zone, address;
+	private String bssid, zone, zone_name;
 	private TextView bssidText, zoneText, zoneName;
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
-	private static String url = "http://wifi-location.appspot.com/getzone/";
 	private AutoPoll auto;
 	private WifiPoller wifiPoller;
 	
@@ -43,7 +40,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         friendButton.setOnClickListener(this);  
         
         wifiPoller = new WifiPoller(this);
-        bssid = wifiPoller.getBSSID();
     }
     
     public void onStart(){
@@ -86,16 +82,20 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	public void onStop(){
 		super.onStop();
 	}
+	
+	public void poll(){
+        bssid = wifiPoller.getBSSID();
+        
+	}
+	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
 		@Override
 		protected Void doInBackground(String... params) {
 	  
 			while(!isCancelled()) {
-		    	bssid =  wifiPoller.getBSSID(); //"00:1f:45:64:12:f1"; 
-		        address =  url + bssid;
 		        try{
-		            JSONObject zone_info = HttpGET.connect(address);
+		            JSONObject zone_info = wifiPoller.getZoneInfo();
 		            publishProgress(zone_info);
 		        	Thread.sleep(1000*30);
 		        } catch (InterruptedException e) {
@@ -109,15 +109,19 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		protected void onProgressUpdate(JSONObject... zones){
 			
 			try{
-				String zone_name = zones[0].getString("zone_name");
-		        zone = zones[0].getString("zone_id");	       
+				zone_name = zones[0].getString("zone_name");
+		        zone = zones[0].getString("zone_id");
+		        bssid = zones[0].getString("mac_address");
 		        bssidText.setText(bssid);
 		        zoneText.setText(zone);
 		        zoneName.setText(zone_name);
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
+				bssid = wifiPoller.getBSSID();
 				zone = "Unknown";
+				zone_name = "Unknown";
 				zoneText.setText(zone);
+				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
 			}
 		}
