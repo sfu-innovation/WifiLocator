@@ -40,8 +40,6 @@ public class TwitterSignInActivity extends Activity {
         if(extras!=null){
         	zone = extras.getString("zone");
         }
-        
-		login();
 	}
 
 	public void login() {
@@ -62,7 +60,8 @@ public class TwitterSignInActivity extends Activity {
 	@Override
 	protected void onStart(){
 		super.onStart();
-		Intent myIntent = new Intent(this.getApplicationContext(), TwitterActivity.class);
+		login();
+		Intent myIntent = new Intent(this, TwitterActivity.class);
 		myIntent.putExtra("zone", zone);
 		startActivity(myIntent);
 	}
