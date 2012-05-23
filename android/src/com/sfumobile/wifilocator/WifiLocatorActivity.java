@@ -16,9 +16,7 @@ import android.widget.TextView;
 //import android.widget.Toast;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.widget.Button;
-//import com.sfumobile.wifilocator.DBAdapter;
 import com.sfumobile.wifilocator.HttpGET;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
@@ -26,10 +24,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private String bssid, zone, address;
 	private WifiManager wm;
 	private WifiInfo info;
-	private TextView bssidText, macText, zoneText;
+	private TextView bssidText, zoneText;
 	private Button pollButton, friendButton;
 	private Handler handler;
-	private DBAdapter db;
 	private ImageView twitterIcon;
 	
 	/** Called when the activity is first created. */
@@ -37,21 +34,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-/*
-        db = new DBAdapter(this.getApplicationContext());
-        db.createDatabase();
-        db.openDataBase();
-        
-        Cursor c = db.getAP();
-        c.moveToFirst();
-        for(int i=0; i<c.getCount(); i++){
-        	Log.d("STUFF", c.getString(c.getColumnIndex("bssid")));
-        	c.moveToNext();
-        }
-        c.close();
-        */
+
         bssidText   = (TextView)this.findViewById(R.id.bssidText);
-        macText     = (TextView)this.findViewById(R.id.macText);
         zoneText    = (TextView)this.findViewById(R.id.zoneText);
         pollButton  = (Button)this.findViewById(R.id.pollButton);
         twitterIcon = (ImageView)this.findViewById(R.id.twitterIcon);
@@ -62,11 +46,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);
         
-        try{
-			poll();
-		} catch (Exception e){
-			e.printStackTrace();
-		}
         wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
         info = wm.getConnectionInfo();
         bssid = info.getBSSID();
@@ -76,8 +55,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	super.onStart();
     	bssidText.setText(bssid);
     	
-    	//zone = db.getZone(bssid);
-    	zoneText.setText("-1");
+        try{
+			poll();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+        
     	/*
     	new Thread(new Runnable(){
     		public void run(){
@@ -131,15 +114,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
             	Log.e("JSON Error:", e.getLocalizedMessage());
             	zone = "Unknown";
 	        	zoneText.setText(zone);
-            }
-        	
-
-            
-			//int duration = Toast.LENGTH_SHORT;
-			//Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
-			//toast.show();
-      //  }
-     
+            }   
 
     }
 
