@@ -32,13 +32,13 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/macLabel"
+            android:id="@+id/zoneNameLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mac_label" />
-
+            android:text="@string/zoneName_label" />
+                
         <TextView
-            android:id="@+id/macText"
+            android:id="@+id/zoneName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge" />
