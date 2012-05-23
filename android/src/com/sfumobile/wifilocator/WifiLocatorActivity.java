@@ -3,8 +3,6 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,13 +18,12 @@ import com.sfumobile.wifilocator.HttpGET;
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
 	private String bssid, zone, address;
-	private WifiManager wm;
-	private WifiInfo info;
 	private TextView bssidText, zoneText, zoneName;
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
 	private static String url = "http://wifi-location.appspot.com/getzone/";
 	private AutoPoll auto;
+	private WifiPoller wifiPoller;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -45,9 +42,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
         
-        wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        info = wm.getConnectionInfo();
-        bssid = info.getBSSID();
+        wifiPoller = new WifiPoller(this);
+        bssid = wifiPoller.getBSSID();
     }
     
     public void onStart(){
@@ -58,10 +54,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	pollButton.setTag(1);
     }
     
-    public void poll(){
-    	auto.cancel(true);
-    }
-
 	public void onClick(View src) {
 		@SuppressWarnings("unused")
 		Intent myIntent;
@@ -70,7 +62,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			final int status = (Integer) src.getTag();
 			if(status ==1){
 				pollButton.setText("Auto Poll");
-				poll();
+				auto.cancel(true);
 				src.setTag(0);
 			}else{
 				pollButton.setText("Stop Polling");
@@ -100,8 +92,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		protected Void doInBackground(String... params) {
 	  
 			while(!isCancelled()) {
-				info = wm.getConnectionInfo();
-		    	bssid =  info.getBSSID(); //"00:1f:45:64:12:f1"; 
+		    	bssid =  wifiPoller.getBSSID(); //"00:1f:45:64:12:f1"; 
 		        address =  url + bssid;
 		        try{
 		            JSONObject zone_info = HttpGET.connect(address);
