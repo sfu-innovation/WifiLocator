@@ -5,3 +5,4 @@ bin/*
 .project
 project.properties
 proguard.cfg
+src/com/sfumobile/wifilocator/OAuthConsumer.java

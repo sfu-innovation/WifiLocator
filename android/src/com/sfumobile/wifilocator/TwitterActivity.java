@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import twitter4j.Query;
@@ -67,7 +66,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
         if(extras!=null){
         	zone = extras.getString("zone");
         }
-		twitter.setOAuthConsumer(TwitterSignInActivity.CONSUMER_KEY, TwitterSignInActivity.CONSUMER_SECRET);
+		twitter.setOAuthConsumer(OAuthConsumer.CONSUMER_KEY, OAuthConsumer.CONSUMER_SECRET);
         token = new AccessToken(prefs.getString("token", ""), prefs.getString("secret", ""));
 
 		twitter.setOAuthAccessToken(token);
