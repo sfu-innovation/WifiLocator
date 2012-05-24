@@ -83,11 +83,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		super.onStop();
 	}
 	
-	public void poll(){
-        bssid = wifiPoller.getBSSID();
-        
-	}
-	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
 		@Override
@@ -112,14 +107,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				zone_name = zones[0].getString("zone_name");
 		        zone = zones[0].getString("zone_id");
 		        bssid = zones[0].getString("mac_address");
-		        bssidText.setText(bssid);
-		        zoneText.setText(zone);
-		        zoneName.setText(zone_name);
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 				bssid = wifiPoller.getBSSID();
 				zone = "Unknown";
-				zone_name = "Unknown";
+				zone_name = "Unknown";				
+			} finally {
 				zoneText.setText(zone);
 				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
