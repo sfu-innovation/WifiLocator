@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 public class RequestHandler {
 	private WifiManager wm;
@@ -20,7 +21,8 @@ public class RequestHandler {
 	
 	public JSONObject getZoneInfo(){
     	String bssid =  wm.getConnectionInfo().getBSSID(); //"00:1f:45:64:12:f1"; 
-        String address =  url + bssid;
+        String address =  url + WifiLocatorActivity.USER + "/" + bssid;
+        Log.d("URL: ", address);
         
         JSONObject zone_info = HttpGET.connect(address);
         return zone_info;
