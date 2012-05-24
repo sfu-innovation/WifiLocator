@@ -9,14 +9,16 @@
 #import "TestTableViewController.h"
 #import "SFUMobileTweet.h"
 #import "WLANContext.h"
+#import "NSRequestResponseWrapper.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import "SFUMobileParserUtils.h"
 @interface TestTableViewController ()
 
 @end
 
 @implementation TestTableViewController
 
-@synthesize players;
+@synthesize players, responseData, connection, currentLocation;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,7 +32,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    responseData = [[NSMutableData alloc] init];
+    
+     WLANContext* context = [[WLANContext alloc] init];
+    
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                           [context getBSSID]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -142,8 +153,11 @@
         {
             TWTweetComposeViewController *tweetSheet = 
             [[TWTweetComposeViewController alloc] init];
+            NSString* prependTweetString = [NSString stringWithFormat:@"%@%@ ",
+                                      @"#",
+                                      self.currentLocation];
             [tweetSheet setInitialText:
-             @"#SFUZone6 "];
+             prependTweetString];
             [self presentModalViewController:tweetSheet animated:YES];
         }
         else
@@ -159,22 +173,29 @@
             [alertView show];
         
         }
-        WLANContext* context = [[WLANContext alloc] init];
-        NSLog(@" This is the BSSID %@", [context getBSSID]);
         
     }
 }
 
+-(NSString*)getZone:(int)zoneID{
+    
+}
 -(IBAction)refreshTweets:(id)sender{
-    //WLANContext* context = [[WLANContext alloc] init];
+    WLANContext* context = [[WLANContext alloc] init];
+    [context getBSSID];
     
-
-   
+    NSString* macString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
+                           /* @"00:1f:45:64:17:08"*/
+                           [context getBSSID]];
+  
+   NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
     
-    NSString* temp = @"SFUZone6";
+    
     NSString* urlString = [NSString stringWithFormat:@"%@%@",
                            @"http://search.twitter.com/search.json?q=%23",
-                           temp];
+                           self.currentLocation];
     
     TWRequest *request = [[TWRequest alloc] initWithURL:[NSURL URLWithString:
                                                          urlString] 
@@ -204,7 +225,6 @@
                  tweet.image = [temp objectForKey:@"profile_image_url"];
                  tweet.time = [temp objectForKey:@"created_at"];
                  [tweets addObject:tweet];
-                 NSLog(@" The size of tweets = %d", [tweets count]);
              }
              self.players = tweets;
              [self.tableView reloadData];
@@ -213,5 +233,46 @@
              NSLog(@"Twitter error, HTTP response: %i", [urlResponse statusCode]);
      }];
 
+}
+- (void)testFunction2:(NSData*) responseData{
+     self.currentLocation = [SFUMobileParserUtils 
+                                  parseZoneName:responseData];
+    if ( [self.currentLocation length] == 0){
+        self.currentLocation = @"SFU";
+    }
+}
+- (void)testFunction:(NSData*) responseData{
+    NSString* zoneIDString = [NSString stringWithFormat:@"%@%@",
+                           @"http://wifi-location.appspot.com/rest/ZoneNames?feq_zone_id=",
+                           [SFUMobileParserUtils parseZone:responseData]];
+    
+    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
+    [test initGetRequest:zoneIDString withTarget:self onAction:@selector(testFunction2:)];
+
+}
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+	[responseData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    if (responseData == nil ) {
+        NSLog(@"responseData was null :(");
+    }
+	[responseData appendData:data];
+    NSLog(@"We got data :D length = %d", [responseData length]);
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	//label.text = [NSString stringWithFormat:@"Connection failed: %@", [error //description]];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    
+/*	NSMutableString *text = [NSMutableString stringWithString:@"Lucky numbers:\n"];
+    
+	for (int i = 0; i < [luckyNumbers count]; i++)
+		[text appendFormat:@"%@\n", [luckyNumbers objectAtIndex:i]];
+    
+	label.text =  text;*/
 }
 @end

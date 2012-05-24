@@ -18,7 +18,7 @@ import time
 
 # Parameters
 samples = 21
-network = "SFUNET-SECURE"
+network = "((SFUNET-SECURE)|(SFUNET)|(eduroam))"
 area = "zone0"
 
 if (len(sys.argv) > 1):
@@ -41,6 +41,8 @@ for i in range(samples):
 			f.write(line + ",")
 		elif re.search("^SSID", line):
 			validnetwork = re.search(network, line.split(",")[1])
+			if validnetwork:
+				f.write(re.sub("[0-9]", "", line, 0) + "\n")
 		elif re.search("Signal", line) and validnetwork:
 			f.write(line + "\n")
 	

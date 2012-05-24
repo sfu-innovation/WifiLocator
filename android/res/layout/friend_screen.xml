@@ -3,11 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <ListView android:layout_width="fill_parent"
-			  android:layout_height="fill_parent"
-			  xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:id="@+id/TweetListView">
-	</ListView>
+
+    <ExpandableListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null" >
+    </ExpandableListView>
 
 </LinearLayout>

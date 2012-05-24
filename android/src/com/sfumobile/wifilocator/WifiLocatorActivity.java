@@ -1,133 +1,130 @@
 package com.sfumobile.wifilocator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.Activity;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
+import android.net.wifi.ScanResult;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.widget.Button;
-import com.sfumobile.wifilocator.DBAdapter;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
-	private String bssid, macAddr, zone;
-	private WifiManager wm;
-	private WifiInfo info;
-	private TextView bssidText, macText, zoneText;
-	private Button pollButton;
-	private Handler handler;
-	private DBAdapter db;
+	private String bssid, ssid, zone, zone_name;
+	private TextView bssidText, ssidText, zoneText, zoneName;
+	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
+	private AutoPoll auto;
+	private RequestHandler requestHandler;
+	
+	public static final String USER = "Mike";
 	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        db = new DBAdapter(this.getApplicationContext());
-        db.createDatabase();
-        db.openDataBase();
-        
-        Cursor c = db.getAP();
-        c.moveToFirst();
-        for(int i=0; i<c.getCount(); i++){
-        	Log.d("STUFF", c.getString(c.getColumnIndex("bssid")));
-        	c.moveToNext();
-        }
-        c.close();
-        
-        bssidText   = (TextView)this.findViewById(R.id.bssidText);
-        macText     = (TextView)this.findViewById(R.id.macText);
-        zoneText    = (TextView)this.findViewById(R.id.zoneText);
-        pollButton  = (Button)this.findViewById(R.id.pollButton);
-        twitterIcon = (ImageView)this.findViewById(R.id.twitterIcon);
-        handler = new Handler();
+
+        bssidText    = (TextView)this.findViewById(R.id.bssidText);
+        ssidText     = (TextView)this.findViewById(R.id.ssidText);
+        zoneText     = (TextView)this.findViewById(R.id.zoneText);
+        zoneName     = (TextView)this.findViewById(R.id.zoneName);
+        pollButton   = (Button)this.findViewById(R.id.pollButton);
+        twitterIcon  = (ImageView)this.findViewById(R.id.twitterIcon);
+        friendButton = (Button)this.findViewById(R.id.friendButton);
         
         pollButton.setOnClickListener(this);
         twitterIcon.setOnClickListener(this);
+        friendButton.setOnClickListener(this);  
         
-        wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        info = wm.getConnectionInfo();
-        bssid = info.getBSSID();
-        macAddr = info.getMacAddress();
+        requestHandler = new RequestHandler(this);
     }
     
     public void onStart(){
     	super.onStart();
-    	bssidText.setText(bssid);
-    	macText.setText(macAddr);
-    	
-    	zone = db.getZone(bssid);
-    	zoneText.setText(zone);
-    	
-    	/*
-    	new Thread(new Runnable(){
-    		public void run(){
-    			while(true){
-    				try {
-    					Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-					e.printStackTrace();
-					}
-    				handler.post(new Runnable(){
-    					public void run(){
-    						poll();
-    					}
-    				});
-    			}
-    		}
-    	}).start();
-    	*/
+    	auto = new AutoPoll();
+    	auto.execute();
+    	pollButton.setTag(1);
     }
     
-    public void poll(){
-    	
-        info = wm.getConnectionInfo();
-        
-        if(info != null){
-        	Log.d("Polling", bssid.toUpperCase());
-        	String curBSSID = info.getBSSID();
-	        //Alert user of hand-offs
-	        if(curBSSID != null & bssid.toUpperCase().compareTo(curBSSID.toUpperCase()) != 0){
-	        	bssid = info.getBSSID();
-	            bssidText.setText(bssid);
-	            
-	        	zone = db.getZone(bssid);
-	        	zoneText.setText(zone);
-	            
-				int duration = Toast.LENGTH_SHORT;
-				Toast toast = Toast.makeText(this.getApplicationContext(), "Handoff!", duration);
-				toast.show();
-	        }
-	        macAddr = info.getMacAddress();
-	        macText.setText(macAddr);
-        }
-    }
-
 	public void onClick(View src) {
-		@SuppressWarnings("unused")
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
-			poll();
+			final int status = (Integer) src.getTag();
+			if(status ==1){
+				pollButton.setText("Auto Poll");
+				auto.cancel(true);
+				src.setTag(0);
+			}else{
+				pollButton.setText("Stop Polling");
+				auto = new AutoPoll();
+		    	auto.execute();
+				src.setTag(1);
+			}
 			break;
-		
+		case R.id.friendButton:
+    		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
+    		startActivity(nextScreen);
+    		break;
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterActivity.class);
 			myIntent.putExtra("zone", zone);
 			startActivity(myIntent);
 			break;
 		}
+	}
+	
+	public void onStop(){
+		super.onStop();
+    	auto.cancel(true);
+	}
+	
+	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
+
+		@Override
+		protected Void doInBackground(String... params) {
+	  
+			while(!isCancelled()) {
+		        try{
+		            JSONObject zone_info = requestHandler.getZoneInfo();
+		            publishProgress(zone_info);
+		        	Thread.sleep(1000*5);
+		        } catch (InterruptedException e) {
+		        	Thread.currentThread().destroy();
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+		@Override
+		protected void onProgressUpdate(JSONObject... zones){
+			
+			try{
+				zone_name = zones[0].getString("zone_name");
+		        zone = zones[0].getString("zone_id");
+		        bssid = zones[0].getString("mac_address");
+			} catch (JSONException e) {
+				Log.e("JSON Error:", e.getLocalizedMessage());
+				ScanResult bs = requestHandler.getBS();
+				bssid = bs.BSSID;
+				ssid  = bs.SSID;
+				zone = "Unknown";
+				zone_name = "Unknown";				
+			} finally {
+				zoneText.setText(zone);
+				zoneName.setText(zone_name);
+				bssidText.setText(bssid);
+				ssidText.setText(ssid);
+			}
+		}
+
+
 	}
 }
