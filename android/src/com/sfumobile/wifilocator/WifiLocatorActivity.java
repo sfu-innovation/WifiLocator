@@ -20,7 +20,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
-	private WifiPoller wifiPoller;
+	private RequestHandler requestHandler;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -39,7 +39,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
         
-        wifiPoller = new WifiPoller(this);
+        requestHandler = new RequestHandler(this);
     }
     
     public void onStart(){
@@ -89,7 +89,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	  
 			while(!isCancelled()) {
 		        try{
-		            JSONObject zone_info = wifiPoller.getZoneInfo();
+		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
 		        	Thread.sleep(1000*30);
 		        } catch (InterruptedException e) {
@@ -108,7 +108,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        bssid = zones[0].getString("mac_address");
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = wifiPoller.getBSSID();
+				bssid = requestHandler.getBSSID();
 				zone = "Unknown";
 				zone_name = "Unknown";				
 			} finally {

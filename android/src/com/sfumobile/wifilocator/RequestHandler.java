@@ -5,11 +5,11 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 
-public class WifiPoller {
+public class RequestHandler {
 	private WifiManager wm;
 	private static String url = "http://wifi-location.appspot.com/getzone/";
 
-	public WifiPoller(Context context){
+	public RequestHandler(Context context){
         wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 
 	}
