@@ -30,9 +30,11 @@ class FriendHandler(webapp.RequestHandler):
 				for item in q:
 					friend = Users.get_by_id(item.friend_id)
 					friendname = friend.short_name
-					last_location = friend.last_location
-					if last_location is None:
+					if friend.last_location is not None:
+						last_location = friend.last_location.zone_name
+					else:
 						last_location = "Unknown"
+					
 					data[name].append({'friend_name' : friendname,
 									   'friend_location' : last_location,
 									   'last_update' : friend.last_update.ctime()}
