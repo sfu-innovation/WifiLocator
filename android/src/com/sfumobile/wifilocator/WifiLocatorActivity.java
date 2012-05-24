@@ -22,6 +22,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	
+	public static final String USER = "Mike";
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     
     public void onStart(){
     	super.onStart();
-    	//bssidText.setText("0");
     	auto = new AutoPoll();
     	auto.execute();
     	pollButton.setTag(1);
@@ -71,7 +72,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     		startActivity(nextScreen);
     		break;
 		case R.id.twitterIcon:
-			myIntent = new Intent(src.getContext(), TwitterSignInActivity.class);
+			myIntent = new Intent(src.getContext(), TwitterActivity.class);
 			myIntent.putExtra("zone", zone);
 			startActivity(myIntent);
 			break;
@@ -80,6 +81,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	
 	public void onStop(){
 		super.onStop();
+    	auto.cancel(true);
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
@@ -91,7 +93,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        try{
 		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
-		        	Thread.sleep(1000*30);
+		        	Thread.sleep(1000*5);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();

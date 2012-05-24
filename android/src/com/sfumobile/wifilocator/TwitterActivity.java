@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
 public class TwitterActivity extends Activity implements OnClickListener{
 
@@ -35,10 +39,14 @@ public class TwitterActivity extends Activity implements OnClickListener{
 	private String zone;
 	private ArrayList<String> tweet_text;
 	private ArrayAdapter<String> adapter;
-	private AccessToken token;
+	private AccessToken accessToken;
 	private SharedPreferences prefs;
 	private List<Tweet> tweets;
 	private QueryResult result;
+	
+	RequestToken requestToken;
+	public final static String TOKEN_FILE = "access_token";
+	private final String CALLBACKURL = "SFUMobile://wifilocator";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +54,7 @@ public class TwitterActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.twitter_view);
 		
-		prefs = getSharedPreferences(TwitterSignInActivity.TOKEN_FILE, 0);
+        prefs = getSharedPreferences(TOKEN_FILE,0);
 		
 		tweetListView = (ListView)this.findViewById(R.id.TweetListView);
 		tweetText     = (EditText)this.findViewById(R.id.tweetText);
@@ -66,16 +74,14 @@ public class TwitterActivity extends Activity implements OnClickListener{
         if(extras!=null){
         	zone = extras.getString("zone");
         }
-		twitter.setOAuthConsumer(OAuthConsumer.CONSUMER_KEY, OAuthConsumer.CONSUMER_SECRET);
-        token = new AccessToken(prefs.getString("token", ""), prefs.getString("secret", ""));
-
-		twitter.setOAuthAccessToken(token);
 	}
 
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		login();
+			
 		try {
 			if(zone!=null){
 				result = twitter.search(new Query(zone.replaceAll(" ", "")));
@@ -106,8 +112,57 @@ public class TwitterActivity extends Activity implements OnClickListener{
 		
 	}
 	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Uri uri = intent.getData();
+		try {
+			if(uri != null){
+				String verifier = uri.getQueryParameter("oauth_verifier");
+				accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+				twitter.setOAuthAccessToken(accessToken);
+				saveToken(accessToken);
+			}
+		} catch (TwitterException e) {
+			Log.e("onNewIntent", "" + e.getMessage());
+		}
+	}
+	
+	void saveToken(AccessToken token){
+		final Editor edit = prefs.edit();
+		edit.putString("token", token.getToken());
+		edit.putString("secret", token.getTokenSecret());
+		edit.commit();
+	}
+	
+	public void login() {
+		twitter = new TwitterFactory().getInstance();
+		twitter.setOAuthConsumer(OAuthConsumer.CONSUMER_KEY, OAuthConsumer.CONSUMER_SECRET);
+
+		if(!prefs.contains("token") | !prefs.contains("secret")){
+			try {
+				requestToken = twitter.getOAuthRequestToken(CALLBACKURL);
+				String authUrl = requestToken.getAuthorizationURL();
+				
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+				this.startActivity(intent);
+				
+			} catch (TwitterException e) {
+				Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+				Log.e("Login", e.getMessage());
+			}
+		}
+		else{
+	        accessToken = new AccessToken(prefs.getString("token", ""), prefs.getString("secret", ""));
+			twitter.setOAuthAccessToken(accessToken);	
+		}
+	}
+	
 	void tweet (String message){
-		if (token != null) {
+		Log.d("Twitter","TWEET");
+		if (accessToken != null) {
+			Log.d("Twitter","TWEET");
 			Status status = null;
 			try {
 				status = twitter.updateStatus(message);
