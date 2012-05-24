@@ -51,7 +51,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     }
     
 	public void onClick(View src) {
-		@SuppressWarnings("unused")
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:

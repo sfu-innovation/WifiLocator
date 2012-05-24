@@ -1,6 +1,5 @@
 package com.sfumobile.wifilocator;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;

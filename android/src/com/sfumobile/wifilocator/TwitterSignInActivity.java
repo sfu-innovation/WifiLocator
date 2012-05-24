@@ -23,8 +23,6 @@ public class TwitterSignInActivity extends Activity {
 	Twitter twitter;
 	RequestToken requestToken;
 	public final static String TOKEN_FILE = "access_token";
-	public final static String CONSUMER_KEY = "5wNUxrYGUQ2SiPYrUB1w";
-	public final static String CONSUMER_SECRET = "49CfLOBUnvIubWwh37FgcWJZR3SqxXkgooHHvnRF4s"; 
 	private final String CALLBACKURL = "SFUMobile://wifilocator";
 	private String zone;
 	private SharedPreferences prefs;
@@ -46,7 +44,7 @@ public class TwitterSignInActivity extends Activity {
 		if(!prefs.contains("token") | !prefs.contains("secret")){
 			try {
 				twitter = new TwitterFactory().getInstance();
-				twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
+				twitter.setOAuthConsumer(OAuthConsumer.CONSUMER_KEY, OAuthConsumer.CONSUMER_SECRET);
 				requestToken = twitter.getOAuthRequestToken(CALLBACKURL);
 				String authUrl = requestToken.getAuthorizationURL();
 				this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl)));
