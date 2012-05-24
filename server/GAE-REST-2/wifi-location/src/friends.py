@@ -7,6 +7,8 @@ import csv
 import rest
 from django.utils import simplejson as json
 
+from src.models import Zones, ZoneNames, Friends, Areas, BSSIDZones, ZoneMaps, Users
+
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
