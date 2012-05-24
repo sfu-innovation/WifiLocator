@@ -3,8 +3,6 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,21 +10,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
 import android.content.Intent;
 import android.widget.Button;
-import com.sfumobile.wifilocator.HttpGET;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
-	private String bssid, zone, address;
-	private WifiManager wm;
-	private WifiInfo info;
+	private String bssid, zone, zone_name;
 	private TextView bssidText, zoneText, zoneName;
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
-	private static String url = "http://wifi-location.appspot.com/getzone/";
 	private AutoPoll auto;
+	private RequestHandler requestHandler;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -45,9 +39,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
         
-        wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-        info = wm.getConnectionInfo();
-        bssid = info.getBSSID();
+        requestHandler = new RequestHandler(this);
     }
     
     public void onStart(){
@@ -58,19 +50,14 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	pollButton.setTag(1);
     }
     
-    public void poll(){
-    	auto.cancel(true);
-    }
-
 	public void onClick(View src) {
-		@SuppressWarnings("unused")
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
 			final int status = (Integer) src.getTag();
 			if(status ==1){
 				pollButton.setText("Auto Poll");
-				poll();
+				auto.cancel(true);
 				src.setTag(0);
 			}else{
 				pollButton.setText("Stop Polling");
@@ -94,17 +81,15 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	public void onStop(){
 		super.onStop();
 	}
+	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
 		@Override
 		protected Void doInBackground(String... params) {
 	  
 			while(!isCancelled()) {
-				info = wm.getConnectionInfo();
-		    	bssid =  info.getBSSID(); //"00:1f:45:64:12:f1"; 
-		        address =  url + bssid;
 		        try{
-		            JSONObject zone_info = HttpGET.connect(address);
+		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
 		        	Thread.sleep(1000*30);
 		        } catch (InterruptedException e) {
@@ -118,15 +103,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		protected void onProgressUpdate(JSONObject... zones){
 			
 			try{
-				String zone_name = zones[0].getString("zone_name");
-		        zone = zones[0].getString("zone_id");	       
-		        bssidText.setText(bssid);
-		        zoneText.setText(zone);
-		        zoneName.setText(zone_name);
+				zone_name = zones[0].getString("zone_name");
+		        zone = zones[0].getString("zone_id");
+		        bssid = zones[0].getString("mac_address");
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
+				bssid = requestHandler.getBSSID();
 				zone = "Unknown";
+				zone_name = "Unknown";				
+			} finally {
 				zoneText.setText(zone);
+				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
 			}
 		}
