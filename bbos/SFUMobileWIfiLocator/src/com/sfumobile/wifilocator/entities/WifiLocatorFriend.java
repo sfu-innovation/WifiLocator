@@ -1,4 +1,4 @@
-package com.sfumobile.wifilocator.types;
+package com.sfumobile.wifilocator.entities;
 
 public class WifiLocatorFriend {
 	private String _name;
@@ -10,11 +10,6 @@ public class WifiLocatorFriend {
 	}
 	public WifiLocatorFriend( String name, String location, String time ){
 		_name = name;
-		_location = location;
-		_time = time;
-	}
-	
-	public void setLocation( String location, String time ){
 		_location = location;
 		_time = time;
 	}

@@ -6,7 +6,7 @@ import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
-import com.sfumobile.wifilocator.types.WifiLocatorFriend;
+import com.sfumobile.wifilocator.entities.WifiLocatorFriend;
 
 public class JSONWifiLocatorParser {
 	public static String getZoneName( String res ){

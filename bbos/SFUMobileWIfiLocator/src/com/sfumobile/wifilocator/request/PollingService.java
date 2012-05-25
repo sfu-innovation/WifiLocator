@@ -15,10 +15,10 @@ public class PollingService {
 	}
 	
 	
-	public void addRequest( IRequest t ){
+	public void addRequest( RequestPackage t ){
 		_actions.addElement(t);
 	}
-	public void removeRequest( IRequest t ) {
+	public void removeRequest( RequestPackage t ) {
 		_actions.removeElement( t );
 	}
 	
@@ -48,7 +48,7 @@ class RequestThread extends Thread{
 		public void run(){
 			System.out.println("[SFUMobile] Polling now!");
 			for(int i = 0; i < _actions.size(); i++){
-				IRequest currentRequest = (IRequest)_actions.elementAt( i );
+				RequestPackage currentRequest = (RequestPackage)_actions.elementAt( i );
 				currentRequest.init();
 			}
 		}
