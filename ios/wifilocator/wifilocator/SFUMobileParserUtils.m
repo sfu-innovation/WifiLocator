@@ -14,8 +14,9 @@
     NSError *error; 
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     NSDictionary* list = [dict objectForKey:@"list"];
-    NSDictionary* zone = [list objectForKey:@"Zones"];
-    return [zone objectForKey:@"zone_id"];
+    NSDictionary* zone = [list objectForKey:@"BSSIDZones"];
+    NSLog(@" This is teh key!!! \n\n\n %@", [zone objectForKey:@"zones"]);
+    return [zone objectForKey:@"zones"];
 }
 +(NSArray*)parseFriends:(NSData*)data{
     NSMutableArray* myFriends;
@@ -45,8 +46,10 @@
 +(NSString*)parseZoneName:(NSData*)data{
     NSError *error; 
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-    NSDictionary* list = [dict objectForKey:@"list"];
-    NSDictionary* zoneNames = [list objectForKey:@"ZoneNames"];
+   // NSDictionary* list = [dict objectForKey:@"list"];
+    NSDictionary* zoneNames = [dict objectForKey:@"Areas"];
+    NSLog(@"Printing areas \n %@", zoneNames);
+    NSLog(@" This is teh key!!! \n\n\n %@", [zoneNames objectForKey:@"zone_name"]);
     return [zoneNames objectForKey:@"zone_name"];
 }
 @end
