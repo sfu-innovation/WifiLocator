@@ -5,7 +5,8 @@ import java.util.Vector;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.container.MainScreen;
-import com.sfumobile.wifilocator.types.WifiLocatorFriend;
+
+import com.sfumobile.wifilocator.entities.WifiLocatorFriend;
 
 public class WifiLocatorFriendDetailScreen extends MainScreen {
 

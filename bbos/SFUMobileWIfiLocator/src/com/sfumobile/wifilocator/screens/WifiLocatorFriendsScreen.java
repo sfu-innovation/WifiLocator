@@ -2,6 +2,8 @@ package com.sfumobile.wifilocator.screens;
 
 import java.util.Vector;
 
+import org.json.me.JSONObject;
+
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.Graphics;
@@ -15,8 +17,9 @@ import net.rim.device.api.ui.component.ObjectListField;
 import com.sfumobile.wifilocator.request.FriendsRequest;
 import com.sfumobile.wifilocator.request.PollingService;
 import com.sfumobile.wifilocator.request.RequestDelegate;
-import com.sfumobile.wifilocator.request.RequestTypes;
+import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.ZoneRequest;
+import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.JSONWifiLocatorParser;
 
 public class WifiLocatorFriendsScreen extends RequestDelegate  {
@@ -27,6 +30,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 	private PollingService _service;
 	private FriendsRequest _friendsRequest;
 	private ZoneRequest    _zoneRequest;
+	//private RequestPackage _friendsRequestPackage, _zoneRequestPackage;
+	
 	private String zoneName;
 	public WifiLocatorFriendsScreen(){
 		
@@ -50,20 +55,19 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 	protected void onUiEngineAttached( boolean attached ) {
 		if ( attached ){
 			
-			_zoneRequest = new ZoneRequest( this );
-			_friendsRequest = new FriendsRequest(this);
+			
+			_zoneRequest = new ZoneRequest("Alex");
+			RequestPackage _zoneRequestPackage = new RequestPackage( this, _zoneRequest);
+			
+			_friendsRequest = new FriendsRequest("Alex");
+			RequestPackage _friendsRequestPackage = new RequestPackage(this, _friendsRequest);
+			
 			_service = PollingService.getInstance();
-			_service.addRequest( _friendsRequest );
-			_service.addRequest( _zoneRequest );
+			_service.addRequest( _friendsRequestPackage );
+			_service.addRequest( _zoneRequestPackage );
+			
 			System.out.println("*************** Added friendsRequest from PollingService");
 		}
-	}
-	
-	public boolean onClose(){
-		_service.removeRequest( _friendsRequest );
-		_service.removeRequest( _zoneRequest );
-		System.out.println("*************** Removing friendsRequest from PollingService");
-		return true;
 	}
 	
 	private Object[] vectorToArray(Vector v){
@@ -73,6 +77,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		return objs;
 	}
 	public void handleStringValue(int type, String val) {
+		System.out.println("[SFUMOBILE] - Handling a string - "+val);
 		if ( type == RequestTypes.REQUEST_FRIENDS_TYPE){
 		_friends = JSONWifiLocatorParser.getFriends(val);
 		
@@ -97,6 +102,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 
 
 

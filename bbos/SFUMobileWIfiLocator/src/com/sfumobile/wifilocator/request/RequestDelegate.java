@@ -1,4 +1,5 @@
 package com.sfumobile.wifilocator.request;
+
 import net.rim.device.api.ui.container.MainScreen;
 public abstract class RequestDelegate extends MainScreen {
 	public abstract void handleStringValue( int type, String val );
