@@ -5,6 +5,7 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
+import main
 from django.utils import simplejson as json
 
 from src.models import *
@@ -34,10 +35,10 @@ class FriendHandler(webapp.RequestHandler):
 						last_location = friend.last_location.zone_name
 					else:
 						last_location = "Unknown"
-					
+			
 					data[name].append({'friend_name' : friendname,
 									   'friend_location' : last_location,
-									   'last_update' : friend.last_update.ctime()}
+									   'last_update' : main.pretty_date(friend.last_update)}
 										)
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
