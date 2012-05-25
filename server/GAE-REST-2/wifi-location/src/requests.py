@@ -21,10 +21,12 @@ class SendRequest(webapp.RequestHandler):
 		friend_obj = Users.get_by_id(int(json_obj["friend_id"]))
 		#check if user or friend is valid
 		if not user_obj :
-			self.response.out.write("user_not_found")
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"request_id" : "unknown", "status" : 1}))
 			return
 		elif not friend_obj:
-			self.response.out.write("friend_not_found")
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"request_id" : "unknown", "status" : 1}))
 			return
 		
 		#check if request already exist
@@ -40,7 +42,7 @@ class SendRequest(webapp.RequestHandler):
 		request.put()
 		#self.response.out.write("request_sent")
 		self.response.headers['Content-Type'] = "application/json"
-		self.response.out.write(json.dumps({"request_id" : request.key().id()}))
+		self.response.out.write(json.dumps({"request_id" : request.key().id(),"status" : 1}))
 		
 class GetRequests(webapp.RequestHandler):
 	def get(self, user_id):
