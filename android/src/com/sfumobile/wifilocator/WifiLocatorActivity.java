@@ -112,9 +112,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        bssid = zones[0].getString("mac_address");
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				ScanResult bs = requestHandler.getBS();
-				bssid = bs.BSSID;
-				ssid  = bs.SSID;
+				bssid = requestHandler.getBSSID();
+				ssid  = requestHandler.getSSID();
 				zone = "Unknown";
 				zone_name = "Unknown";				
 			} finally {
