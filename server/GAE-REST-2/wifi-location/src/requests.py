@@ -40,7 +40,7 @@ class SendRequest(webapp.RequestHandler):
 
 
 		#sends request	
-		request = FriendRequests(user_id = json_obj["user_id"], friend_id = json_obj["friend_id"])
+		request = FriendRequests(user_id = json_obj["friend_id"], friend_id = json_obj["user_id"])
 		request.put()
 		#self.response.out.write("request_sent")
 		self.response.headers['Content-Type'] = "application/json"
