@@ -17,28 +17,31 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 class FriendHandler(webapp.RequestHandler):
 	def get(self, user_short_name):
 		data = dict()
-		p = db.GqlQuery(("SELECT * FROM Users " +
+		user = db.GqlQuery(("SELECT * FROM Users " +
 				"WHERE short_name = :1"), urllib.unquote_plus(user_short_name))
-		if p is not None:
-			for user in p:
-				#thisUser = Users.get_by_id(int(user_id))
-				name = user.short_name
-				data = dict()
-				data[name] = []
-				q = db.GqlQuery(("SELECT * FROM Friends " +
-						"WHERE user = :1"), user.key())
-				for item in q:
-					friend = Users.get_by_id(item.friend_id)
-					friendname = friend.short_name
-					if friend.last_location is not None:
-						last_location = friend.last_location.zone_name
-					else:
-						last_location = "Unknown"
-					
-					data[name].append({'friend_name' : friendname,
-									   'friend_location' : last_location,
-									   'last_update' : friend.last_update.ctime()}
-										)
+		if user.count() > 0:
+			#thisUser = Users.get_by_id(int(user_id))
+			name = user[0].short_name
+			data = dict()
+			data[name] = []
+			q = db.GqlQuery(("SELECT * FROM Friends " +
+					"WHERE user = :1"), user[0].key())
+			for item in q:
+				friend = Users.get_by_id(item.friend_id)
+				friendname = friend.short_name
+				if friend.last_location is not None:
+					last_location = friend.last_location.zone_name
+				else:
+					last_location = "Unknown"
+				
+				data[name].append({'friend_name' : friendname,
+								   'friend_location' : last_location,
+								   'last_update' : friend.last_update.ctime()}
+									)
+		else:
+			data = dict()
+			data[user_short_name] = "Unknown"
+			
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
 
