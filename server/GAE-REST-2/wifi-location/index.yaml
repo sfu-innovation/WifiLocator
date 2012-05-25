@@ -20,6 +20,11 @@ indexes:
   - name: zone_id
   - name: mac_address
 
+- kind: FriendRequests
+  properties:
+  - name: user_id
+  - name: friend_id
+
 - kind: Friends
   properties:
   - name: user_id

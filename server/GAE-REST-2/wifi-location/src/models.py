@@ -32,3 +32,7 @@ class BSSIDZones(db.Model):
 class ZoneMaps(db.Model):
 	zones = db.ReferenceProperty(Areas, collection_name='maps')
 	map_name = db.StringProperty(required=True)
+	
+class FriendRequests(db.Model):
+	user_id = db.IntegerProperty(required=True)
+	friend_id = db.IntegerProperty (required=True)

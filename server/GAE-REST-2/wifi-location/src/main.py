@@ -7,9 +7,11 @@ import csv
 import rest
 from django.utils import simplejson as json
 
-from src.models import Zones, ZoneNames, Friends, Areas, BSSIDZones, ZoneMaps, Users
-from src.friends import FriendHandler, SetFriend, SetUser
-from src.zones import BSSIDHandler, MapHandler
+from src.models import *
+from src.friends import *
+from src.zones import *
+from src.requests import *
+from src.users import *
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
@@ -90,8 +92,13 @@ application = webapp.WSGIApplication([('/', MainPage),
 				      ('/getfriends/(.*)', FriendHandler),
 				      ('/rest/.*', rest.Dispatcher), 
 					  ('/setfriend/', SetFriend),
-					  ('/setuser/', SetUser)],
+					  ('/setuser/', SetUser),
+					  ('/sendrequest/', SendRequest),
+					  ('/getrequests/(.*)', GetRequests),
+					  ('/acceptrequest/(.*)',acceptRequests)],
 					debug=True)
+
+
 
 # configure the rest dispatcher to know what prefix to expect on request urls
 rest.Dispatcher.base_url = "/rest"
