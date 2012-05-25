@@ -6,3 +6,5 @@ ios/wifilocator/wifilocator.xcodeproj/xcuserdata/alexkwan.xcuserdatad/xcdebugger
 server/GAE-REST-2/wifi-location/rest/__init__.pyc
 
 server/GAE-REST-2/wifi-location/src/__init__.pyc
+
+bbos/SFUMobileWIfiLocator/src/.DS_Store
