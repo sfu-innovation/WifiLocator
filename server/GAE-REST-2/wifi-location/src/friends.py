@@ -5,6 +5,7 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
+import main
 from django.utils import simplejson as json
 
 from src.models import *
@@ -19,6 +20,7 @@ class FriendHandler(webapp.RequestHandler):
 		data = dict()
 		user = db.GqlQuery(("SELECT * FROM Users " +
 				"WHERE short_name = :1"), urllib.unquote_plus(user_short_name))
+
 		if user.count() > 0:
 			#thisUser = Users.get_by_id(int(user_id))
 			name = user[0].short_name
@@ -36,7 +38,7 @@ class FriendHandler(webapp.RequestHandler):
 				
 				data[name].append({'friend_name' : friendname,
 								   'friend_location' : last_location,
-								   'last_update' : friend.last_update.ctime()}
+								   'last_update' : main.pretty_date(friend.last_update)}
 									)
 		else:
 			data = dict()
