@@ -35,5 +35,6 @@
     </string-array>
     <string name="cancel">Cancel</string>
     <string name="tweet">Tweet</string>
+    <string name="ssid_label">SSID:</string>
 
 </resources>

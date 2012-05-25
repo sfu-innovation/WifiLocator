@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface WLANContext : NSObject
--(NSString*)getBSSID;
++(NSString*)getBSSID;
 
 @property (nonatomic, retain) NSString *currentLocation;
 @end
