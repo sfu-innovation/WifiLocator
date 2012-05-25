@@ -39,7 +39,11 @@ public class RequestPackage {
 			
 			//special case since this request is dynamic
 			if ( type == RequestTypes.REQUEST_ZONE_TYPE){
+<<<<<<< HEAD
 				url += WLANContext.getBSSID();
+=======
+				url += /*"00:1f:45:64:16:c8";*/WLANContext.getBSSID();
+>>>>>>> master
 			}
 			System.out.println("[SFUMOBILE] - testing out this url "+url);
 			_thread = new WifiLocatorRequestThread(type,
