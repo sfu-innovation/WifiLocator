@@ -1,0 +1,32 @@
+<html>
+  <head>
+  </head>
+  
+  <body style="font-family: helvetica, sans-serif">
+  
+  <hr/>
+  
+  
+  	<h3> List of Zones </h3>
+	  {% for item in areas %}
+    <b> {{ item.zone_id }} | {{item.zone_name }} </b>
+    	<ul>
+    	{% for bssid in item.bssid %}
+    	
+    		<li> BSSID: <a style="font-family:monospace"> {{ bssid.mac_address }} </a></li>
+    	{% endfor %}
+    	</ul>
+    	</br>
+    {% endfor %}
+
+    </br> 
+	<h3> List of Friends </h3>
+    {% for items in friends %}
+    	User: {{ items.user_name }}
+    	Friend: {{ items.friend_name }}
+    	</br>
+    {% endfor %}
+    </br>
+
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Woah!  WiFi Locator Bitches!</string>
+    <string name="app_name">WifiLocator</string>
+    <string name="bssid_label">Current BSSID:</string>
+    <string name="zoneName_label">Zone Name:</string>
+    <string name="poll_button_label">Stop Polling</string>
+    <string name="zone_label">Zone:</string>
+    <string name="friend_button_label">Friends</string>
+    
+    <string-array name="friends">
+        <item>Andy</item>
+        <item>Sara</item>
+        <item>Ken</item>
+        <item>Jennifer</item>
+        <item>John</item>
+        <item>Amanda</item>
+        <item>Jack</item>
+        <item>Tony</item>
+        <item>Arnold</item>
+        <item>Amy</item>
+    </string-array>
+    <string-array name="status">
+        <item>On Campus</item>
+        <item>Not on Campus</item>
+        <item>Not on Campus</item>
+        <item>On Campus</item>
+        <item>Not on Campus</item>
+        <item>Not on Campus</item>
+        <item>Not on Campus</item>
+        <item>Not on Campus</item>
+        <item>On Campus</item>
+        <item>Not on Campus</item>
+    </string-array>
+    <string name="cancel">Cancel</string>
+    <string name="tweet">Tweet</string>
+    <string name="ssid_label">SSID:</string>
+
+</resources>
