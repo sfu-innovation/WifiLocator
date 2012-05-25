@@ -2,3 +2,21 @@
 ios/wifilocator/wifilocator.xcodeproj/project.xcworkspace/xcuserdata/alexkwan.xcuserdatad/UserInterfaceState.xcuserstate
 
 ios/wifilocator/wifilocator.xcodeproj/xcuserdata/alexkwan.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+
+bbos/SFUMobileWIfiLocator/.classpath
+
+bbos/SFUMobileWIfiLocator/.project
+
+bbos/SFUMobileWIfiLocator/BlackBerry_App_Descriptor.xml
+
+bbos/SFUMobileWIfiLocator/.settings/org.eclipse.jdt.core.prefs
+
+bbos/SFUMobileWIfiLocator/res/img/icon.png
+
+bbos/SFUMobileWIfiLocator/src/.DS_Store
+
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/types/.DS_Store
+
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/utils/.DS_Store
+
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/screens/.DS_Store
