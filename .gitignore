@@ -6,3 +6,13 @@ ios/wifilocator/wifilocator.xcodeproj/xcuserdata/alexkwan.xcuserdatad/xcdebugger
 server/GAE-REST-2/wifi-location/rest/__init__.pyc
 
 server/GAE-REST-2/wifi-location/src/__init__.pyc
+
+server/GAE-REST-2/wifi-location/src/friends.pyc
+
+server/GAE-REST-2/wifi-location/src/requests.pyc
+
+server/GAE-REST-2/wifi-location/src/users.pyc
+
+server/GAE-REST-2/wifi-location/src/zones.pyc
+
+server/GAE-REST-2/wifi-location/src/models.pyc
