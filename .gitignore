@@ -3,13 +3,12 @@ ios/wifilocator/wifilocator.xcodeproj/project.xcworkspace/xcuserdata/alexkwan.xc
 
 ios/wifilocator/wifilocator.xcodeproj/xcuserdata/alexkwan.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
 
-<<<<<<< HEAD
 server/GAE-REST-2/wifi-location/rest/__init__.pyc
 
 server/GAE-REST-2/wifi-location/src/__init__.pyc
 
 bbos/SFUMobileWIfiLocator/src/.DS_Store
-=======
+
 bbos/SFUMobileWIfiLocator/.classpath
 
 bbos/SFUMobileWIfiLocator/.project
@@ -27,4 +26,14 @@ bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/types/.DS_Store
 bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/utils/.DS_Store
 
 bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/screens/.DS_Store
->>>>>>> alex-bbos
+
+server/GAE-REST-2/wifi-location/src/friends.pyc
+
+server/GAE-REST-2/wifi-location/src/requests.pyc
+
+server/GAE-REST-2/wifi-location/src/users.pyc
+
+server/GAE-REST-2/wifi-location/src/zones.pyc
+
+server/GAE-REST-2/wifi-location/src/models.pyc
+
