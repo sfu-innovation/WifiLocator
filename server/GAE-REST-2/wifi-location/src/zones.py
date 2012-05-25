@@ -70,7 +70,8 @@ class MapHandler(webapp.RequestHandler):
 		item = db.GqlQuery(("SELECT * FROM Areas " +
 				"WHERE zone_id = :1"), int(zone_id))
 		data = dict()
-		if item.count() > 0:
+		if item.count() > 0 and item[0].maps.count() > 0:
+			currmap = item[0].maps[0]
 			data = {'map_name' : currmap.map_name, 'zone_name' : item[0].zone_name, 'zone_id' : zone_id}
 		else:
 			data = {'map_name' : 'Unknown', 'zone_name' : 'Unknown', 'zone_id' : zone_id}
