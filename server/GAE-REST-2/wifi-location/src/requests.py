@@ -47,7 +47,7 @@ class SendRequest(webapp.RequestHandler):
 		self.response.out.write(json.dumps({"request_id" : request.key().id(),"Status" : 0}))
 		
 class GetRequests(webapp.RequestHandler):
-	def get(self, user_id):
+	def post(self, user_id):
 		data = dict()
 		data["Requests"] = []
 		user_obj = Users.get_by_id(int(user_id))
