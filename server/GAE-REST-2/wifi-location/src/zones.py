@@ -6,7 +6,7 @@ import wsgiref.handlers
 import csv
 import rest
 from django.utils import simplejson as json
-import main
+
 from src.models import Zones, ZoneNames, Friends, Areas, BSSIDZones, ZoneMaps, Users
 
 from google.appengine.ext import db
@@ -14,56 +14,61 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 class BSSIDHandler(webapp.RequestHandler):
-	
+		
 	def get(self, user_short_name, mac_address):
-			
 		data = {}
 		#query users
-		user = db.GqlQuery(("SELECT * FROM Users " +
+		p = db.GqlQuery(("SELECT * FROM Users " +
 				"WHERE short_name = :1"), urllib.unquote_plus(user_short_name))
 		#get user id
-		if user.count() > 0:
-			user_id = user[0].key().id()
-				
-			item = db.GqlQuery(("SELECT * FROM BSSIDZones " +
-			"WHERE mac_address = :1"), urllib.unquote_plus(mac_address))	
-			if item.count() > 0:
-					curr_zone = item[0].zones
-					zone_id = curr_zone.zone_id
+		if p is not None:
+			for user in p:
+				user_id = user.key().id()
 					
-					#update user location
-					user[0].last_location = curr_zone.key()
-					user[0].put()
-					
-					#generating JSON data
-					data = {'zone_id' : zone_id, 
-							'zone_name' : curr_zone.zone_name, 
-							'mac_address' : item[0].mac_address, 
-							'user' : user[0].short_name, 
+				q = db.GqlQuery(("SELECT * FROM BSSIDZones " +
+				"WHERE mac_address = :1"), urllib.unquote_plus(mac_address))	
+				if q is not None:
+					for item in q:
+						curr_zone = item.zones
+						zone_id = curr_zone.zone_id
+						
+						#update user location
+						user.last_location = curr_zone.key()
+						user.put()
+						
+						#generating JSON data
+						data = {'zone_id' : zone_id, 
+								'zone_name' : curr_zone.zone_name, 
+								'mac_address' : item.mac_address, 
+								'user' : user.short_name, 
+								'user_location' : curr_zone.zone_id,
+								'last_update' : user.last_update.ctime(),
+								}
+					break							
+											
+				else: 	
+					data = {'zone_id' : "INVALID",
+							'zone_name' : "INVALID", 
+							'mac_address' : item.mac_address, 
+							'user' : user.short_name, 
 							'user_location' : curr_zone.zone_id,
-							'last_update' : main.pretty_date(user[0].last_update),
-							}							
-			else: 	
-				data = {'zone_id' : -1,
-						'zone_name' : "Unknown", 
-						'mac_address' : "Unkown", 
-						'user' : user[0].short_name, 
-						'user_location' : -1,
-						'last_update' : main.pretty_date(user[0].last_update),
-						}
+							'last_update' : user.last_update.ctime(),
+							}
+				break
+		
 		else: 	
-			data = {'zone_id' : -1,
-					'zone_name' : "Unknown", 
-					'mac_address' : "Unknown", 
-					'user' : "Unknown", 
-					'user_location' : -1,
-					'last_update' : "Unknown",
+			data = {'zone_id' : "N/A" ,
+					'zone_name' : "N/A", 
+					'mac_address' : mac_address, 
+					'user' : "INVALID", 
+					'user_location' : "N/A",
+					'last_update' : "N/A",
 					}
+			
 		
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))	
-		
-	
+
 
 class MapHandler(webapp.RequestHandler):
 	def get(self, zone_id):

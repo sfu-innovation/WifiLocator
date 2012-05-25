@@ -3,8 +3,6 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +23,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	
-	public static final String USER = "Catherine";
+	public static final String USER = "Mike";
 	
 	/** Called when the activity is first created. */
     @Override
@@ -101,25 +99,22 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
-				} catch (NullPointerException npe){
-					Log.d("NULLPOINTER", npe.toString());	
-					
-					break;
 				}
 			}
 			return null;
 		}
 		@Override
 		protected void onProgressUpdate(JSONObject... zones){
-
+			
 			try{
 				zone_name = zones[0].getString("zone_name");
 		        zone = zones[0].getString("zone_id");
 		        bssid = zones[0].getString("mac_address");
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = requestHandler.getBSSID();
-				ssid  = requestHandler.getSSID();
+				ScanResult bs = requestHandler.getBS();
+				bssid = bs.BSSID;
+				ssid  = bs.SSID;
 				zone = "Unknown";
 				zone_name = "Unknown";				
 			} finally {
@@ -128,12 +123,6 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
 			}
-		
-		}
-		@Override
-		protected void onPostExecute(Void result){
-			new AlertDialog.Builder(WifiLocatorActivity.this).setTitle("No WiFi detected!").setMessage("You are currently not connected to any wireless network.").setNeutralButton("Close",null).show();
-
 		}
 
 
