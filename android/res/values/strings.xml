@@ -36,5 +36,6 @@
     <string name="cancel">Cancel</string>
     <string name="tweet">Tweet</string>
     <string name="ssid_label">SSID:</string>
+    <string name="addFriend">Add Friend</string>
 
 </resources>

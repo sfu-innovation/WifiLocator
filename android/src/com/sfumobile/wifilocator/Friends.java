@@ -5,19 +5,23 @@ import android.app.ExpandableListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 //import android.widget.Button;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
+import android.widget.Button;
 //import android.widget.ExpandableListView;
 //import android.widget.ExpandableListView.OnGroupClickListener;
 //import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.TextView;
 
-public class Friends extends ExpandableListActivity {
+public class Friends extends ExpandableListActivity implements OnClickListener{
+	
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
+	private Button addFriendButton;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,6 +32,9 @@ public class Friends extends ExpandableListActivity {
 		friends = id.get_friends();
 		loc = id.get_loc();
 
+		addFriendButton = (Button)findViewById(R.id.addFriendButton);
+		addFriendButton.setOnClickListener(this);
+		
 		status = new String[loc.length][1];		
 		for (int i=0; i< loc.length; i++){
 			status[i][0] = loc[i];
@@ -99,6 +106,14 @@ public class Friends extends ExpandableListActivity {
 		public boolean isChildSelectable(int groupPosition, int childPosition) {
 			return true;
 		}
+	}
+
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.addFriendButton:
+			break;
+		}
+		
 	}
 
 }
