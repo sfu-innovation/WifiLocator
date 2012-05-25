@@ -8,6 +8,9 @@ import rest
 from django.utils import simplejson as json
 
 from src.models import Zones, ZoneNames, Friends, Areas, BSSIDZones, ZoneMaps, Users
+from src.friends import FriendHandler, SetFriend, SetUser
+from src.zones import BSSIDHandler, MapHandler
+
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -80,146 +83,6 @@ class MainPage(webapp.RequestHandler):
 		self.response.out.write(template.render(path,template_values))
 		
 
-class BSSIDHandler(webapp.RequestHandler):
-		
-	def get(self, user_short_name, mac_address):
-		data = {}
-		#query users
-		p = db.GqlQuery(("SELECT * FROM Users " +
-				"WHERE short_name = :1"), urllib.unquote_plus(user_short_name))
-		#get user id
-		if p is not None:
-			for user in p:
-				user_id = user.key().id()
-					
-				q = db.GqlQuery(("SELECT * FROM BSSIDZones " +
-				"WHERE mac_address = :1"), urllib.unquote_plus(mac_address))	
-				if q is not None:
-					for item in q:
-						curr_zone = item.zones
-						zone_id = curr_zone.zone_id
-						
-						#update user location
-						user.last_location = curr_zone.key()
-						user.put()
-						
-						#generating JSON data
-						data = {'zone_id' : zone_id, 
-								'zone_name' : curr_zone.zone_name, 
-								'mac_address' : item.mac_address, 
-								'user' : user.short_name, 
-								'user_location' : curr_zone.zone_id,
-								'last_update' : user.last_update.ctime(),
-								}
-					break							
-											
-				else: 	
-					data = {'zone_id' : "INVALID",
-							'zone_name' : "INVALID", 
-							'mac_address' : item.mac_address, 
-							'user' : user.short_name, 
-							'user_location' : curr_zone.zone_id,
-							'last_update' : user.last_update.ctime(),
-							}
-				break
-		
-		else: 	
-			data = {'zone_id' : "N/A" ,
-					'zone_name' : "N/A", 
-					'mac_address' : mac_address, 
-					'user' : "INVALID", 
-					'user_location' : "N/A",
-					'last_update' : "N/A",
-					}
-			
-		
-		self.response.headers['Content-Type'] = "application/json"
-		self.response.out.write(json.dumps(data))	
-
-
-class MapHandler(webapp.RequestHandler):
-	def get(self, zone_id):
-		q = db.GqlQuery(("SELECT * FROM Areas " +
-				"WHERE zone_id = :1"), int(zone_id))
-		for item in q:
-			for currmap in item.maps:
-				#print currmap.key().id()
-				data = {'map_name' : currmap.map_name, 'zone_name' : item.zone_name, 'zone_id' : zone_id}
-		
-		self.response.headers['Content-Type'] = "application/json"
-		self.response.out.write(json.dumps(data))
-
-
-class FriendHandler(webapp.RequestHandler):
-	def get(self, user_short_name):
-		data = dict()
-		p = db.GqlQuery(("SELECT * FROM Users " +
-				"WHERE short_name = :1"), urllib.unquote_plus(user_short_name))
-		if p is not None:
-			for user in p:
-				#thisUser = Users.get_by_id(int(user_id))
-				name = user.short_name
-				data = dict()
-				data[name] = []
-				q = db.GqlQuery(("SELECT * FROM Friends " +
-						"WHERE user = :1"), user.key())
-				for item in q:
-					friend = Users.get_by_id(item.friend_id)
-					friendname = friend.short_name
-					last_location = friend.last_location
-					if last_location is None:
-						last_location = "Unknown"
-					data[name].append({'friend_name' : friendname,
-									   'friend_location' : last_location,
-									   'last_update' : friend.last_update.ctime()}
-										)
-		self.response.headers['Content-Type'] = "application/json"
-		self.response.out.write(json.dumps(data))
-
-class SetFriend(webapp.RequestHandler):
-	def get(self):
-		self.response.out.write("requires post or delete request")
-	def post(self):
-		json_obj = json.loads(self.request.body)
-		
-		userobj = db.GqlQuery(("SELECT * FROM Users " + "WHERE short_name = :1"), urllib.unquote_plus(json_obj["user_name"]))
-		if userobj.count() <= 0:
-			self.response.out.write("user_not_found")
-			return
-		friendobj = db.GqlQuery(("SELECT * FROM Users " + "WHERE short_name = :1"), urllib.unquote_plus(json_obj["friend"]))
-		if userobj.count() <= 0:
-			self.response.out.write("friend_not_found")
-			return
-			
-		if json_obj["command"] == "addfriend":
-			Friends(user = userobj[0].key(), friend_id = friendobj[0].key().id()).put()
-			self.response.out.write("add_Success")
-		elif json_obj["command"] == "deletefriend":
-			friendentry = db.GqlQuery(("SELECT * FROM Friends " + "WHERE user = :1 AND friend_id = :2"), userobj[0].key(), friendobj[0].key().id())
-			if friendentry.count() <= 0:
-				self.response.out.write("entry_not_found")
-			friendentry[0].delete()
-			self.response.out.write("delete_success")
-		else:
-			self.response.out.write("invalid_command")
-
-class SetUser(webapp.RequestHandler):
-	def get(self):
-		self.response.out.write("requires post or delete request")
-	def post(self):
-		json_obj = json.loads(self.request.body)
-		if json_obj["command"] == "adduser":
-			Users(first_name = json_obj["first_name"], short_name = json_obj["short_name"], last_name = json_obj["last_name"]).put()
-			self.response.out.write("user_added")
-		elif json_obj["command"] == "deleteuser":
-			userobj = db.GqlQuery(("SELECT * FROM Users " + "WHERE short_name = :1"), urllib.unquote_plus(json_obj["short_name"]))
-			if userobj.count() <= 0:
-				self.response.out.write("user_not_found")
-			else:
-				userobj[0].delete()
-				self.response.out.write("user_deleted")
-		else:
-			self.response.out.write("invalid_command")
 	
 application = webapp.WSGIApplication([('/', MainPage), 
 				      ('/getzone/(.*)/(.*)', BSSIDHandler),

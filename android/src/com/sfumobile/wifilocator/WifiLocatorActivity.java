@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +16,8 @@ import android.widget.Button;
 
 public class WifiLocatorActivity extends Activity implements OnClickListener{
     
-	private String bssid, zone, zone_name;
-	private TextView bssidText, zoneText, zoneName;
+	private String bssid, ssid, zone, zone_name;
+	private TextView bssidText, ssidText, zoneText, zoneName;
 	private Button pollButton, friendButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
@@ -30,11 +31,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        bssidText   = (TextView)this.findViewById(R.id.bssidText);
-        zoneText    = (TextView)this.findViewById(R.id.zoneText);
-        zoneName    = (TextView)this.findViewById(R.id.zoneName);
-        pollButton  = (Button)this.findViewById(R.id.pollButton);
-        twitterIcon = (ImageView)this.findViewById(R.id.twitterIcon);
+        bssidText    = (TextView)this.findViewById(R.id.bssidText);
+        ssidText     = (TextView)this.findViewById(R.id.ssidText);
+        zoneText     = (TextView)this.findViewById(R.id.zoneText);
+        zoneName     = (TextView)this.findViewById(R.id.zoneName);
+        pollButton   = (Button)this.findViewById(R.id.pollButton);
+        twitterIcon  = (ImageView)this.findViewById(R.id.twitterIcon);
         friendButton = (Button)this.findViewById(R.id.friendButton);
         
         pollButton.setOnClickListener(this);
@@ -110,13 +112,16 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        bssid = zones[0].getString("mac_address");
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = requestHandler.getBSSID();
+				ScanResult bs = requestHandler.getBS();
+				bssid = bs.BSSID;
+				ssid  = bs.SSID;
 				zone = "Unknown";
 				zone_name = "Unknown";				
 			} finally {
 				zoneText.setText(zone);
 				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
+				ssidText.setText(ssid);
 			}
 		}
 

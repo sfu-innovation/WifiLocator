@@ -16,6 +16,7 @@
 		1E4733C5156AD979002FC4B0 /* SFUMobileParserUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733C4156AD979002FC4B0 /* SFUMobileParserUtils.m */; };
 		1E4733C8156AEA82002FC4B0 /* FriendDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E4733C7156AEA82002FC4B0 /* FriendDetailViewController.m */; };
 		1E9F553E1566C5B50051653F /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E9F553D1566C5B50051653F /* TestViewController.m */; };
+		1EB7602B156B5BA60053B608 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EB7602A156B5BA60053B608 /* LoginViewController.m */; };
 		1EC5419E1566F59D005FFF9A /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EC5419D1566F59D005FFF9A /* Twitter.framework */; };
 		1EC541A21567013D005FFF9A /* TweetTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC541A11567013D005FFF9A /* TweetTestViewController.m */; };
 		1EE101901567BD1500FAE751 /* SFUMobileTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EE1018F1567BD1500FAE751 /* SFUMobileTweet.m */; };
@@ -63,6 +64,8 @@
 		1E4733C7156AEA82002FC4B0 /* FriendDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendDetailViewController.m; sourceTree = "<group>"; };
 		1E9F553C1566C5B50051653F /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		1E9F553D1566C5B50051653F /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		1EB76029156B5BA60053B608 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		1EB7602A156B5BA60053B608 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		1EC5419D1566F59D005FFF9A /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		1EC541A01567013D005FFF9A /* TweetTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetTestViewController.h; sourceTree = "<group>"; };
 		1EC541A11567013D005FFF9A /* TweetTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetTestViewController.m; sourceTree = "<group>"; };
@@ -178,6 +181,8 @@
 				1E4733C0156ABE28002FC4B0 /* NSRequestResponseWrapper.m */,
 				1E4733C3156AD979002FC4B0 /* SFUMobileParserUtils.h */,
 				1E4733C4156AD979002FC4B0 /* SFUMobileParserUtils.m */,
+				1EB76029156B5BA60053B608 /* LoginViewController.h */,
+				1EB7602A156B5BA60053B608 /* LoginViewController.m */,
 			);
 			path = wifilocator;
 			sourceTree = "<group>";
@@ -332,6 +337,7 @@
 				1E4733C1156ABE29002FC4B0 /* NSRequestResponseWrapper.m in Sources */,
 				1E4733C5156AD979002FC4B0 /* SFUMobileParserUtils.m in Sources */,
 				1E4733C8156AEA82002FC4B0 /* FriendDetailViewController.m in Sources */,
+				1EB7602B156B5BA60053B608 /* LoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

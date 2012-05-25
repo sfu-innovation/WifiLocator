@@ -34,11 +34,10 @@
     [super viewDidLoad];
     responseData = [[NSMutableData alloc] init];
     
-     WLANContext* context = [[WLANContext alloc] init];
     
-    NSString* macString = [NSString stringWithFormat:@"%@%@",
-                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
-                           [context getBSSID]];
+    NSString* macString = [NSString stringWithFormat:@"%@%@%@",
+                           @"http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=",@"0",
+                           [WLANContext getBSSID]];
     
     NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
     [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
@@ -47,6 +46,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.prompt = [WLANContext getBSSID];
 }
 
 - (void)viewDidUnload
@@ -181,13 +181,11 @@
     
 }
 -(IBAction)refreshTweets:(id)sender{
-    WLANContext* context = [[WLANContext alloc] init];
-    [context getBSSID];
     
-    NSString* macString = [NSString stringWithFormat:@"%@%@",
-                           @"http://wifi-location.appspot.com/rest/Zones?feq_mac_address=",
-                           /* @"00:1f:45:64:17:08"*/
-                           [context getBSSID]];
+    
+    NSString* macString = [NSString stringWithFormat:@"%@%@%@",
+                           @"http://wifi-location.appspot.com/rest/BSSIDZones?feq_mac_address=",@"0",
+                           [WLANContext getBSSID]];
   
    NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
     [test initGetRequest:macString withTarget:self onAction:@selector(testFunction:)];
@@ -239,11 +237,13 @@
                                   parseZoneName:responseData];
     if ( [self.currentLocation length] == 0){
         self.currentLocation = @"SFU";
+        
     }
+    self.navigationItem.prompt = [WLANContext getBSSID];
 }
 - (void)testFunction:(NSData*) responseData{
     NSString* zoneIDString = [NSString stringWithFormat:@"%@%@",
-                           @"http://wifi-location.appspot.com/rest/ZoneNames?feq_zone_id=",
+                           @"http://wifi-location.appspot.com/rest/Areas/",
                            [SFUMobileParserUtils parseZone:responseData]];
     
     NSRequestResponseWrapper* test = [[NSRequestResponseWrapper alloc] init];
