@@ -124,9 +124,10 @@ public class RequestHandler {
 	
 	public JSONObject postRequest(JSONObject body){
 		
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost post         = new HttpPost();
-		HttpResponse response = null;
+		HttpClient httpClient   = new DefaultHttpClient();
+		HttpPost post           = new HttpPost();
+		HttpResponse response   = null;
+		JSONObject jsonResponse = null;
 		
 		post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
@@ -146,6 +147,12 @@ public class RequestHandler {
 		}
         try {
 			BufferedReader r = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+			String json = r.readLine();
+			try {
+				jsonResponse = new JSONObject(json);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
@@ -153,6 +160,7 @@ public class RequestHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        return jsonResponse;
 	}
 	
 }
