@@ -23,7 +23,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	
-	public static final String USER = "Mike";
+	public static final String USER = "Catherine";
 	
 	/** Called when the activity is first created. */
     @Override

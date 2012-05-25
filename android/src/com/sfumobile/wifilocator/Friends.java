@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator;
 import android.app.ExpandableListActivity;
 //import android.content.Intent; //find friends from server?
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 //import android.widget.Button;
@@ -15,50 +16,26 @@ import android.widget.TextView;
 
 public class Friends extends ExpandableListActivity {
 	private FriendAdapter mAdapter;
-	private String[] friends;
+	private String[] friends, loc;
 	private String[][] status;
-	//private ExpandableListView fname;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
-		
-		friends = getResources().getStringArray(R.array.friends);
-		String[] status1 = getResources().getStringArray(R.array.status);
-		status = new String[status1.length][1];
-		
-		for (int i=0; i< status1.length; i++){
-			status[i][0] = status1[i];
+
+		userProfile id = new userProfile();
+
+		friends = id.get_friends();
+		loc = id.get_loc();
+
+		status = new String[loc.length][1];		
+		for (int i=0; i< loc.length; i++){
+			status[i][0] = loc[i];
 		}
 		
 		mAdapter = new FriendAdapter();
 		setListAdapter(mAdapter);
-		//fname = (ExpandableListView) findViewById(R.id.friend);
-		
-		//fname.setAdapter(mAdapter);
-		//fname.setGroupIndicator(null);
-		
-		/*fname.setOnGroupExpandListener(new OnGroupExpandListener() {
-			
-			public void onGroupExpand(int groupPosition){
-				int len = mAdapter.getGroupCount();
-				for (int i=0; i<len; i++){
-					if(i!=groupPosition) {
-						fname.collapseGroup(i);
-					}
-				}
-			}
-		});
-		*/
-	/*	fname.setOnGroupClickListener(new onGroupClickListener() {
-			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-				return false;
-			}
-		});
-		*/
-//		Intent i = getIntent();
-//		String name = "test";
-//		fname.set
+
 	}
 	
 	public class FriendAdapter extends BaseExpandableListAdapter {
