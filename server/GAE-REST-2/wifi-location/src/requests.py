@@ -17,8 +17,8 @@ class SendRequest(webapp.RequestHandler):
 	def post(self):
 		json_obj = json.loads(self.request.body)
 		
-		user_obj = Users.get_by_id(json_obj["user_id"])
-		friend_obj = Users.get_by_id(json_obj["friend_id"])
+		user_obj = Users.get_by_id(int(json_obj["user_id"]))
+		friend_obj = Users.get_by_id(int(json_obj["friend_id"]))
 		#check if user or friend is valid
 		if not user_obj :
 			self.response.out.write("user_not_found")
