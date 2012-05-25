@@ -1,6 +1,8 @@
 package com.sfumobile.wifilocator;
 
+import android.app.Dialog;
 import android.app.ExpandableListActivity;
+import android.graphics.Color;
 //import android.content.Intent; //find friends from server?
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.EditText;
 //import android.widget.ExpandableListView;
 //import android.widget.ExpandableListView.OnGroupClickListener;
 //import android.widget.ExpandableListView.OnGroupExpandListener;
@@ -21,12 +24,18 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton;
+	private Button addFriendButton, addButton, cancelButton;
+	private EditText friendIDText;
+	private Dialog addFriendDialog;
+	private RequestHandler requestHandler;
+	
+	private final int ADD_FRIEND_DIALOG_ID = 0;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
 
+		requestHandler = new RequestHandler(this);
 		userProfile id = new userProfile();
 
 		friends = id.get_friends();
@@ -111,9 +120,46 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.addFriendButton:
+			showDialog(ADD_FRIEND_DIALOG_ID);
+			break;
+			
+		case R.id.addButton:
+			requestHandler.sendFriendRequest(friendIDText.getText().toString());
+			break;
+		
+		case R.id.cancelButton:
+			addFriendDialog.cancel();
+			break;
+			
+		case R.id.friendIDText:
+			friendIDText.setText("");
+			friendIDText.setTextColor(Color.BLACK);
 			break;
 		}
 		
+	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id){
+		switch(id){
+		case ADD_FRIEND_DIALOG_ID:
+			addFriendDialog = new Dialog(this);
+			addFriendDialog.setContentView(R.layout.add_friend);
+			
+			addButton    = (Button)addFriendDialog.findViewById(R.id.addButton);
+			cancelButton = (Button)addFriendDialog.findViewById(R.id.cancelButton);
+			friendIDText = (EditText)addFriendDialog.findViewById(R.id.friendIDText);
+			
+			addButton.setOnClickListener(this);
+			cancelButton.setOnClickListener(this);
+			friendIDText.setOnClickListener(this);
+			friendIDText.setTextColor(Color.GRAY);
+			
+			return addFriendDialog;
+		
+		default:
+			return null;
+		}
 	}
 
 }

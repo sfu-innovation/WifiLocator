@@ -26,6 +26,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private RequestHandler requestHandler;
 	
 	public static final String USER = "Catherine";
+	public static final String USER_ID = "28001";
 	
 	/** Called when the activity is first created. */
     @Override
@@ -115,13 +116,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			try{
 				zone_name = zones[0].getString("zone_name");
 		        zone = zones[0].getString("zone_id");
-		        bssid = zones[0].getString("mac_address");
+		        bssid = requestHandler.getBSSID();
+		        ssid = requestHandler.getSSID();
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 				bssid = requestHandler.getBSSID();
 				ssid  = requestHandler.getSSID();
-				zone = "Unknown";
-				zone_name = "Unknown";				
 			} finally {
 				zoneText.setText(zone);
 				zoneName.setText(zone_name);
