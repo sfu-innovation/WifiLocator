@@ -54,3 +54,19 @@ bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocato
 bbos/.metadata/.plugins/org.eclipse.core.resources/.snap
 
 bbos/SFUMobileWIfiLocator/.DS_Store
+
+server/GAE-REST-2/wifi-location/rest/__init__.pyc
+
+server/GAE-REST-2/wifi-location/src/__init__.pyc
+
+server/GAE-REST-2/wifi-location/src/requests.pyc
+
+server/GAE-REST-2/wifi-location/src/models.pyc
+
+server/GAE-REST-2/wifi-location/src/friends.pyc
+
+server/GAE-REST-2/wifi-location/src/zones.pyc
+
+server/GAE-REST-2/wifi-location/src/users.pyc
+
+server/GAE-REST-2/wifi-location/.DS_Store
