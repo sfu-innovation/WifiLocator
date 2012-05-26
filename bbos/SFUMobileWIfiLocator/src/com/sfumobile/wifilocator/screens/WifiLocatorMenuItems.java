@@ -81,5 +81,24 @@ public class WifiLocatorMenuItems {
 		};
 		return _menuItem;
 	}
+	public static MenuItem QRCodeMenuItem(){
+		MenuItem _menuItem = null;
+		_menuItem = new MenuItem("SHOW QR", 110, 10){
+			public void run(){
+				UiApplication.getUiApplication().pushScreen( new WifiLocatorQRCodeScreen());
+			}};
+		return _menuItem;
+		
+	}
+	
+	public static MenuItem QRViewMenuItem(){
+		MenuItem _menuItem = null;
+		_menuItem = new MenuItem("SCAN QR", 110, 10){
+			public void run(){
+				UiApplication.getUiApplication().pushScreen( new WifiLocatorQRCodeViewerAScreen());
+			}};
+		return _menuItem;
+		
+	}
 	
 }

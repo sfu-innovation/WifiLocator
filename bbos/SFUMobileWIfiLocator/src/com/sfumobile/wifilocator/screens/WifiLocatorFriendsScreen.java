@@ -38,6 +38,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		//addMenuItem(WifiLocatorMenuItems.popScreenMenuItem("Tweets"));
 		addMenuItem(WifiLocatorMenuItems.enablePollingMenuItem());
 		addMenuItem(WifiLocatorMenuItems.disablePollingMenuItem());
+		addMenuItem(WifiLocatorMenuItems.QRCodeMenuItem());
+		addMenuItem(WifiLocatorMenuItems.QRViewMenuItem());
 		_friendsList = new ObjectListField();
 		_friendsList.set(friendsArray);;
 		add( _friendsList );
