@@ -6,14 +6,15 @@ import android.graphics.Color;
 //import android.content.Intent; //find friends from server?
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-//import android.widget.Button;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 //import android.widget.ExpandableListView;
 //import android.widget.ExpandableListView.OnGroupClickListener;
 //import android.widget.ExpandableListView.OnGroupExpandListener;
@@ -102,7 +103,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		}
 
 		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
+			View convertView, ViewGroup parent) {
 			TextView txtView = getGenericView();
 			txtView.setText(getGroup(groupPosition).toString());
 			return txtView;
@@ -124,7 +125,29 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 			
 		case R.id.addButton:
-			boolean success = requestHandler.sendFriendRequest(friendIDText.getText().toString());
+			int result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
+			String message = "";
+			
+			switch(result){
+			case -1:
+				message = "Error trying to add friend";
+				break;
+			case 0:
+				message = "Friend request sent";
+				break;
+			case 1:
+				message = "User not found.  How are you logged in even?";
+				break;
+			case 2:
+				message = "Friend id not found.";
+				break;
+			case 3:
+				message = "There is already a friend request pending for that user.";
+				break;
+			}
+			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
 			break;
 		
 		case R.id.cancelButton:

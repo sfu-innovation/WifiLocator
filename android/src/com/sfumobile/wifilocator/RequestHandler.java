@@ -105,26 +105,26 @@ public class RequestHandler {
         return zone_info;
 	}
 	
-	public boolean sendFriendRequest(String id){
+	public int sendFriendRequest(int id){
 
 		JSONObject requestBody = new JSONObject();
 		JSONObject response = null;
 		try {
-			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
 			requestBody.put("friend_id", id);
+			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
 			response = postRequest(requestBody,FRIEND_REQUEST_URL);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		if(response!=null){
 			try {
-				Log.d("Status:" ,response.get("Status").toString());
+				return response.getInt("status");
 			} catch (JSONException e) {
-				e.printStackTrace();
+				Log.d("FriendRequest","Couldn't Convert Status to Int");
+				return -1;
 			}
-			return true;
 		}
-		return false;
+		return -1;
 	}
 	
 	
@@ -134,7 +134,7 @@ public class RequestHandler {
 		HttpPost post           = new HttpPost(url);
 		HttpResponse response   = null;
 		JSONObject jsonResponse = null;
-		
+
 		post.setHeader("Accept", "application/json");
         post.setHeader("Content-type", "application/json");
 		try {
@@ -152,9 +152,7 @@ public class RequestHandler {
         try {
 			BufferedReader r = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 			String json = r.readLine();
-			Log.d("JSONObject",json.toString());
 			try {
-				Log.d("JSONResponse:",json.toString());
 				jsonResponse = new JSONObject(json);
 			} catch (JSONException e) {
 				e.printStackTrace();

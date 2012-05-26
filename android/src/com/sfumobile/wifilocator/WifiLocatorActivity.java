@@ -26,7 +26,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private RequestHandler requestHandler;
 	
 	public static final String USER = "Catherine";
-	public static final String USER_ID = "30001";
+	public static final int USER_ID = 30001;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -98,7 +98,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        try{
 		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
-		        	Thread.sleep(1000*5);
+		        	Thread.sleep(1000*300);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
