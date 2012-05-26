@@ -9,13 +9,20 @@ public class userProfile {
 	private JSONObject request;
 	private JSONArray profile;
 	private static String url = "http://wifi-location.appspot.com/getfriends/" + WifiLocatorActivity.USER;
-	private String[] friends, loc;
+	private String[] friends;// = {"Alex", "Mike"};
+	private String[] loc;// = {"AQZone1", "Galleria3_3"};
 	
 	
 	public userProfile(){
 		request = HttpGET.connect(url);
-		Log.d("userProfile()", request.toString());
-		extract_info();
+		Log.d("userProfile()", Integer.toString(request.length()));
+		
+		if (request.length()>0)
+			extract_info();
+		else{
+			friends = null;
+			loc = null;
+		}
 	}
 	
 	public void extract_info() {

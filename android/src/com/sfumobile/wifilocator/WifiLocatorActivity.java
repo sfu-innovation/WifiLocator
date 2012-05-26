@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+//import android.app.AlertDialog.Builder;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	
-	public static final String USER = "Catherine";
+	public static final String USER = "Alex";
 	
 	/** Called when the activity is first created. */
     @Override

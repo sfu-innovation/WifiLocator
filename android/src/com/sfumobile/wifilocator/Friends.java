@@ -1,7 +1,11 @@
 package com.sfumobile.wifilocator;
 
 import android.app.ExpandableListActivity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 //import android.content.Intent; //find friends from server?
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.ImageView;
 //import android.widget.ExpandableListView;
 //import android.widget.ExpandableListView.OnGroupClickListener;
 //import android.widget.ExpandableListView.OnGroupExpandListener;
@@ -26,23 +31,13 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
-
-		userProfile id = new userProfile();
-
-		friends = id.get_friends();
-		loc = id.get_loc();
-
+		
+		loadList populate = new loadList();
+		populate.execute();
+		
 		addFriendButton = (Button)findViewById(R.id.addFriendButton);
 		addFriendButton.setOnClickListener(this);
 		
-		status = new String[loc.length][1];		
-		for (int i=0; i< loc.length; i++){
-			status[i][0] = loc[i];
-		}
-		
-		mAdapter = new FriendAdapter();
-		setListAdapter(mAdapter);
-
 	}
 	
 	public class FriendAdapter extends BaseExpandableListAdapter {
@@ -67,13 +62,26 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		public View getChildView(int groupPosition, int childPosition,
 				boolean isLastChild, View convertView, ViewGroup parent) {
 
-			View inflatedView = View.inflate(getApplicationContext(), R.layout.friend_sub, null);
-			inflatedView.setPadding(50, 0, 0, 0);
-			TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
-				
-			txtView.setTextSize(17);
+			//View inflatedView = View.inflate(getApplicationContext(), R.layout.friend_sub, null);
+			//inflatedView.setPadding(50, 0, 0, 0);
+			//TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
+			
+			final Intent i = new Intent(getApplicationContext(), GetMap.class);
+			i.putExtra("zone", getChild(groupPosition, childPosition).toString());
+			TextView txtView = getGenericView();
+			
+			txtView.setTextSize(15);
 			txtView.setText(getChild(groupPosition, childPosition).toString());
-			return inflatedView;
+			txtView.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub				
+					startActivity(i);
+				}
+			});
+			
+			return txtView;
 		}
 
 		public int getChildrenCount(int groupPosition) {
@@ -114,6 +122,44 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 		}
 		
+	}
+	
+	class loadList extends AsyncTask<Void, Void, Void> {	
+		private ProgressDialog dialog = new ProgressDialog(Friends.this);
+		
+		@Override
+		protected void onPreExecute(){
+			dialog.setMessage("Loading...");
+			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			dialog.show();
+		}
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+
+			userProfile id = new userProfile();
+
+			friends = id.get_friends();	
+			loc = id.get_loc();
+
+			
+			if (friends != null){
+				status = new String[loc.length][1];		
+				for (int i=0; i< loc.length; i++)
+					status[i][0] = loc[i];
+			}
+			
+			mAdapter = new FriendAdapter();
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result){
+			dialog.dismiss();
+			setListAdapter(mAdapter);
+		}
+
+
 	}
 
 }
