@@ -32,13 +32,20 @@ class SendRequest(webapp.RequestHandler):
 				
 			#check if request already exist
 			q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1 and friend_id = :2" ), int(json_obj["friend_id"]),int(json_obj["user_id"]))
-			print q.count()
+			#print q.count()
 			#print q[0]
 			if q.count() > 0:
 				self.response.headers['Content-Type'] = "application/json"
-				self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 3}))
+				self.response.out.write(json.dumps({"request_id" : q[0].key().id(), "Status" : 3}))
 				return
-	
+			
+			
+			p = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1 and friend_id = :2" ), int(json_obj["user_id"]),int(json_obj["friend_id"]))
+			if p.count() > 0:
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"request_id" : p[0].key().id(), "Status" : 3}))
+				return
+				
 			#sends request	   
 			request = FriendRequests(user_id = json_obj["friend_id"], friend_id = json_obj["user_id"])
 			request.put()
