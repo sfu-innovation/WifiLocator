@@ -6,7 +6,7 @@ import wsgiref.handlers
 import csv
 import rest
 from django.utils import simplejson as json
-
+import main
 from src.models import Zones, ZoneNames, Friends, Areas, BSSIDZones, ZoneMaps, Users
 
 from google.appengine.ext import db
@@ -42,7 +42,7 @@ class BSSIDHandler(webapp.RequestHandler):
 								'mac_address' : item.mac_address, 
 								'user' : user.short_name, 
 								'user_location' : curr_zone.zone_id,
-								'last_update' : user.last_update.ctime(),
+								'last_update' : main.pretty_date(user[0].last_update),
 								}
 					break							
 											
@@ -52,7 +52,7 @@ class BSSIDHandler(webapp.RequestHandler):
 							'mac_address' : item.mac_address, 
 							'user' : user.short_name, 
 							'user_location' : curr_zone.zone_id,
-							'last_update' : user.last_update.ctime(),
+							'last_update' : main.pretty_date(user[0].last_update),
 							}
 				break
 		
