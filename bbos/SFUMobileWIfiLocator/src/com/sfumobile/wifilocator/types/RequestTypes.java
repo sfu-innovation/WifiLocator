@@ -1,7 +1,10 @@
 package com.sfumobile.wifilocator.types;
 
 public class RequestTypes {
-	public static final int REQUEST_ZONE_TYPE = 1;
-	public static final int REQUEST_FRIENDS_TYPE = 2;
-	public static final int REQUEST_FRIENDSHIP_TYPE = 3;
+	
+	public static final int ZONE                       = 1;
+	public static final int GET_FRIENDS                = 2;
+	public static final int INIT_FRIENDSHIP            = 3;
+	public static final int GET_FRIENDSHIP_REQUESTS    = 4;
+	public static final int CONFIRM_FRIENDSHIP_REQUEST = 5;
 }

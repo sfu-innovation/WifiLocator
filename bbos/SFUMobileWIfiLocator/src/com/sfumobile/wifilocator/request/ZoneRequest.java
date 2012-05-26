@@ -13,7 +13,7 @@ public class ZoneRequest extends Request {
 	private static final String GET_ZONE_BASE_URL = "http://wifi-location.appspot.com/getzone/";
 	WifiLocatorRequestThread _thread;
 	public ZoneRequest( String user ){
-		super(RequestTypes.REQUEST_ZONE_TYPE);
+		super(RequestTypes.ZONE);
 		_user = user;
 		_url = GET_ZONE_BASE_URL + _user +"/";
 	}

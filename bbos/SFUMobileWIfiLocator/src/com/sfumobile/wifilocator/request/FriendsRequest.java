@@ -10,7 +10,7 @@ public class FriendsRequest extends Request {
 	
 	WifiLocatorRequestThread _thread;
 	public FriendsRequest( String url ){
-		super(RequestTypes.REQUEST_FRIENDS_TYPE);
+		super(RequestTypes.GET_FRIENDS);
 		_url = GET_FRIENDS_BASE_URL+url;
 	}
 	
