@@ -59,10 +59,11 @@ class SendRequest(webapp.RequestHandler):
 			self.response.out.write(json.dumps({"request_id" : "unknown", "status" : 10}))
 		
 class GetRequests(webapp.RequestHandler):
-	def post(self, user_id):
+	def post(self):
+		json_obj = json.loads(self.request.body)
+		user_obj = Users.get_by_id(int(json_obj["user_id"]))
 		data = dict()
 		data["requests"] = []
-		user_obj = Users.get_by_id(int(user_id))
 		if not user_obj :
 			#data["Requests"].append({"request_id" : "unknown"})
 			data["status"] = 1
@@ -70,7 +71,7 @@ class GetRequests(webapp.RequestHandler):
 			self.response.out.write(json.dumps(data))
 			return
 
-		q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1"), int(user_id))
+		q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1"), int(json_obj["user_id"]))
 		if q.count() == 0:
 			data["status"] = 2
 			self.response.headers['Content-Type'] = "application/json"
@@ -88,10 +89,10 @@ class GetRequests(webapp.RequestHandler):
 		
 class acceptRequests(webapp.RequestHandler):
 	def post(self, request_id):
+		json_obj = json.loads(self.request.body)
+		request = FriendRequests.get_by_id(int(json_obj["request_id"]))
 		data = dict()
 		#check if request exist
-
-		request = FriendRequests.get_by_id(int(request_id))
 		if not request:
 			data["status"] = 1
 			self.response.headers['Content-Type'] = "application/json"
