@@ -112,20 +112,26 @@ public class RequestHandler {
 		try {
 			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
 			requestBody.put("friend_id", id);
-			response = postRequest(requestBody);
+			response = postRequest(requestBody,FRIEND_REQUEST_URL);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		if(response!=null){
+			try {
+				Log.d("Status:" ,response.get("Status").toString());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			return true;
 		}
 		return false;
 	}
 	
-	public JSONObject postRequest(JSONObject body){
+	
+	public JSONObject postRequest(JSONObject body, String url){
 		
 		HttpClient httpClient   = new DefaultHttpClient();
-		HttpPost post           = new HttpPost();
+		HttpPost post           = new HttpPost(url);
 		HttpResponse response   = null;
 		JSONObject jsonResponse = null;
 		
@@ -137,9 +143,7 @@ public class RequestHandler {
 			e.printStackTrace();
 		}
         try {
-			response= httpClient.execute(post);
-			Log.d("RESPONSE:", response.getEntity().toString());
-			
+			response= httpClient.execute(post);			
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -148,7 +152,9 @@ public class RequestHandler {
         try {
 			BufferedReader r = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 			String json = r.readLine();
+			Log.d("JSONObject",json.toString());
 			try {
+				Log.d("JSONResponse:",json.toString());
 				jsonResponse = new JSONObject(json);
 			} catch (JSONException e) {
 				e.printStackTrace();

@@ -125,12 +125,6 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			
 		case R.id.addButton:
 			boolean success = requestHandler.sendFriendRequest(friendIDText.getText().toString());
-			if(success){
-				Log.d("SUCCESS","SUCCESS");
-			}
-			else{
-				Log.d("FAIL","FAIL");
-			}
 			break;
 		
 		case R.id.cancelButton:

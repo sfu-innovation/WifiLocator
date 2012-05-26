@@ -26,7 +26,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private RequestHandler requestHandler;
 	
 	public static final String USER = "Catherine";
-	public static final String USER_ID = "28001";
+	public static final String USER_ID = "30001";
 	
 	/** Called when the activity is first created. */
     @Override
