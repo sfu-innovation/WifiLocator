@@ -16,34 +16,40 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 class SendRequest(webapp.RequestHandler):
 	def post(self):
 		json_obj = json.loads(self.request.body)
+		try:
+			user_obj = Users.get_by_id(int(json_obj["user_id"]))
+			friend_obj = Users.get_by_id(int(json_obj["friend_id"]))
 		
-		user_obj = Users.get_by_id(int(json_obj["user_id"]))
-		friend_obj = Users.get_by_id(int(json_obj["friend_id"]))
 		#check if user or friend is valid
-		if not user_obj :
+			if not user_obj :
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 1}))
+				return
+			elif not friend_obj:
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 2}))
+				return
+				
+			#check if request already exist
+			q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1 and friend_id = :2" ), int(json_obj["friend_id"]),int(json_obj["user_id"]))
+			print q.count()
+			#print q[0]
+			if q.count() > 0:
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 3}))
+				return
+	
+			#sends request	   
+			request = FriendRequests(user_id = json_obj["friend_id"], friend_id = json_obj["user_id"])
+			request.put()
+			#self.response.out.write("request_sent")
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 1}))
-			return
-		elif not friend_obj:
-			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 2}))
-			return
+			self.response.out.write(json.dumps({"request_id" : request.key().id(), "Status" : 0}))
 			
-		#check if request already exist
-		q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1 and friend_id = :2" ), int(json_obj["user_id"]),int(json_obj["friend_id"]))
-		#print q.count()
-		#print q[0]
-		if q.count() > 0:
+		except apiproxy_errors.OverQuotaError, message:
+			logging.error(message)
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 3}))
-			return
-
-		#sends request	   
-		request = FriendRequests(user_id = json_obj["friend_id"], friend_id = json_obj["user_id"])
-		request.put()
-		#self.response.out.write("request_sent")
-		self.response.headers['Content-Type'] = "application/json"
-		self.response.out.write(json.dumps({"request_id" : request.key().id()}))
+			self.response.out.write(json.dumps({"request_id" : "unknown", "Status" : 10}))
 		
 class GetRequests(webapp.RequestHandler):
 	def post(self, user_id):
