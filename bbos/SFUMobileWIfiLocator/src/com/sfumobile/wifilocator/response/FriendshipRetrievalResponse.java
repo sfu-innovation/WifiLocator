@@ -8,12 +8,12 @@ import org.json.me.JSONObject;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 
-public class FriendshipRetrievalResponse extends Response {
+public class FriendshipRetrievalResponse extends ResponseHandler {
 	public FriendshipRetrievalResponse(String data){
 		super(data);
 	}
 
-	public Object doAction() {
+	public Object handleResponse() {
 		int status = -1;
 		Vector friendRequests = new Vector();
 		try {

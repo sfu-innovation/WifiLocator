@@ -3,10 +3,10 @@ package com.sfumobile.wifilocator.response;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
-public abstract class Response  {
+public abstract class ResponseHandler  {
 
 	JSONObject _data;
-	public Response(String data){
+	public ResponseHandler(String data){
 		try {
 			_data = new JSONObject( data );
 		} catch (JSONException e) {
@@ -15,5 +15,5 @@ public abstract class Response  {
 			e.printStackTrace();
 		}
 	}
-	public abstract Object doAction();
+	public abstract Object handleResponse();
 }
