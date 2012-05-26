@@ -9,7 +9,7 @@ public class FriendshipRequest extends Request {
 	
 	WifiLocatorRequestThread _thread;
 	public FriendshipRequest( int userid, int friendid ){
-		super(RequestTypes.REQUEST_FRIENDSHIP_TYPE);
+		super(RequestTypes.INIT_FRIENDSHIP);
 		_userid = userid;
 		_friendid = friendid;
 	}
