@@ -26,7 +26,7 @@ public abstract class Request {
 	}
 	
 	
-	public void setProperty( String key, Object value){
+	public void setProperty( String key, String value){
 		_properties.put(key, value);
 	}
 	

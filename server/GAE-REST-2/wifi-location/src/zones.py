@@ -14,9 +14,9 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 class BSSIDHandler(webapp.RequestHandler):
-	
+
 	def get(self, user_short_name, mac_address):
-			
+
 		data = {}
 		#query users
 		user = db.GqlQuery(("SELECT * FROM Users " +
@@ -24,16 +24,20 @@ class BSSIDHandler(webapp.RequestHandler):
 		#get user id
 		if user.count() > 0:
 			user_id = user[0].key().id()
-				
+
 			item = db.GqlQuery(("SELECT * FROM BSSIDZones " +
 			"WHERE mac_address = :1"), urllib.unquote_plus(mac_address))	
 			if item.count() > 0:
 					curr_zone = item[0].zones
 					zone_id = curr_zone.zone_id
-					
+
 					#update user location
 					user[0].last_location = curr_zone.key()
 					user[0].put()
+					
+					map_name = "Unknown"
+					if curr_zone.maps.count() > 0:
+						map_name = curr_zone.maps[0].map_name
 					
 					#generating JSON data
 					data = {'zone_id' : zone_id, 
@@ -42,7 +46,8 @@ class BSSIDHandler(webapp.RequestHandler):
 							'user' : user[0].short_name, 
 							'user_location' : curr_zone.zone_id,
 							'last_update' : main.pretty_date(user[0].last_update),
-							}							
+							'map_name' : map_name,
+							}
 			else: 	
 				data = {'zone_id' : -1,
 						'zone_name' : "Unknown", 
@@ -50,6 +55,7 @@ class BSSIDHandler(webapp.RequestHandler):
 						'user' : user[0].short_name, 
 						'user_location' : -1,
 						'last_update' : main.pretty_date(user[0].last_update),
+						'map_name' : "Unknown", 
 						}
 		else: 	
 			data = {'zone_id' : -1,
@@ -58,12 +64,12 @@ class BSSIDHandler(webapp.RequestHandler):
 					'user' : "Unknown", 
 					'user_location' : -1,
 					'last_update' : "Unknown",
+					'map_name' : "Unknown", 
 					}
-		
+
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))	
 		
-	
 
 class MapHandler(webapp.RequestHandler):
 	def get(self, zone_id):
@@ -77,4 +83,3 @@ class MapHandler(webapp.RequestHandler):
 			data = {'map_name' : 'Unknown', 'zone_name' : 'Unknown', 'zone_id' : zone_id}
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
-

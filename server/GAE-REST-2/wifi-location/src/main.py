@@ -83,7 +83,7 @@ class MainPage(webapp.RequestHandler):
 		}
 		path = os.path.join(os.path.dirname(__file__), 'index.html')
 		self.response.out.write(template.render(path,template_values))
-		
+
 
 def pretty_date(time=False):
 		"""
@@ -101,10 +101,10 @@ def pretty_date(time=False):
 		    diff = now - now
 		second_diff = diff.seconds
 		day_diff = diff.days
-		
+
 		if day_diff < 0:
 		    return ''
-		
+
 		if day_diff == 0:
 		    if second_diff < 10:
 		        return "just now"
@@ -127,6 +127,7 @@ def pretty_date(time=False):
 		if day_diff < 365:
 		    return str(day_diff/30) + " months ago"
 		return str(day_diff/365) + " years ago"
+		
 
 	
 application = webapp.WSGIApplication([('/', MainPage), 
@@ -137,7 +138,7 @@ application = webapp.WSGIApplication([('/', MainPage),
 					  ('/setfriend/', SetFriend),
 					  ('/setuser/', SetUser),
 					  ('/sendrequest/', SendRequest),
-					  ('/getrequests/(.*)', GetRequests),
+					  ('/getrequests/', GetRequests),
 					  ('/acceptrequest/(.*)',acceptRequests)],
 					debug=True)
 

@@ -38,6 +38,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		//addMenuItem(WifiLocatorMenuItems.popScreenMenuItem("Tweets"));
 		addMenuItem(WifiLocatorMenuItems.enablePollingMenuItem());
 		addMenuItem(WifiLocatorMenuItems.disablePollingMenuItem());
+		addMenuItem(WifiLocatorMenuItems.QRCodeMenuItem());
+		addMenuItem(WifiLocatorMenuItems.QRViewMenuItem());
 		_friendsList = new ObjectListField();
 		_friendsList.set(friendsArray);;
 		add( _friendsList );
@@ -63,8 +65,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 			RequestPackage _friendsRequestPackage = new RequestPackage(this, _friendsRequest);
 			
 			_service = PollingService.getInstance();
-			_service.addRequest( _friendsRequestPackage );
-			_service.addRequest( _zoneRequestPackage );
+			//_service.addRequest( _friendsRequestPackage );
+			//_service.addRequest( _zoneRequestPackage );
 			
 			System.out.println("*************** Added friendsRequest from PollingService");
 		}
@@ -78,7 +80,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 	}
 	public void handleStringValue(int type, String val) {
 		System.out.println("[SFUMOBILE] - Handling a string - "+val);
-		if ( type == RequestTypes.REQUEST_FRIENDS_TYPE){
+		if ( type == RequestTypes.GET_FRIENDS){
 		_friends = JSONWifiLocatorParser.getFriends(val);
 		
 		friendsArray = vectorToArray(_friends);
@@ -86,7 +88,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		_friendsList.setSize( friendsArray.length);
 		_friendsList.invalidate();
 		}
-		else if ( type == RequestTypes.REQUEST_ZONE_TYPE){
+		else if ( type == RequestTypes.ZONE){
 			zoneName = JSONWifiLocatorParser.getZoneName(val);
 			setTitle( "#"+zoneName );
 		}

@@ -36,10 +36,10 @@ public class RequestPackage {
 			int type = _request.getType();
 			String url = _request.getURL();
 			String payload = _request.getPayload();
-			
+			System.out.println( "[SFUMOBILE] The payload - "+payload);
 			//special case since this request is dynamic
-			if ( type == RequestTypes.REQUEST_ZONE_TYPE){
-				url += /*"00:1f:45:64:16:c8";*/WLANContext.getBSSID();
+			if ( type == RequestTypes.ZONE){
+				url += WLANContext.getBSSID();
 			}
 			System.out.println("[SFUMOBILE] - testing out this url "+url);
 			_thread = new WifiLocatorRequestThread(type,
@@ -64,7 +64,7 @@ public class RequestPackage {
 			case WLANContext.WLAN_RADIO_OFF:
 				    reasonString = "Wifi not on"; break;
 			}
-			_rd.handleError(RequestTypes.REQUEST_ZONE_TYPE, WLANContext.isAssociated(), reasonString);
+			_rd.handleError(RequestTypes.ZONE, WLANContext.isAssociated(), reasonString);
 		}
 	}
 }

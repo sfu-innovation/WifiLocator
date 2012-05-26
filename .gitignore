@@ -3,12 +3,6 @@ ios/wifilocator/wifilocator.xcodeproj/project.xcworkspace/xcuserdata/alexkwan.xc
 
 ios/wifilocator/wifilocator.xcodeproj/xcuserdata/alexkwan.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
 
-server/GAE-REST-2/wifi-location/rest/__init__.pyc
-
-server/GAE-REST-2/wifi-location/src/__init__.pyc
-
-bbos/SFUMobileWIfiLocator/src/.DS_Store
-
 bbos/SFUMobileWIfiLocator/.classpath
 
 bbos/SFUMobileWIfiLocator/.project
@@ -27,15 +21,52 @@ bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/utils/.DS_Store
 
 bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/screens/.DS_Store
 
-server/GAE-REST-2/wifi-location/src/friends.pyc
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/.DS_Store
+
+bbos/.DS_Store
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.syncinfo.snap
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.markers.snap
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/properties.index
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.history/d4/d0b3a11dbaa600111742931501de86b8
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/e4/81/5c/e1/79/properties.index
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/e4/81/5c/e1/3f/properties.index
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/af/history.index
+
+bbos/.metadata/.log-ejde
+
+bbos/.metadata/.log
+
+bbos/.metadata/.lock
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/e4/81/5c/e1/8f/properties.index
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.projects/SFUMobileWIfiLocator/.indexes/e4/81/5c/e1/properties.index
+
+bbos/.metadata/.plugins/org.eclipse.core.resources/.snap
+
+bbos/SFUMobileWIfiLocator/.DS_Store
+
+server/GAE-REST-2/wifi-location/rest/__init__.pyc
+
+server/GAE-REST-2/wifi-location/src/__init__.pyc
 
 server/GAE-REST-2/wifi-location/src/requests.pyc
 
-server/GAE-REST-2/wifi-location/src/users.pyc
+server/GAE-REST-2/wifi-location/src/models.pyc
+
+server/GAE-REST-2/wifi-location/src/friends.pyc
 
 server/GAE-REST-2/wifi-location/src/zones.pyc
 
-server/GAE-REST-2/wifi-location/src/models.pyc
-
+server/GAE-REST-2/wifi-location/src/users.pyc
 
 server/GAE-REST-2/wifi-location/.DS_Store
