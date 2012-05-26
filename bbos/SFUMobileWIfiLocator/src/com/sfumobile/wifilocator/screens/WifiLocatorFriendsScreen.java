@@ -63,8 +63,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 			RequestPackage _friendsRequestPackage = new RequestPackage(this, _friendsRequest);
 			
 			_service = PollingService.getInstance();
-			_service.addRequest( _friendsRequestPackage );
-			_service.addRequest( _zoneRequestPackage );
+			//_service.addRequest( _friendsRequestPackage );
+			//_service.addRequest( _zoneRequestPackage );
 			
 			System.out.println("*************** Added friendsRequest from PollingService");
 		}

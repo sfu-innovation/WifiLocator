@@ -29,7 +29,7 @@ public class WifiLocator extends UiApplication
      */
     public WifiLocator()
     {        
-    	PollingService.getInstance().startPolling();
+    	//PollingService.getInstance().startPolling();
         // Push a screen onto the UI stack for rendering.
         pushScreen(new WifiLocatorFriendsScreen());
     }    
