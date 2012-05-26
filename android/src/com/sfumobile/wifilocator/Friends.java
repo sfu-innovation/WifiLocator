@@ -37,7 +37,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		setContentView(R.layout.friend_screen);
 
 		requestHandler = new RequestHandler(this);
-		userProfile id = new userProfile();
+		UserProfile id = new UserProfile();
 
 		friends = id.get_friends();
 		loc = id.get_loc();

@@ -5,24 +5,24 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import android.util.Log;
 
-public class userProfile {
+public class UserProfile {
 	private JSONObject request;
 	private JSONArray profile;
 	private static String url = "http://wifi-location.appspot.com/getfriends/" + WifiLocatorActivity.USER;
 	private String[] friends, loc;
-	
-	
-	public userProfile(){
+
+
+	public UserProfile(){
 		request = HttpGET.connect(url);
 		Log.d("userProfile()", request.toString());
 		extract_info();
 	}
-	
+
 	public void extract_info() {
 		try{
 			Log.d("profile extract", "in extract");
 			profile = request.getJSONArray(WifiLocatorActivity.USER);
-			
+
 			int count = profile.length();
 			friends = new String[count];
 			loc = new String[count];
@@ -35,13 +35,13 @@ public class userProfile {
 			Log.e("JSON Exception", jse.toString());
 		}
 	}
-	
+
 	public String[] get_friends(){
 		return friends;
 	}
-	
+
 	public String[] get_loc(){
 		return loc;
 	}
-	
+
 }
