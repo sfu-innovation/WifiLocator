@@ -24,7 +24,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton, addButton, cancelButton;
+	private Button addFriendButton, addButton, cancelButton, scanButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 	private RequestHandler requestHandler;
@@ -38,8 +38,11 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		loadList populate = new loadList();
 		populate.execute();
 
-		addFriendButton = (Button)findViewById(R.id.addFriendButton);
+		requestHandler = new RequestHandler(this);
+		
+		addFriendButton = (Button)findViewById(R.id.addFriendButton);	
 		addFriendButton.setOnClickListener(this);
+
 		
 	}
 	
@@ -69,21 +72,20 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			//inflatedView.setPadding(50, 0, 0, 0);
 			//TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
 			
-			final Intent i = new Intent(getApplicationContext(), GetMap.class);
-			i.putExtra("zone", getChild(groupPosition, childPosition).toString());
+		//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
+		//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
 			TextView txtView = getGenericView();
 			
 			txtView.setTextSize(15);
 			txtView.setText(getChild(groupPosition, childPosition).toString());
-			txtView.setOnClickListener(new View.OnClickListener() {
+		/*	txtView.setOnClickListener(new View.OnClickListener() {
 				
-				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub				
 					startActivity(i);
 				}
 			});
-			
+			*/
 			return txtView;
 		}
 
@@ -155,14 +157,25 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			addFriendDialog.cancel();
 			break;
 			
+		case R.id.scanButton:
+    		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+    		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+    		startActivityForResult(intent, 0);
+    		break;
 		case R.id.friendIDText:
 			friendIDText.setText("");
 			friendIDText.setTextColor(Color.BLACK);
 			break;
 		}
-		
 	}
-	
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Bundle extras = data.getExtras();
+		String id = extras.get("SCAN_RESULT").toString().substring(10);
+		friendIDText.setText(id);
+	}
 
 	class loadList extends AsyncTask<Void, Void, Void> {	
 		private ProgressDialog dialog = new ProgressDialog(Friends.this);
@@ -210,10 +223,12 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			
 			addButton    = (Button)addFriendDialog.findViewById(R.id.addButton);
 			cancelButton = (Button)addFriendDialog.findViewById(R.id.cancelButton);
+			scanButton   = (Button)addFriendDialog.findViewById(R.id.scanButton);
 			friendIDText = (EditText)addFriendDialog.findViewById(R.id.friendIDText);
 			
 			addButton.setOnClickListener(this);
 			cancelButton.setOnClickListener(this);
+			scanButton.setOnClickListener(this);
 			friendIDText.setOnClickListener(this);
 			friendIDText.setTextColor(Color.GRAY);
 			

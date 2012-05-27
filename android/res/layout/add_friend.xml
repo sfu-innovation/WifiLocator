@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel" />
 
+        <Button
+            android:id="@+id/scanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/qr_scan" />
+
     </LinearLayout>
 
 </LinearLayout>
