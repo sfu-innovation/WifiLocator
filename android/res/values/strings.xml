@@ -38,5 +38,6 @@
     <string name="ssid_label">SSID:</string>
     <string name="add_friend">Add Friend</string>
     <string name="friend_id">Friend ID</string>
+    <string name="qr_scan">Scan QR</string>
 
 </resources>

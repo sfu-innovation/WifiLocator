@@ -2,6 +2,7 @@ package com.sfumobile.wifilocator;
 
 import android.app.Dialog;
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.graphics.Color;
 //import android.content.Intent; //find friends from server?
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton, addButton, cancelButton;
+	private Button addFriendButton, addButton, cancelButton, scanButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 	private RequestHandler requestHandler;
@@ -42,8 +43,9 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		friends = id.get_friends();
 		loc = id.get_loc();
 
-		addFriendButton = (Button)findViewById(R.id.addFriendButton);
+		addFriendButton = (Button)findViewById(R.id.addFriendButton);	
 		addFriendButton.setOnClickListener(this);
+
 		
 		status = new String[loc.length][1];		
 		for (int i=0; i< loc.length; i++){
@@ -154,6 +156,10 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			addFriendDialog.cancel();
 			break;
 			
+		case R.id.scanButton:
+    		Intent intent = new Intent(this,QRScannerActivity.class);
+    		startActivity(intent);
+    		break;
 		case R.id.friendIDText:
 			friendIDText.setText("");
 			friendIDText.setTextColor(Color.BLACK);
@@ -171,10 +177,12 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			
 			addButton    = (Button)addFriendDialog.findViewById(R.id.addButton);
 			cancelButton = (Button)addFriendDialog.findViewById(R.id.cancelButton);
+			scanButton   = (Button)addFriendDialog.findViewById(R.id.scanButton);
 			friendIDText = (EditText)addFriendDialog.findViewById(R.id.friendIDText);
 			
 			addButton.setOnClickListener(this);
 			cancelButton.setOnClickListener(this);
+			scanButton.setOnClickListener(this);
 			friendIDText.setOnClickListener(this);
 			friendIDText.setTextColor(Color.GRAY);
 			
