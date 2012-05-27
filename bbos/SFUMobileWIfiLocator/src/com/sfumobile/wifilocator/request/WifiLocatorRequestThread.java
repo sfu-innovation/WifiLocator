@@ -17,11 +17,11 @@ import net.rim.device.api.io.transport.TransportInfo;
 
 public class WifiLocatorRequestThread extends Thread {
 	private String _url;
-	private RequestDelegate _delegate;
+	private RequestDelegateScreen _delegate;
 	private int     _type;
 	private static final int CONNECTION_FAILED = 1;
 	private String _data;
-	public WifiLocatorRequestThread( int type,  String url, String data, RequestDelegate delegate ) {
+	public WifiLocatorRequestThread( int type,  String url, String data, RequestDelegateScreen delegate ) {
 		_url = url;
 		_delegate = delegate;
 		_type  = type;
@@ -36,7 +36,7 @@ public class WifiLocatorRequestThread extends Thread {
         int[] preferredTypes = { TransportInfo.TRANSPORT_TCP_WIFI};
         factory.setPreferredTransportTypes(preferredTypes);
 
-        factory.setConnectionMode(ConnectionFactory.ACCESS_READ);
+        factory.setConnectionMode(ConnectionFactory.ACCESS_READ_WRITE);
         ConnectionDescriptor _connectionDescriptor = null;
        
         try {

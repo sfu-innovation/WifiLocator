@@ -28,13 +28,13 @@ public class FriendshipRetrievalResponse extends ResponseHandler {
 		if ( status == 0 ) {
 			JSONObject temp = null;
 			try {
-				JSONArray arr = (JSONArray) _data.get("Requests");
+				JSONArray arr = (JSONArray) _data.get("requests");
 				int length = arr.length();
 				for(int i = 0; i < length; i++){
 					temp = arr.getJSONObject(i);
 					friendRequests.addElement( new WifiLocatorFriendship(
 							temp.getString("friend_name"),
-							temp.getString("request_id")
+							temp.getInt("request_id")
 					));
 				}
 			} catch (JSONException e) {

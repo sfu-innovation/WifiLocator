@@ -6,13 +6,17 @@ import java.util.Hashtable;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
+import com.sfumobile.wifilocator.types.RequestTypes;
+
 public abstract class Request {
 	private Hashtable _properties;
+	private Hashtable _propertiesTypes;
 	protected int _type;
 	private Hashtable _errors;
 	
 	public Request(int type ){
 		_properties = new Hashtable();
+		_propertiesTypes = new Hashtable();
 		_errors = new Hashtable();
 		_type = type;
 	}
@@ -26,8 +30,10 @@ public abstract class Request {
 	}
 	
 	
-	public void setProperty( String key, String value){
+	
+	public void setProperty( String key, String value, String type){
 		_properties.put(key, value);
+		_propertiesTypes.put(key, type);
 	}
 	
 	public String getPayload(){
@@ -43,7 +49,16 @@ public abstract class Request {
 		while (e.hasMoreElements()){
 			key = (String)e.nextElement();
 			try {
-				obj.append(key, (String)obj.get(key));
+				if ( _propertiesTypes.containsKey( key )){
+					String type = (String)_propertiesTypes.get( key );
+					if ( type.equals( RequestTypes.INT_TYPE)){
+						obj.put(key, Integer.parseInt((String)_properties.get(key)));
+					}
+					else {
+						obj.put(key, (String)_properties.get(key));
+					}
+				}
+				
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

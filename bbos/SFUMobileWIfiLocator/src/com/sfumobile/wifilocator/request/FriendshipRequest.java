@@ -3,7 +3,7 @@ package com.sfumobile.wifilocator.request;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 public class FriendshipRequest extends Request {
-	private static final String GET_FRIENDSHIP_BASE_URL = "http://wifi-location.appspot.com/sendrequest/ ";
+	private static final String GET_FRIENDSHIP_BASE_URL = "http://wifi-location.appspot.com/sendrequest/";
 	private int _userid, _friendid;
 	
 	
@@ -15,8 +15,8 @@ public class FriendshipRequest extends Request {
 	}
 	
 	public String getURL() {
-		setProperty( "user_id", ""+_userid);
-		setProperty( "friend_id", ""+_friendid);
+		setProperty( "user_id", ""+_userid, RequestTypes.INT_TYPE);
+		setProperty( "friend_id", ""+_friendid, RequestTypes.INT_TYPE);
 		return GET_FRIENDSHIP_BASE_URL;
 	}
 	
