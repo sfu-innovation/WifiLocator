@@ -39,5 +39,6 @@
     <string name="add_friend">Add Friend</string>
     <string name="friend_id">Friend ID</string>
     <string name="map_button_label">View Map</string>
+    <string name="qr_scan">Scan QR</string>
 
 </resources>
