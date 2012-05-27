@@ -12,6 +12,7 @@ from src.friends import *
 from src.zones import *
 from src.requests import *
 from src.users import *
+from src.accepts import *
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
@@ -85,6 +86,58 @@ class MainPage(webapp.RequestHandler):
 		self.response.out.write(template.render(path,template_values))
 
 
+class RequestHandler(webapp.RequestHandler):
+
+	def post(self, request_type):
+		try:
+			json_obj = json.loads(self.request.body)
+		
+			
+			#get a list of friends and friends info
+			if (request_type == "friendlist"):
+	
+				getFriendList(self, json_obj)
+			
+			#send friendship request
+			elif (request_type == "friendship"):
+				
+				sendFriendRequest(self, json_obj)
+			
+			#get a list of pending friend request
+			elif (request_type == "pending/friendships"):
+	
+				getFriendRequests(self, json_obj)
+			
+			#get zone_id by mac_address and 
+			elif (request_type == "updatezone"):
+				
+				updateZone(self, json_obj)
+				
+		except ValueError:
+			# if json is empty
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"status" : 11}))
+			
+
+class AcceptHandler(webapp.RequestHandler):
+	def post(self, accept_type):
+		try:
+			json_obj = json.loads(self.request.body)
+
+			if (accept_type == "friendship"):
+				acceptFriendRequest(self, json_obj)
+				
+				
+				
+		except ValueError:
+			# if json is empty
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"status" : 11}))
+			
+
+		
+	
+
 def pretty_date(time=False):
 		"""
 		Get a datetime object or a int() Epoch timestamp and return a
@@ -130,17 +183,15 @@ def pretty_date(time=False):
 		
 
 	
-application = webapp.WSGIApplication([('/', MainPage), 
-				      ('/getzone/(.*)/(.*)', BSSIDHandler),
-				      ('/getmap/(.*)', MapHandler),
-				      ('/getfriends/(.*)', FriendHandler),
-				      ('/rest/.*', rest.Dispatcher), 
-					  ('/setfriend/', SetFriend),
-					  ('/setuser/', SetUser),
-					  ('/sendrequest/', SendRequest),
-					  ('/getrequests/', GetRequests),
-					  ('/acceptrequest/',acceptRequests)],
-					debug=True)
+application = webapp.WSGIApplication([
+									('/', MainPage), 
+									('/request/(.*)', RequestHandler),
+									('/accept/(.*)', AcceptHandler),
+									('/getmap/(.*)', MapHandler),
+									('/rest/.*', rest.Dispatcher), 
+									('/setfriend/', SetFriend),
+									('/setuser/', SetUser)],
+									debug=True)
 
 
 
@@ -165,5 +216,5 @@ rest.Dispatcher.add_models_from_module(__name__)
 def main():
     run_wsgi_app(application)
 
-if __name__ == "__main__":
+if __name__ == "__friends__":
     main()
