@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
 
@@ -23,8 +24,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
+	private AlertDialog alert;
 	
-	public static final String USER = "Catherine";
+	public static final String USER = "Catherine"; //Hedy, 45006
 	public static final int USER_ID = 30001;
 
 	
@@ -53,9 +55,27 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     
     public void onStart(){
     	super.onStart();
-    	auto = new AutoPoll();
-    	auto.execute();
-    	pollButton.setTag(1);
+    	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
+				new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		}).create();
+    	if (!requestHandler.wifi_check()){
+    		alert.setTitle("WiFi Error");
+    		alert.setMessage("No WiFi connection detected.");
+    	} else if (!SSIDs.SSIDs.contains(requestHandler.getSSID())){	
+    		alert.setTitle("Connection Error");
+    		alert.setMessage("The network you are connected to appears to be invalid.");
+    	} else {   
+    		auto = new AutoPoll();
+        	auto.execute();
+        	pollButton.setTag(1);
+    	}
+    	alert.show();
     }
     
 	public void onClick(View src) {
@@ -92,7 +112,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	
 	public void onStop(){
 		super.onStop();
-    	auto.cancel(true);
+		if (auto!=null) {
+			auto.cancel(true);
+		}
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	

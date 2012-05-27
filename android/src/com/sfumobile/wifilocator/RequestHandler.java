@@ -34,6 +34,10 @@ public class RequestHandler {
         wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 
 	}
+	
+	public Boolean wifi_check(){
+		return wm.isWifiEnabled();
+	}
 
 	public String getBSSID(){
 		return wm.getConnectionInfo().getBSSID();
