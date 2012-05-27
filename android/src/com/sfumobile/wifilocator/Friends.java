@@ -140,7 +140,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
 		    FileOutputStream out = null;
 			try {
-				out = new FileOutputStream("/mnt/sdcard/MikeBitmap.bmp");
+				out = new FileOutputStream("/data/data/com.sfumobile.wifilocator/MikeBitmap.bmp");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
