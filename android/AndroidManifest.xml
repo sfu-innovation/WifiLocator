@@ -29,6 +29,11 @@
         </activity>
         
         <activity 
+            android:name = ".FriendRequestsActivity"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity 
             android:name = ".GetMap"
             android:label="@string/app_name">
         </activity>
