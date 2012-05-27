@@ -42,6 +42,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 		addMenuItem(WifiLocatorMenuItems.QRCodeMenuItem());
 		addMenuItem(WifiLocatorMenuItems.QRViewMenuItem());
 		addMenuItem(WifiLocatorMenuItems.AddFriendMenuItem());
+		addMenuItem(WifiLocatorMenuItems.AddFriendRequestsViewMenuItem());
 		_friendsList = new ObjectListField();
 		_friendsList.set(friendsArray);;
 		add( _friendsList );

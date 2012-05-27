@@ -29,7 +29,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton, addButton, cancelButton, scanButton, qrButton;
+	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 	private RequestHandler requestHandler;
@@ -43,11 +43,13 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 
 		requestHandler = new RequestHandler(this);
 		
-		addFriendButton = (Button)findViewById(R.id.addFriendButton);
-		qrButton        = (Button)findViewById(R.id.qrButton);
-		qrImage         = (ImageView)findViewById(R.id.qrImage);
+		addFriendButton      = (Button)findViewById(R.id.addFriendButton);
+		friendRequestsButton = (Button)findViewById(R.id.friendRequestsButton);
+		qrButton             = (Button)findViewById(R.id.qrButton);
+		qrImage              = (ImageView)findViewById(R.id.qrImage);
 		
 		addFriendButton.setOnClickListener(this);
+		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
 		
 	}
@@ -133,11 +135,17 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	}
 
 	public void onClick(View v) {
+		Intent intent;
 		switch(v.getId()){
 		case R.id.addFriendButton:
 			showDialog(ADD_FRIEND_DIALOG_ID);
 			break;
-		
+			
+		case R.id.friendRequestsButton:
+			intent = new Intent(this,FriendRequestsActivity.class);
+			startActivity(intent);
+			break;
+			
 		case R.id.qrButton:
 			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
 			qrImage.setImageBitmap(bitmap);
@@ -159,7 +167,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 			
 		case R.id.scanButton:
-    		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+    		intent = new Intent("com.google.zxing.client.android.SCAN");
     		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
     		startActivityForResult(intent, 0);
     		break;
