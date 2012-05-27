@@ -2,11 +2,11 @@ package com.sfumobile.wifilocator.response;
 
 import org.json.me.JSONException;
 
-public class FriendshipConfirmResponse extends Response {
+public class FriendshipConfirmResponse extends ResponseHandler {
 	public FriendshipConfirmResponse(String data ){
 		super(data);
 	}
-	public Object doAction() {
+	public Object handleResponse() {
 		String status = null;
 		
 		try {

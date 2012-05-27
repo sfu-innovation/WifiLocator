@@ -8,12 +8,12 @@ import org.json.me.JSONObject;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorFriend;
 
-public class FriendsResponse extends Response {
+public class FriendsResponse extends ResponseHandler {
 
 	public FriendsResponse(String data){
 		super( data );
 	}
-	public Object doAction() {
+	public Object handleResponse() {
 		Vector friends = new Vector();
 		JSONArray temp = null;
 		

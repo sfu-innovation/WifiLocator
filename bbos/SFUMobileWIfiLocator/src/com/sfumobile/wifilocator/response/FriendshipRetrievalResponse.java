@@ -8,12 +8,12 @@ import org.json.me.JSONObject;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 
-public class FriendshipRetrievalResponse extends Response {
+public class FriendshipRetrievalResponse extends ResponseHandler {
 	public FriendshipRetrievalResponse(String data){
 		super(data);
 	}
 
-	public Object doAction() {
+	public Object handleResponse() {
 		int status = -1;
 		Vector friendRequests = new Vector();
 		try {
@@ -28,13 +28,13 @@ public class FriendshipRetrievalResponse extends Response {
 		if ( status == 0 ) {
 			JSONObject temp = null;
 			try {
-				JSONArray arr = (JSONArray) _data.get("Requests");
+				JSONArray arr = (JSONArray) _data.get("requests");
 				int length = arr.length();
 				for(int i = 0; i < length; i++){
 					temp = arr.getJSONObject(i);
 					friendRequests.addElement( new WifiLocatorFriendship(
 							temp.getString("friend_name"),
-							temp.getString("request_id")
+							temp.getInt("request_id")
 					));
 				}
 			} catch (JSONException e) {

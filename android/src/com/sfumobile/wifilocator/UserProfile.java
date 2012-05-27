@@ -14,8 +14,14 @@ public class UserProfile {
 
 	public UserProfile(){
 		request = HttpGET.connect(url);
-		Log.d("userProfile()", request.toString());
-		extract_info();
+		Log.d("userProfile()", Integer.toString(request.length()));
+		
+		if (request.length()>0)
+			extract_info();
+		else{
+			friends = null;
+			loc = null;
+		}
 	}
 
 	public void extract_info() {

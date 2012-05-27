@@ -5,11 +5,11 @@ import com.sfumobile.wifilocator.utils.WLANContext;
 
 public class RequestPackage {
 
-	private RequestDelegate _rd;
+	private RequestDelegateScreen _rd;
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
 	
-	public RequestPackage( RequestDelegate rd, Request req ){
+	public RequestPackage( RequestDelegateScreen rd, Request req ){
 		_rd = rd;
 		_request = req;
 	}

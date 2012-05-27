@@ -11,7 +11,8 @@ public class FriendshipRequestRetrieval extends Request {
 	}
 	
 	public String getURL() {
-		return GET_FRIENDSHIP_REQUESTS_BASE_URL+_userid;
+		setProperty("user_id", ""+_userid, RequestTypes.INT_TYPE);
+		return GET_FRIENDSHIP_REQUESTS_BASE_URL;
 	}
 	
 	

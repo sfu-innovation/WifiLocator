@@ -13,16 +13,17 @@ import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.ListField;
 import net.rim.device.api.ui.component.ListFieldCallback;
 import net.rim.device.api.ui.component.ObjectListField;
+import net.rim.device.api.ui.container.MainScreen;
 
 import com.sfumobile.wifilocator.request.FriendsRequest;
 import com.sfumobile.wifilocator.request.PollingService;
-import com.sfumobile.wifilocator.request.RequestDelegate;
+import com.sfumobile.wifilocator.request.RequestDelegateScreen;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.ZoneRequest;
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.JSONWifiLocatorParser;
 
-public class WifiLocatorFriendsScreen extends RequestDelegate  {
+public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 	private Vector _friends = null;
 	private Object[] friendsArray = null;
 	private ObjectListField _friendsList;
@@ -40,6 +41,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegate  {
 		addMenuItem(WifiLocatorMenuItems.disablePollingMenuItem());
 		addMenuItem(WifiLocatorMenuItems.QRCodeMenuItem());
 		addMenuItem(WifiLocatorMenuItems.QRViewMenuItem());
+		addMenuItem(WifiLocatorMenuItems.AddFriendMenuItem());
 		_friendsList = new ObjectListField();
 		_friendsList.set(friendsArray);;
 		add( _friendsList );

@@ -6,7 +6,7 @@ import com.sfumobile.wifilocator.request.WifiLocatorRequestThread;
 
 public class ZoneRequest extends Request {
 	
-	private RequestDelegate _rd;
+	private RequestDelegateScreen _rd;
 	private String          _bssid;
 	private String          _url;
 	private String          _user;

@@ -12,8 +12,8 @@ public class FriendshipConfirmRequest extends Request {
 	}
 	
 	public String getURL() {
-		
-		return CONFIRM_FRIENDSHIP_REQUEST_BASE_URL+_friendshipId;
+		setProperty("request_id", ""+_friendshipId, RequestTypes.INT_TYPE);
+		return CONFIRM_FRIENDSHIP_REQUEST_BASE_URL;
 	}
 
 }

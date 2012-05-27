@@ -2,9 +2,9 @@ package com.sfumobile.wifilocator.entities;
 
 public class WifiLocatorFriendship {
 	private String _friendName;
-	private String _id;
+	private int _id;
 	
-	public WifiLocatorFriendship(String friendname, String id  ){
+	public WifiLocatorFriendship(String friendname, int id  ){
 		_friendName = friendname;
 		_id = id;
 	}
@@ -13,7 +13,7 @@ public class WifiLocatorFriendship {
 		return _friendName;
 	}
 	
-	public String getID(){
+	public int getID(){
 		return _id;
 	}
 	

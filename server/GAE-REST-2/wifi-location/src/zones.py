@@ -34,7 +34,11 @@ class BSSIDHandler(webapp.RequestHandler):
 					#update user location
 					user[0].last_location = curr_zone.key()
 					user[0].put()
-
+					
+					map_name = "Unknown"
+					if curr_zone.maps.count() > 0:
+						map_name = curr_zone.maps[0].map_name
+					
 					#generating JSON data
 					data = {'zone_id' : zone_id, 
 							'zone_name' : curr_zone.zone_name, 
@@ -42,7 +46,8 @@ class BSSIDHandler(webapp.RequestHandler):
 							'user' : user[0].short_name, 
 							'user_location' : curr_zone.zone_id,
 							'last_update' : main.pretty_date(user[0].last_update),
-							}							
+							'map_name' : map_name,
+							}
 			else: 	
 				data = {'zone_id' : -1,
 						'zone_name' : "Unknown", 
@@ -50,6 +55,7 @@ class BSSIDHandler(webapp.RequestHandler):
 						'user' : user[0].short_name, 
 						'user_location' : -1,
 						'last_update' : main.pretty_date(user[0].last_update),
+						'map_name' : "Unknown", 
 						}
 		else: 	
 			data = {'zone_id' : -1,
@@ -58,12 +64,12 @@ class BSSIDHandler(webapp.RequestHandler):
 					'user' : "Unknown", 
 					'user_location' : -1,
 					'last_update' : "Unknown",
+					'map_name' : "Unknown", 
 					}
 
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))	
-
-
+		
 
 class MapHandler(webapp.RequestHandler):
 	def get(self, zone_id):
