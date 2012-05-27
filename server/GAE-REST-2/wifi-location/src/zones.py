@@ -20,12 +20,9 @@ def updateZone(self, json_obj):
 	if not user_obj :
 		
 		data = {'status' : 1,
-				'zone_id' : -1,
 				'zone_name' : "unknown", 
-				'mac_address' : "unknown", 
-				'user_location' : -1,
-				'last_update' : "unknown",
 				'map_name' : "unknown", 
+				'last_update' : "unknown"
 				}
 		
 		self.response.headers['Content-Type'] = "application/json"
@@ -44,33 +41,41 @@ def updateZone(self, json_obj):
 		user_obj.last_location = curr_zone.key()
 		user_obj.put()
 		
-		map_name = "unknown"
 		
 		if curr_zone.maps.count() > 0:
 			map_name = curr_zone.maps[0].map_name
+			
 
 		#generating JSON data
-		data = {'status' : 0,
-				'zone_id' : zone_id, 
-				'zone_name' : curr_zone.zone_name, 
-				'mac_address' : item[0].mac_address, 
-				'user_location' : curr_zone.zone_id,
-				'last_update' : main.pretty_date(user_obj.last_update),
-				'map_name' : map_name
-				}	
-				
+			data = {'status' : 0,
+					'zone_name' : curr_zone.zone_name, 
+					'map_name' : map_name,
+					'last_update' : main.pretty_date(user_obj.last_update),
+					}	
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps(data))	
+			return
+		
+		#map not found
+		else: 
+			data = {'status' : 3,
+					'zone_name' : curr_zone.zone_name, 
+					'map_name' : "unknown",
+					'last_update' : main.pretty_date(user_obj.last_update),
+					}	
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps(data))	
+			return
 	#zone unknown						
 	else: 	
 		data = {'status' : 2,
-				'zone_id' : -1,
 				'zone_name' : "unknown", 
-				'mac_address' : "unknown", 
-				'user_location' : -1,
 				'last_update' : main.pretty_date(user_obj.last_update),
 				'map_name' : "unknown"
 				}
-	self.response.headers['Content-Type'] = "application/json"
-	self.response.out.write(json.dumps(data))	
+		self.response.headers['Content-Type'] = "application/json"
+		self.response.out.write(json.dumps(data))	
+		return
 
 
 		
