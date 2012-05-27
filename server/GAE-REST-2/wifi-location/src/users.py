@@ -15,18 +15,24 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 class SetUser(webapp.RequestHandler):
 	def get(self):
-		self.response.out.write("requires post or delete request")
+		data = {'status' : 1, 'message' : 'requires post request'}
+		self.response.out.write(json.dumps(data))
+		
 	def post(self):
 		json_obj = json.loads(self.request.body)
+		data = {}
+		
 		if json_obj["command"] == "adduser":
 			Users(first_name = json_obj["first_name"], short_name = json_obj["short_name"], last_name = json_obj["last_name"]).put()
-			self.response.out.write("user_added")
+			data = {'status' : 0, 'message' : 'user added successfully'}
 		elif json_obj["command"] == "deleteuser":
 			userobj = db.GqlQuery(("SELECT * FROM Users " + "WHERE short_name = :1"), urllib.unquote_plus(json_obj["short_name"]))
 			if userobj.count() <= 0:
+				data = {'status' : 1, 'message' : 'user not found'}
 				self.response.out.write("user_not_found")
 			else:
 				userobj[0].delete()
-				self.response.out.write("user_deleted")
+				data = {'status' : 0, 'message' : 'user deleted successfully'}
 		else:
-			self.response.out.write("invalid_command")
+			data = {'status' : 1, 'message' : 'invalid command'}
+		self.response.out.write(json.dumps(data))
