@@ -92,6 +92,11 @@
         android:layout_height="wrap_content"
         android:text="@string/friend_button_label" />
 
+    <Button
+        android:id="@+id/mapbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/map_button_label" />
 
     <ImageView
         android:id="@+id/twitterIcon"

@@ -69,13 +69,13 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			//inflatedView.setPadding(50, 0, 0, 0);
 			//TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
 			
-			final Intent i = new Intent(getApplicationContext(), GetMap.class);
-			i.putExtra("zone", getChild(groupPosition, childPosition).toString());
+		//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
+		//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
 			TextView txtView = getGenericView();
 			
 			txtView.setTextSize(15);
 			txtView.setText(getChild(groupPosition, childPosition).toString());
-			txtView.setOnClickListener(new View.OnClickListener() {
+		/*	txtView.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
@@ -83,7 +83,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 					startActivity(i);
 				}
 			});
-			
+			*/
 			return txtView;
 		}
 
@@ -160,10 +160,8 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			friendIDText.setTextColor(Color.BLACK);
 			break;
 		}
-		
 	}
 	
-
 	class loadList extends AsyncTask<Void, Void, Void> {	
 		private ProgressDialog dialog = new ProgressDialog(Friends.this);
 		

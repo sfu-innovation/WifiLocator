@@ -19,7 +19,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     
 	private String bssid, ssid, zone, zone_name;
 	private TextView bssidText, ssidText, zoneText, zoneName;
-	private Button pollButton, friendButton;
+	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
@@ -39,12 +39,14 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         zoneText     = (TextView)this.findViewById(R.id.zoneText);
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
         pollButton   = (Button)this.findViewById(R.id.pollButton);
+        locButton    = (Button)this.findViewById(R.id.mapbutton);
         twitterIcon  = (ImageView)this.findViewById(R.id.twitterIcon);
         friendButton = (Button)this.findViewById(R.id.friendButton);
         
         pollButton.setOnClickListener(this);
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
+        locButton.setOnClickListener(this);
         
         requestHandler = new RequestHandler(this);
     }
@@ -81,6 +83,10 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			myIntent.putExtra("zone", zone);
 			startActivity(myIntent);
 			break;
+		case R.id.mapbutton:
+			myIntent = new Intent(getApplicationContext(), GetMap.class);
+			myIntent.putExtra("zone", zone);
+			startActivity(myIntent);
 		}
 	}
 	
