@@ -40,5 +40,6 @@
     <string name="friend_id">Friend ID</string>
     <string name="map_button_label">View Map</string>
     <string name="qr_scan">Scan QR</string>
+    <string name="qr_code">Show QR Code</string>
 
 </resources>

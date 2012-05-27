@@ -1,9 +1,13 @@
 package com.sfumobile.wifilocator;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import android.app.Dialog;
 import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +20,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -24,10 +29,11 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton, addButton, cancelButton, scanButton;
+	private Button addFriendButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 	private RequestHandler requestHandler;
+	private ImageView qrImage;
 	
 	private final int ADD_FRIEND_DIALOG_ID = 0;
 	
@@ -40,9 +46,12 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 
 		requestHandler = new RequestHandler(this);
 		
-		addFriendButton = (Button)findViewById(R.id.addFriendButton);	
+		addFriendButton = (Button)findViewById(R.id.addFriendButton);
+		qrButton        = (Button)findViewById(R.id.qrButton);
+		qrImage         = (ImageView)findViewById(R.id.qrImage);
+		
 		addFriendButton.setOnClickListener(this);
-
+		qrButton.setOnClickListener(this);
 		
 	}
 	
@@ -125,6 +134,18 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		switch(v.getId()){
 		case R.id.addFriendButton:
 			showDialog(ADD_FRIEND_DIALOG_ID);
+			break;
+		
+		case R.id.qrButton:
+			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
+		    FileOutputStream out = null;
+			try {
+				out = new FileOutputStream("/data/data/com.sfumobile.wifilocator/MikeBitmap.bmp");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		    bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+			qrImage.setImageBitmap(bitmap);
 			break;
 			
 		case R.id.addButton:
