@@ -10,12 +10,12 @@ public class ZoneRequest extends Request {
 	private String          _bssid;
 	private String          _url;
 	private String          _user;
-	private static final String GET_ZONE_BASE_URL = "http://wifi-location.appspot.com/getzone/";
+	
 	WifiLocatorRequestThread _thread;
 	public ZoneRequest( String user ){
 		super(RequestTypes.ZONE);
 		_user = user;
-		_url = GET_ZONE_BASE_URL + _user +"/";
+		_url = RequestConstants.GET_ZONE_BASE_URL + _user +"/";
 	}
 	
 	
