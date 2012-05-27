@@ -30,7 +30,6 @@ public class RequestHandler {
 	
 	public RequestHandler(Context context){
         wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-
 	}
 
 	public String getBSSID(){
