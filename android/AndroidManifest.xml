@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
-    
+        
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
@@ -25,6 +25,11 @@
         
         <activity 
             android:name = ".Friends"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity 
+            android:name = ".FriendRequestsActivity"
             android:label="@string/app_name">
         </activity>
         
@@ -47,7 +52,7 @@
         </activity>
         
         <activity
-            android:name=".QRScannerActivity"
+            android:name=".QRGenerator"
             android:label="@string/app_name">
         </activity>
     </application>

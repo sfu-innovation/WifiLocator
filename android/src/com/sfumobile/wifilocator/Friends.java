@@ -1,9 +1,13 @@
 package com.sfumobile.wifilocator;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 import android.app.Dialog;
 import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +20,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
 
@@ -24,10 +29,11 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
 	private String[][] status;
-	private Button addFriendButton, addButton, cancelButton, scanButton;
+	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 	private RequestHandler requestHandler;
+	private ImageView qrImage;
 	
 	private final int ADD_FRIEND_DIALOG_ID = 0;
 	
@@ -40,9 +46,14 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 
 		requestHandler = new RequestHandler(this);
 		
-		addFriendButton = (Button)findViewById(R.id.addFriendButton);	
+		addFriendButton      = (Button)findViewById(R.id.addFriendButton);
+		friendRequestsButton = (Button)findViewById(R.id.friendRequestsButton);
+		qrButton             = (Button)findViewById(R.id.qrButton);
+		qrImage              = (ImageView)findViewById(R.id.qrImage);
+		
 		addFriendButton.setOnClickListener(this);
-
+		friendRequestsButton.setOnClickListener(this);
+		qrButton.setOnClickListener(this);
 		
 	}
 	
@@ -122,35 +133,31 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	}
 
 	public void onClick(View v) {
+		Intent intent;
 		switch(v.getId()){
 		case R.id.addFriendButton:
 			showDialog(ADD_FRIEND_DIALOG_ID);
 			break;
 			
-		case R.id.addButton:
-			int result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-			String message = "";
+		case R.id.friendRequestsButton:
+			intent = new Intent(this,FriendRequestsActivity.class);
+			startActivity(intent);
+			break;
 			
-			switch(result){
-			case -1:
-				message = "Error trying to add friend";
-				break;
-			case 0:
-				message = "Friend request sent";
-				break;
-			case 1:
-				message = "User not found.  How are you logged in even?";
-				break;
-			case 2:
-				message = "Friend id not found.";
-				break;
-			case 3:
-				message = "There is already a friend request pending for that user.";
-				break;
+		case R.id.qrButton:
+			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
+			qrImage.setImageBitmap(bitmap);
+			break;
+			
+		case R.id.addButton:
+			int result = -1;
+			try{
+				result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
 			}
-			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
-			t.setGravity(Gravity.CENTER, 0, 0);
-			t.show();
+			catch(NumberFormatException e){
+				Log.e("AddFriend", "Can't convert string to int");
+			}
+			handleResult(result);
 			break;
 		
 		case R.id.cancelButton:
@@ -158,7 +165,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 			
 		case R.id.scanButton:
-    		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+    		intent = new Intent("com.google.zxing.client.android.SCAN");
     		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
     		startActivityForResult(intent, 0);
     		break;
@@ -169,12 +176,54 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		}
 	}
 
+	private void handleResult(int result) {
+		String message = "";
+		
+		switch(result){
+		case -1:
+			message = "Error trying to add friend";
+			break;
+		case 0:
+			message = "Friend request sent";
+			addFriendDialog.cancel();
+			break;
+		case 1:
+			message = "User not found.  How are you logged in even?";
+			break;
+		case 2:
+			message = "Friend id not found.";
+			break;
+		case 3:
+			message = "There is already a friend request pending for that user.";
+			break;
+		case 4:
+			message = "You can't add yourself as a friend.";
+			break;
+		}
+		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+		
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Bundle extras = data.getExtras();
-		String id = extras.get("SCAN_RESULT").toString().substring(10);
-		friendIDText.setText(id);
+		if(resultCode == RESULT_OK){
+			Bundle extras = data.getExtras();
+			String id = extras.get("SCAN_RESULT").toString().substring(10);
+			if(id != null){
+				friendIDText.setText(id);
+				int result = -1;
+				try{
+					result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
+				}
+				catch(NumberFormatException e){
+					Log.e("AddFriend", "Can't convert string to int");
+				}
+				handleResult(result);
+			}
+		}
 	}
 
 	class loadList extends AsyncTask<Void, Void, Void> {	

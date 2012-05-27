@@ -88,7 +88,7 @@ class GetRequests(webapp.RequestHandler):
 		self.response.out.write(json.dumps(data))		
 		
 class acceptRequests(webapp.RequestHandler):
-	def post(self, request_id):
+	def post(self):
 		json_obj = json.loads(self.request.body)
 		request = FriendRequests.get_by_id(int(json_obj["request_id"]))
 		data = dict()

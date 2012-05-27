@@ -139,7 +139,7 @@ application = webapp.WSGIApplication([('/', MainPage),
 					  ('/setuser/', SetUser),
 					  ('/sendrequest/', SendRequest),
 					  ('/getrequests/', GetRequests),
-					  ('/acceptrequest/(.*)',acceptRequests)],
+					  ('/acceptrequest/',acceptRequests)],
 					debug=True)
 
 
