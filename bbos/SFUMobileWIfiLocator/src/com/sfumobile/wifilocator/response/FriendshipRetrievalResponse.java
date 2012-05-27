@@ -1,5 +1,6 @@
 package com.sfumobile.wifilocator.response;
 
+
 import java.util.Vector;
 
 import org.json.me.JSONArray;
@@ -15,7 +16,7 @@ public class FriendshipRetrievalResponse extends ResponseHandler {
 
 	public Object handleResponse() {
 		int status = -1;
-		Vector friendRequests = new Vector();
+		Vector friendshipRequests = new Vector();
 		try {
 			status = Integer.parseInt(_data.getString("status"));
 		} catch (NumberFormatException e) {
@@ -30,9 +31,11 @@ public class FriendshipRetrievalResponse extends ResponseHandler {
 			try {
 				JSONArray arr = (JSONArray) _data.get("requests");
 				int length = arr.length();
+				WifiLocatorFriendship tempFriendship;
 				for(int i = 0; i < length; i++){
 					temp = arr.getJSONObject(i);
-					friendRequests.addElement( new WifiLocatorFriendship(
+					
+					friendshipRequests.addElement(new WifiLocatorFriendship(
 							temp.getString("friend_name"),
 							temp.getInt("request_id")
 					));
@@ -44,6 +47,6 @@ public class FriendshipRetrievalResponse extends ResponseHandler {
 		}else {
 			return null;
 		}
-		return friendRequests;
+		return friendshipRequests;
 	}
 }

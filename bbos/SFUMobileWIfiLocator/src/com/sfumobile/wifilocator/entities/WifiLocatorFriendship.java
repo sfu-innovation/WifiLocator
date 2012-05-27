@@ -17,6 +17,7 @@ public class WifiLocatorFriendship {
 		return _id;
 	}
 	
-	
-
+	public String toString(){
+		return "Friendship request from " +_friendName;
+	}
 }

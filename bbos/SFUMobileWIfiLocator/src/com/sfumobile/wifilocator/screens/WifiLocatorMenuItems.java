@@ -111,4 +111,23 @@ public class WifiLocatorMenuItems {
 		
 	}
 	
+	public static MenuItem AddFriendRequestsViewMenuItem(){
+		MenuItem _menuItem = null;
+		_menuItem = new MenuItem("View Requests", 110, 10){
+			public void run(){
+				UiApplication.getUiApplication().pushScreen( new ViewPendingFriendshipsScreen());
+			}};
+		return _menuItem;
+		
+	}
+	
+	public static MenuItem addGetRequests(final ViewPendingFriendshipsScreen screen){
+		MenuItem _menuItem = null;
+		_menuItem = new MenuItem("request requests", 110, 10){
+			public void run(){
+				screen.foo();
+			}};
+		return _menuItem;
+	}
+	
 }
