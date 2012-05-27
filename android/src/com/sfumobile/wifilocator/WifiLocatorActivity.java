@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.net.wifi.ScanResult;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,7 +24,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	
-	public static final String USER = "Mike";
+	public static final String USER = "Catherine";
+	public static final int USER_ID = 30001;
+
 	
 	/** Called when the activity is first created. */
     @Override
@@ -95,7 +98,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        try{
 		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
-		        	Thread.sleep(1000*5);
+		        	Thread.sleep(1000*300);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
@@ -109,14 +112,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			try{
 				zone_name = zones[0].getString("zone_name");
 		        zone = zones[0].getString("zone_id");
-		        bssid = zones[0].getString("mac_address");
+		        bssid = requestHandler.getBSSID();
+		        ssid = requestHandler.getSSID();
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				ScanResult bs = requestHandler.getBS();
-				bssid = bs.BSSID;
-				ssid  = bs.SSID;
-				zone = "Unknown";
-				zone_name = "Unknown";				
+				bssid = requestHandler.getBSSID();
+				ssid  = requestHandler.getSSID();	
 			} finally {
 				zoneText.setText(zone);
 				zoneName.setText(zone_name);

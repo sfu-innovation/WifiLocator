@@ -84,30 +84,19 @@
         android:id="@+id/pollButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD:SFUWiFi/res/layout/main.xml
         android:text="@string/poll_button_label" />
 
-=======
-        android:text="@string/poll_button_label" />
-
->>>>>>> master:android/res/layout/main.xml
     <Button
         android:id="@+id/friendButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/friend_button_label" />
-<<<<<<< HEAD:SFUWiFi/res/layout/main.xml
 
-=======
->>>>>>> master:android/res/layout/main.xml
+
     <ImageView
         android:id="@+id/twitterIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/twitter_icon" />
-<<<<<<< HEAD:SFUWiFi/res/layout/main.xml
-
-=======
->>>>>>> master:android/res/layout/main.xml
 
 </TableLayout>

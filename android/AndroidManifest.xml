@@ -5,12 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="7" />
-<<<<<<< HEAD:SFUWiFi/AndroidManifest.xml
-	
-=======
 
-
->>>>>>> master:android/AndroidManifest.xml
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,22 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD:SFUWiFi/AndroidManifest.xml
-
-        
-        <activity 
-            android:name = ".Friends"> 
-        </activity>
-
-        <activity 
-            android:name=".TwitterActivity"
-            android:label="@string/app_name" >   
-=======
         
         <activity 
             android:name = ".Friends"
             android:label="@string/app_name">
->>>>>>> master:android/AndroidManifest.xml
+        </activity>
+        
+        <activity 
+            android:name = ".GetMap"
+            android:label="@string/app_name">
         </activity>
 
         <activity 
