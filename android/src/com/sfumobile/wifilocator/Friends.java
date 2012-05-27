@@ -158,8 +158,9 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 			
 		case R.id.scanButton:
-    		Intent intent = new Intent(this,QRScannerActivity.class);
-    		startActivity(intent);
+    		Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+    		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+    		startActivityForResult(intent, 0);
     		break;
 		case R.id.friendIDText:
 			friendIDText.setText("");
@@ -169,6 +170,15 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		
 	}
 	
+		
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Bundle extras = data.getExtras();
+		String id = extras.get("SCAN_RESULT").toString().substring(10);
+		friendIDText.setText(id);
+	}
 
 	class loadList extends AsyncTask<Void, Void, Void> {	
 		private ProgressDialog dialog = new ProgressDialog(Friends.this);
