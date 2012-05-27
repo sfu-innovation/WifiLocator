@@ -24,9 +24,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import android.graphics.Bitmap;
-
-
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -37,8 +34,6 @@ import java.util.Map;
  * @author dswitkin@google.com (Daniel Switkin)
  */
 final class QRCodeEncoder {
-
-  private static final String TAG = QRCodeEncoder.class.getSimpleName();
 
   private static final int WHITE = 0xFFFFFFFF;
   private static final int BLACK = 0xFF000000;

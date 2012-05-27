@@ -138,40 +138,18 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		
 		case R.id.qrButton:
 			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
-		    FileOutputStream out = null;
-			try {
-				out = new FileOutputStream("/data/data/com.sfumobile.wifilocator/MikeBitmap.bmp");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		    bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
 			qrImage.setImageBitmap(bitmap);
 			break;
 			
 		case R.id.addButton:
-			int result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-			String message = "";
-			
-			switch(result){
-			case -1:
-				message = "Error trying to add friend";
-				break;
-			case 0:
-				message = "Friend request sent";
-				break;
-			case 1:
-				message = "User not found.  How are you logged in even?";
-				break;
-			case 2:
-				message = "Friend id not found.";
-				break;
-			case 3:
-				message = "There is already a friend request pending for that user.";
-				break;
+			int result = -1;
+			try{
+				result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
 			}
-			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
-			t.setGravity(Gravity.CENTER, 0, 0);
-			t.show();
+			catch(NumberFormatException e){
+				Log.e("AddFriend", "Can't convert string to int");
+			}
+			handleResult(result);
 			break;
 		
 		case R.id.cancelButton:
@@ -190,12 +168,54 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		}
 	}
 
+	private void handleResult(int result) {
+		String message = "";
+		
+		switch(result){
+		case -1:
+			message = "Error trying to add friend";
+			break;
+		case 0:
+			message = "Friend request sent";
+			addFriendDialog.cancel();
+			break;
+		case 1:
+			message = "User not found.  How are you logged in even?";
+			break;
+		case 2:
+			message = "Friend id not found.";
+			break;
+		case 3:
+			message = "There is already a friend request pending for that user.";
+			break;
+		case 4:
+			message = "You can't add yourself as a friend.";
+			break;
+		}
+		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+		
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Bundle extras = data.getExtras();
-		String id = extras.get("SCAN_RESULT").toString().substring(10);
-		friendIDText.setText(id);
+		if(resultCode == RESULT_OK){
+			Bundle extras = data.getExtras();
+			String id = extras.get("SCAN_RESULT").toString().substring(10);
+			if(id != null){
+				friendIDText.setText(id);
+				int result = -1;
+				try{
+					result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
+				}
+				catch(NumberFormatException e){
+					Log.e("AddFriend", "Can't convert string to int");
+				}
+				handleResult(result);
+			}
+		}
 	}
 
 	class loadList extends AsyncTask<Void, Void, Void> {	
