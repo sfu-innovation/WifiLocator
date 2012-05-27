@@ -1,5 +1,7 @@
 package com.sfumobile.wifilocator.request;
 
+import net.rim.device.api.ui.UiApplication;
+
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.WLANContext;
 
@@ -47,10 +49,11 @@ public class RequestPackage {
 					payload,
 					_rd);
 			
-			if (_rd.getApplication() == null ) {
+			UiApplication app = UiApplication.getUiApplication();
+			if (app == null ) {
 				System.out.println("Unable to get instance of the application");
 			}else {
-			    _rd.getApplication().invokeLater( _thread );
+			    app.invokeLater( _thread );
 			}
 			//} else {
 			// _rd.handleError(RequestTypes.REQUEST_ZONE_TYPE, 1, "INCORRECT NETWORK");
@@ -64,6 +67,7 @@ public class RequestPackage {
 			case WLANContext.WLAN_RADIO_OFF:
 				    reasonString = "Wifi not on"; break;
 			}
+			System.out.println("[SFUMOBILE] error - "+WLANContext.isAssociated()  + " - "+reasonString);
 			_rd.handleError(RequestTypes.ZONE, WLANContext.isAssociated(), reasonString);
 		}
 	}

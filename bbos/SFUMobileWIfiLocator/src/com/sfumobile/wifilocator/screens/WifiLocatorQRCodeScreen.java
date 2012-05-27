@@ -36,7 +36,7 @@ public class WifiLocatorQRCodeScreen extends MainScreen {
 			e1.printStackTrace();
 		}
 		
-		EditField _barcodeTextField = new EditField("Barcode text: ", temp.toString());
+		EditField _barcodeTextField = new EditField("Barcode text: ", "sfumobile.27001");
 		this.add(_barcodeTextField);
 		
 		QRCode qrCode = new QRCode();
