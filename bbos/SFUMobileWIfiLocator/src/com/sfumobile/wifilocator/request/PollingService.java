@@ -35,7 +35,7 @@ public class PollingService {
 	}
 	
 	public void startPolling(){
-		_pollingThreadID = UiApplication.getUiApplication().invokeLater( _pollingThread, 5*1000, true );
+		_pollingThreadID = UiApplication.getUiApplication().invokeLater( _pollingThread, 5*60*1000, true );
 	}
 	
 	public void stopPolling(){
@@ -46,7 +46,6 @@ public class PollingService {
 class RequestThread extends Thread{
 		
 		public void run(){
-			System.out.println("[SFUMobile] Polling now!");
 			for(int i = 0; i < _actions.size(); i++){
 				RequestPackage currentRequest = (RequestPackage)_actions.elementAt( i );
 				currentRequest.init();

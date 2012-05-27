@@ -107,6 +107,11 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 		
 	}
 
+	public void handleImageDataValue(int type, byte[] data) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 

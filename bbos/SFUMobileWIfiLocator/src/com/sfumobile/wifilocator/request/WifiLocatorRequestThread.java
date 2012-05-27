@@ -21,6 +21,7 @@ public class WifiLocatorRequestThread extends Thread {
 	private int     _type;
 	private static final int CONNECTION_FAILED = 1;
 	private String _data;
+	private byte[] data;
 	public WifiLocatorRequestThread( int type,  String url, String data, RequestDelegateScreen delegate ) {
 		_url = url;
 		_delegate = delegate;
@@ -76,8 +77,7 @@ public class WifiLocatorRequestThread extends Thread {
                 }
             	InputConnection inputConn = (InputConnection) connection;
                 is = inputConn.openInputStream();                                
-                byte[] data = net.rim.device.api.io.IOUtilities.streamToBytes(is);
-                result = new String(data);
+                data = net.rim.device.api.io.IOUtilities.streamToBytes(is);
                 is.close();
                             
             }
@@ -105,7 +105,7 @@ public class WifiLocatorRequestThread extends Thread {
                 }
                 catch(IOException ioe){}              
             }
-            _delegate.handleStringValue( _type, result );
+            _delegate.handleByteValue( _type, data );
            
     }
 }
