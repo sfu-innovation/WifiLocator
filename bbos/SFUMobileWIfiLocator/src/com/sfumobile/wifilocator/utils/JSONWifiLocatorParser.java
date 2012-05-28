@@ -34,16 +34,18 @@ public class JSONWifiLocatorParser {
 		JSONArray temp = null;
 		try {
 			obj = new JSONObject( res );
+			java.util.Enumeration e = obj.keys();
+			while( e.hasMoreElements()){
+				String s = (String)e.nextElement();
+				System.out.println(s);
+			}
+			System.out.println(obj.getString("status"));
+			temp =  obj.getJSONArray("friend_list");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		try {
-			temp =  obj.getJSONArray("Alex");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		JSONObject temp2 = null;
 		for(int  i = 0; i < temp.length(); i++){
 			try {
