@@ -67,11 +67,18 @@ public class RequestHandler {
 	    //Get zone names for 3 strongest signal levels
 	    if(apList.size() > 2){
 		    for(ScanResult result : apList.subList(0, 3)){
-		        String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER + "/" + result.BSSID;
-		        JSONObject zone_info = HttpGET.connect(address);
+		        JSONObject requestBody = new JSONObject();
+				JSONObject response = null;
+				try {
+					requestBody.put("mac_address", result.BSSID);
+					requestBody.put("user_id", WifiLocatorActivity.USER_ID);
+					response = postRequest(requestBody,RequestConstants.GETZONE_URL);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 		        try {
-		        	jsonResponses.add(zone_info);
-					zones.add(zone_info.getString("zone_name"));
+		        	jsonResponses.add(response);
+					zones.add(response.getString("zone_name"));
 				} catch (JSONException e) {
 					Log.e("Handler JSON Error:", e.getLocalizedMessage());
 				}
@@ -80,7 +87,7 @@ public class RequestHandler {
 	    //If there aren't 3 ap's, return the strongest one
 	    else{
 	    	try{
-	    		String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER + "/" + apList.get(0).BSSID;
+	    		String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER_ID + "/" + apList.get(0).BSSID;
 	        	return HttpGET.connect(address);
 	    	}
 	    	catch(IndexOutOfBoundsException e){
@@ -103,8 +110,25 @@ public class RequestHandler {
         String address =  url + WifiLocatorActivity.USER + "/" + wm.getConnectionInfo().getBSSID();
         JSONObject zone_info = HttpGET.connect(address);
 		*/
-    	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1";
+
+		
+		/*
+    	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1"; 
         return zone_info;
+        */
+		
+		JSONObject requestBody = new JSONObject();
+		JSONObject response = null;
+		try {
+			Log.d("mac", getBSSID().toString());
+			requestBody.put("mac_address", getBSSID().toString());
+			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
+			response = postRequest(requestBody,RequestConstants.GETZONE_URL);
+			Log.d("response", response.getString("zone_name"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	public int sendFriendRequest(int id){

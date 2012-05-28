@@ -55,6 +55,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	}
 	
 	public void onStart(){
+		super.onStart();
 		loadList populate = new loadList();
 		populate.execute();
 	}
