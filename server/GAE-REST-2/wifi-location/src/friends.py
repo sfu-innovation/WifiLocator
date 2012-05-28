@@ -28,6 +28,7 @@ def getFriendList(self, json_obj):
 	#thisUser = Users.get_by_id(int(user_id))
 	name = user.short_name
 	data["friend_list"] = []
+	data["status"] = 2
 	q = db.GqlQuery(("SELECT * FROM Friends " +
 			"WHERE user = :1"), user.key())
 	for item in q:
