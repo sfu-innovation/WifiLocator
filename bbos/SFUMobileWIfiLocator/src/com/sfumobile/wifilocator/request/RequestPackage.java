@@ -37,12 +37,15 @@ public class RequestPackage {
 			
 			int type = _request.getType();
 			String url = _request.getURL();
+
+			if ( type == RequestTypes.ZONE){
+				_request.setProperty("mac_address",
+						 "00:1f:45:64:17:d1"/*WLANContext.getBSSID()*/,
+						 RequestTypes.STRING_TYPE);
+			}
 			String payload = _request.getPayload();
 			System.out.println( "[SFUMOBILE] The payload - "+payload);
 			//special case since this request is dynamic
-			if ( type == RequestTypes.ZONE){
-				url += WLANContext.getBSSID();
-			}
 			System.out.println("[SFUMOBILE] - testing out this url "+url);
 			_thread = new WifiLocatorRequestThread(type,
 					url,
