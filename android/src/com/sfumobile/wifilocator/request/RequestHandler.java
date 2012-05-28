@@ -127,14 +127,11 @@ public class RequestHandler {
 	}
 	
 	public static int acceptFriendRequest(int request_id){
-		JSONObject requestBody = new JSONObject();
-		JSONObject response = null;
-		try {
-			requestBody.put("request_id", request_id);
-			response = postRequest(requestBody,	RequestConstants.ACCEPT_FRIEND_REQUEST_URL);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		ConfirmFriendshipRequest fr = new ConfirmFriendshipRequest(request_id);
+		String url = fr.getURL();
+		JSONObject body = fr.getPayload();
+		JSONObject response = postRequest(body, url);
+		
 		if(response!=null){
 			try {
 				return response.getInt("status");
