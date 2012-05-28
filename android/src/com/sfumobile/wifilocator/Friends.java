@@ -211,6 +211,9 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		
 	}
 
+	/*
+	 * Handles response from qr scanning activity
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
