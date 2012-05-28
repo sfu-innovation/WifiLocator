@@ -44,7 +44,7 @@ public class GetMap extends Activity{
 	
 	private String gen_URL(String loc){
 		String map_path;
-		String url = host+"/getmap/"+loc;
+		String url = host+loc;
 		JSONObject map_addr = HttpGET.connect(url);
 		try{
 			map_path = host+map_addr.getString("map_name");
@@ -68,8 +68,8 @@ public class GetMap extends Activity{
 		protected Void doInBackground(ImageView... params) {
 			String zone = getIntent().getExtras().getString("zone");
 		//	String[] splitter = zone.split(",");
-			Log.d("URL", gen_URL(zone));
-			image = getImage(gen_URL(zone));
+			Log.d("URL", host+zone);
+			image = getImage(host+zone);
 			publishProgress(image);
 			return null;
 	      

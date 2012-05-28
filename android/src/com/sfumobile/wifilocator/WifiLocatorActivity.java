@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,8 +25,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private RequestHandler requestHandler;
 	private AlertDialog alert;
 	
-	public static final String USER = "Catherine"; //Hedy, 45006
-	public static final int USER_ID = 30001;
+	//public static final String USER = "Catherine"; //Hedy, 45006
+	public static final int USER_ID = 28001;
 
 	
 	/** Called when the activity is first created. */
@@ -65,15 +66,17 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
     	if (!requestHandler.wifi_check()){
     		alert.setTitle("WiFi Error");
     		alert.setMessage("No WiFi connection detected.");
-    	} else if (!SSIDs.SSIDs.contains(requestHandler.getSSID())){	
+    		alert.show();
+    	} else if (!RequestConstants.SSIDs.contains(requestHandler.getSSID())){	
     		alert.setTitle("Connection Error");
     		alert.setMessage("The network you are connected to appears to be invalid.");
+    		alert.show();
     	} else {   
     		auto = new AutoPoll();
         	auto.execute();
         	pollButton.setTag(1);
     	}
-    	alert.show();
+    	
     }
     
 	public void onClick(View src) {
@@ -137,7 +140,8 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			
 			try{
 				zone_name = zones[0].getString("zone_name");
-		        zone = zones[0].getString("zone_id");
+		        zone = zones[0].getString("map_name");
+		        Log.d("map", zone);
 		        bssid = requestHandler.getBSSID();
 		        ssid = requestHandler.getSSID();
 			} catch (JSONException e) {
@@ -145,7 +149,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				bssid = requestHandler.getBSSID();
 				ssid  = requestHandler.getSSID();	
 			} finally {
-				zoneText.setText(zone);
+			//	zoneText.setText(zone);
 				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);

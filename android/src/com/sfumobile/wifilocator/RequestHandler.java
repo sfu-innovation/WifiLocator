@@ -48,7 +48,7 @@ public class RequestHandler {
 	/*
 	 * Gets the 3 strongest signal strengths and picks the most common zone
 	 */
-	public JSONObject getStrongestAP(){
+/*	public JSONObject getStrongestAP(){
 		wm.startScan();
 	    while(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION == null){
 	    	try {
@@ -95,7 +95,7 @@ public class RequestHandler {
 	    else{
 	    	return jsonResponses.get(0);
 		}
-	}
+	}*/
 	
 	public JSONObject getZoneInfo(){
 		
@@ -103,8 +103,24 @@ public class RequestHandler {
         String address =  url + WifiLocatorActivity.USER + "/" + wm.getConnectionInfo().getBSSID();
         JSONObject zone_info = HttpGET.connect(address);
 		*/
+		
+		/*
     	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1"; 
         return zone_info;
+        */
+		
+		JSONObject requestBody = new JSONObject();
+		JSONObject response = null;
+		try {
+			Log.d("mac", getBSSID().toString());
+			requestBody.put("mac_address", getBSSID().toString());
+			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
+			response = postRequest(requestBody,RequestConstants.GETZONE_URL);
+			Log.d("response", response.getString("zone_name"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	public int sendFriendRequest(int id){
