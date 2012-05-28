@@ -2,6 +2,11 @@ package com.sfumobile.wifilocator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.sfumobile.wifilocator.request.RequestConstants;
+import com.sfumobile.wifilocator.request.RequestHandler;
+import com.sfumobile.wifilocator.request.WifiHandler;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
@@ -23,6 +28,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
+	private WifiHandler wifiHandler;
 	private AlertDialog alert;
 	
 	//public static final String USER = "Catherine"; //Hedy, 45006
@@ -50,6 +56,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         locButton.setOnClickListener(this);
         
         requestHandler = new RequestHandler(this);
+        wifiHandler    = requestHandler.getWifiHandler();
     }
     
     public void onStart(){
@@ -63,11 +70,11 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			}
 		}).create();
     	
-    	if (!requestHandler.wifi_check()){
+    	if (!wifiHandler.wifi_check()){
     		alert.setTitle("WiFi Error");
     		alert.setMessage("No WiFi connection detected.");
     		alert.show();
-    	} else if (!RequestConstants.SSIDs.contains(requestHandler.getSSID())){	
+    	} else if (!RequestConstants.SSIDs.contains(wifiHandler.getSSID())){	
     		alert.setTitle("Connection Error");
     		alert.setMessage("The network you are connected to appears to be invalid.");
     		alert.show();
@@ -141,12 +148,12 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				zone_name = zones[0].getString("zone_name");
 		        zone = zones[0].getString("map_name");
 		        Log.d("map", zone);
-		        bssid = requestHandler.getBSSID();
-		        ssid = requestHandler.getSSID();
+		        bssid = wifiHandler.getBSSID();
+		        ssid = wifiHandler.getSSID();
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = requestHandler.getBSSID();
-				ssid  = requestHandler.getSSID();	
+				bssid = wifiHandler.getBSSID();
+				ssid  = wifiHandler.getSSID();	
 			} finally {
 			//	zoneText.setText(zone);
 				zoneName.setText(zone_name);

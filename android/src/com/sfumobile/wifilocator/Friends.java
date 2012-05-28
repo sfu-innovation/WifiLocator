@@ -3,6 +3,8 @@ package com.sfumobile.wifilocator;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import com.sfumobile.wifilocator.request.RequestHandler;
+
 import android.app.Dialog;
 import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;

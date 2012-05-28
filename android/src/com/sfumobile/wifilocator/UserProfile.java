@@ -3,6 +3,10 @@ package com.sfumobile.wifilocator;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+
+import com.sfumobile.wifilocator.request.RequestConstants;
+import com.sfumobile.wifilocator.request.RequestHandler;
+
 import android.util.Log;
 
 public class UserProfile {

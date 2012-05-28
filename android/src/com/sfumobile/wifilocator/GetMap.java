@@ -6,6 +6,8 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.HttpGET;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
