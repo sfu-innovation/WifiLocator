@@ -14,7 +14,6 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-
 def getFriendList(self, json_obj):
 	user = Users.get_by_id(int(json_obj["user_id"]))
 	data = dict()

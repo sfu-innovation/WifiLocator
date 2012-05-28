@@ -2,6 +2,7 @@ package com.sfumobile.wifilocator;
 
 import net.rim.device.api.ui.UiApplication;
 
+import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.PollingService;
 import com.sfumobile.wifilocator.screens.WifiLocatorFriendsScreen;
 
@@ -32,5 +33,7 @@ public class WifiLocator extends UiApplication
     	//PollingService.getInstance().startPolling();
         // Push a screen onto the UI stack for rendering.
         pushScreen(new WifiLocatorFriendsScreen());
-    }    
+    }
+
+
 }

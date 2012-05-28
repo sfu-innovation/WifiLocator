@@ -70,3 +70,7 @@ server/GAE-REST-2/wifi-location/src/zones.pyc
 server/GAE-REST-2/wifi-location/src/users.pyc
 
 server/GAE-REST-2/wifi-location/.DS_Store
+
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/response/ResponseConstants.java
+
+bbos/SFUMobileWIfiLocator/src/com/sfumobile/wifilocator/request/RequestConstants.java

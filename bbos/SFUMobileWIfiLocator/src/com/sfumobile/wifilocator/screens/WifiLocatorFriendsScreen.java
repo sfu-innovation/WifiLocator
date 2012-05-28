@@ -15,13 +15,16 @@ import net.rim.device.api.ui.component.ListFieldCallback;
 import net.rim.device.api.ui.component.ObjectListField;
 import net.rim.device.api.ui.container.MainScreen;
 
+import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendsRequest;
 import com.sfumobile.wifilocator.request.PollingService;
 import com.sfumobile.wifilocator.request.RequestDelegateScreen;
 import com.sfumobile.wifilocator.request.RequestPackage;
+import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.ZoneRequest;
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.JSONWifiLocatorParser;
+import com.sfumobile.wifilocator.utils.WLANContext;
 
 public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 	private Vector _friends = null;
@@ -60,16 +63,18 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 	protected void onUiEngineAttached( boolean attached ) {
 		if ( attached ){
 			
-			
-			_zoneRequest = new ZoneRequest("Alex");
+			WifiLocatorUser.getInstance().setUserID(27001);
+			_zoneRequest = new ZoneRequest( WifiLocatorUser.getInstance().getID());
 			RequestPackage _zoneRequestPackage = new RequestPackage( this, _zoneRequest);
 			
-			_friendsRequest = new FriendsRequest("Alex");
+			_friendsRequest = new FriendsRequest(WifiLocatorUser.getInstance().getID());
 			RequestPackage _friendsRequestPackage = new RequestPackage(this, _friendsRequest);
-			
+		
+			SingleRequestLauncher.getInstance().sendRequest(_zoneRequestPackage);
+			//SingleRequestLauncher.getInstance().sendRequest(_friendsRequestPackage);
 			_service = PollingService.getInstance();
-			//_service.addRequest( _friendsRequestPackage );
-			//_service.addRequest( _zoneRequestPackage );
+		//	_service.addRequest( _friendsRequestPackage );
+		//	_service.addRequest( _zoneRequestPackage );
 			
 			System.out.println("*************** Added friendsRequest from PollingService");
 		}
