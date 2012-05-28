@@ -5,6 +5,7 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
+from google.appengine.runtime import apiproxy_errors
 from django.utils import simplejson as json
 
 from src.models import *
@@ -14,6 +15,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 def sendFriendRequest(self,json_obj):
 	try:
+		
 		user_obj = Users.get_by_id(int(json_obj["user_id"]))
 		friend_obj = Users.get_by_id(int(json_obj["friend_id"]))
 	

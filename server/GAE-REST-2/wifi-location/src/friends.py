@@ -6,6 +6,7 @@ import wsgiref.handlers
 import csv
 import rest
 import main
+import logging
 from django.utils import simplejson as json
 
 from src.models import *

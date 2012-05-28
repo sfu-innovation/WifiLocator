@@ -88,11 +88,15 @@ class MainPage(webapp.RequestHandler):
 
 
 class RequestHandler(webapp.RequestHandler):
-
+	
 	def post(self, request_type):
 		try:
+			
 			json_obj = json.loads(self.request.body)
-		
+			input = json.dumps(json_obj)
+			#print str(input)
+			#print "Json object recieved: ", input
+			logging.debug("JSON object recieved to RequestHandler: " + str(input))
 			
 			#get a list of friends and friends info
 			if (request_type == "friendlist"):
@@ -116,6 +120,7 @@ class RequestHandler(webapp.RequestHandler):
 				
 		except ValueError:
 			# if json is empty
+			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
 			
@@ -124,6 +129,8 @@ class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):
 		try:
 			json_obj = json.loads(self.request.body)
+			input = json.dumps(json_obj)
+			logging.debug("JSON object received to AcceptHandler: " + str(input))
 
 			if (accept_type == "friendship"):
 				acceptFriendRequest(self, json_obj)
@@ -132,6 +139,7 @@ class AcceptHandler(webapp.RequestHandler):
 				
 		except ValueError:
 			# if json is empty
+			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
 			
