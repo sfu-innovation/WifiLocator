@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.RequestHandler;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 
 public class FriendRequestsActivity extends ListActivity{
 	
-	RequestAdapter adapter;
+	FriendRequestAdapter adapter;
 	RequestHandler requestHandler;
 	private static ArrayList<JSONObject> data;
 	@Override
@@ -18,7 +20,7 @@ public class FriendRequestsActivity extends ListActivity{
 		setContentView(R.layout.friend_requests);
 		requestHandler = new RequestHandler(this);
 		data = requestHandler.getFriendRequests();
-		adapter = new RequestAdapter(this,data);
+		adapter = new FriendRequestAdapter(this,data);
 		setListAdapter(adapter);
 	}
 

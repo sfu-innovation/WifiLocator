@@ -1,4 +1,4 @@
-package com.sfumobile.wifilocator;
+package com.sfumobile.wifilocator.request;
 
 import java.io.BufferedReader;
 import java.io.IOException;

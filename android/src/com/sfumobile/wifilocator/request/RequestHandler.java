@@ -1,4 +1,4 @@
-package com.sfumobile.wifilocator;
+package com.sfumobile.wifilocator.request;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,56 +18,49 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.CompareScanResult;
+import com.sfumobile.wifilocator.WifiLocatorActivity;
+
 
 import android.content.Context;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.util.Log;
 
 
 public class RequestHandler {
-	private WifiManager wm;
-	private List<ScanResult> apList;
+	
+	private WifiHandler wm;
 	
 	public RequestHandler(Context context){
-        wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+       wm = new WifiHandler(context);
 	}
+	
+	public WifiHandler getWifiHandler(){
+		return wm;
+	}
+	
+	public JSONObject getZoneInfo(){
 
-	public String getBSSID(){
-		return wm.getConnectionInfo().getBSSID();
-	}
-	
-	public String getSSID(){
-		return wm.getConnectionInfo().getSSID();
-	}
-	
-	/*
-	 * Gets the 3 strongest signal strengths and picks the most common zone
-	 */
-	public JSONObject getStrongestAP(){
-		wm.startScan();
-	    while(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION == null){
-	    	try {
-				this.wait(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-	    }
-	    apList = wm.getScanResults();
-	    
-	    Collections.sort(apList, new CompareScanResult());
-	    
+		/*
+	    List<ScanResult> apList = wm.getStrongestAPs();
+		
 	    List<String> zones = new ArrayList<String>();
 	    List<JSONObject> jsonResponses = new ArrayList<JSONObject>();
 	    
 	    //Get zone names for 3 strongest signal levels
 	    if(apList.size() > 2){
 		    for(ScanResult result : apList.subList(0, 3)){
-		        String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER + "/" + result.BSSID;
-		        JSONObject zone_info = HttpGET.connect(address);
+		        JSONObject requestBody = new JSONObject();
+				JSONObject response = null;
+				try {
+					requestBody.put("mac_address", result.BSSID);
+					requestBody.put("user_id", WifiLocatorActivity.USER_ID);
+					response = postRequest(requestBody,RequestConstants.GETZONE_URL);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 		        try {
-		        	jsonResponses.add(zone_info);
-					zones.add(zone_info.getString("zone_name"));
+		        	jsonResponses.add(response);
+					zones.add(response.getString("zone_name"));
 				} catch (JSONException e) {
 					Log.e("Handler JSON Error:", e.getLocalizedMessage());
 				}
@@ -76,7 +69,7 @@ public class RequestHandler {
 	    //If there aren't 3 ap's, return the strongest one
 	    else{
 	    	try{
-	    		String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER + "/" + apList.get(0).BSSID;
+	    		String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER_ID + "/" + apList.get(0).BSSID;
 	        	return HttpGET.connect(address);
 	    	}
 	    	catch(IndexOutOfBoundsException e){
@@ -91,29 +84,31 @@ public class RequestHandler {
 	    else{
 	    	return jsonResponses.get(0);
 		}
-	}
-	
-	public JSONObject getZoneInfo(){
 		
-		/* Old method of picking the ap currently connected to
-        String address =  url + WifiLocatorActivity.USER + "/" + wm.getConnectionInfo().getBSSID();
-        JSONObject zone_info = HttpGET.connect(address);
+
 		*/
-    	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1"; 
-        return zone_info;
+		
+		JSONObject requestBody = new JSONObject();
+		JSONObject response = null;
+		try {
+			requestBody.put("mac_address", wm.getBSSID());
+			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
+			response = postRequest(requestBody,RequestConstants.GETZONE_URL);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	public int sendFriendRequest(int id){
 
-		JSONObject requestBody = new JSONObject();
-		JSONObject response = null;
-		try {
-			requestBody.put("friend_id", id);
-			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
-			response = postRequest(requestBody,RequestConstants.FRIEND_REQUEST_URL);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		FriendshipRequest fr = new FriendshipRequest(WifiLocatorActivity.USER_ID, id);
+		JSONObject body = null;
+
+		String url = fr.getURL();
+		body = fr.getPayload();
+
+		JSONObject response = postRequest(body,url);
 		if(response!=null){
 			try {
 				return response.getInt("status");

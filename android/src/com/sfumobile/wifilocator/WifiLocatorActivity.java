@@ -2,7 +2,13 @@ package com.sfumobile.wifilocator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.sfumobile.wifilocator.request.RequestConstants;
+import com.sfumobile.wifilocator.request.RequestHandler;
+import com.sfumobile.wifilocator.request.WifiHandler;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
 
@@ -21,9 +28,11 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
+	private WifiHandler wifiHandler;
+	private AlertDialog alert;
 	
-	public static final String USER = "Catherine";
-	public static final int USER_ID = 30001;
+	//public static final String USER = "Catherine"; //Hedy, 45006
+	public static final int USER_ID = 28001;
 
 	
 	/** Called when the activity is first created. */
@@ -47,13 +56,33 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
         locButton.setOnClickListener(this);
         
         requestHandler = new RequestHandler(this);
+        wifiHandler    = requestHandler.getWifiHandler();
     }
     
     public void onStart(){
     	super.onStart();
-    	auto = new AutoPoll();
-    	auto.execute();
-    	pollButton.setTag(1);
+    	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
+				new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				finish();
+			}
+		}).create();
+    	
+    	if (!wifiHandler.wifi_check()){
+    		alert.setTitle("WiFi Error");
+    		alert.setMessage("No WiFi connection detected.");
+    		alert.show();
+    	} else if (!RequestConstants.SSIDs.contains(wifiHandler.getSSID())){	
+    		alert.setTitle("Connection Error");
+    		alert.setMessage("The network you are connected to appears to be invalid.");
+    		alert.show();
+    	} else {   
+    		auto = new AutoPoll();
+        	auto.execute();
+        	pollButton.setTag(1);
+    	}
     }
     
 	public void onClick(View src) {
@@ -90,7 +119,9 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	
 	public void onStop(){
 		super.onStop();
-    	auto.cancel(true);
+		if (auto!=null) {
+			auto.cancel(true);
+		}
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
@@ -102,7 +133,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 		        try{
 		            JSONObject zone_info = requestHandler.getZoneInfo();
 		            publishProgress(zone_info);
-		        	Thread.sleep(1000*300);
+		        	Thread.sleep(1000*5);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
@@ -115,15 +146,16 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			
 			try{
 				zone_name = zones[0].getString("zone_name");
-		        zone = zones[0].getString("zone_id");
-		        bssid = requestHandler.getBSSID();
-		        ssid = requestHandler.getSSID();
+		        zone = zones[0].getString("map_name");
+		        Log.d("map", zone);
+		        bssid = wifiHandler.getBSSID();
+		        ssid = wifiHandler.getSSID();
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = requestHandler.getBSSID();
-				ssid  = requestHandler.getSSID();	
+				bssid = wifiHandler.getBSSID();
+				ssid  = wifiHandler.getSSID();	
 			} finally {
-				zoneText.setText(zone);
+			//	zoneText.setText(zone);
 				zoneName.setText(zone_name);
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
