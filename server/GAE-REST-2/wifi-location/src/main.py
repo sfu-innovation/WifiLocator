@@ -5,7 +5,7 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
-from django.utils import simplejson as json
+import logging
 
 from src.models import *
 from src.friends import *
@@ -14,6 +14,7 @@ from src.requests import *
 from src.users import *
 from src.accepts import *
 
+from django.utils import simplejson as json
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import users

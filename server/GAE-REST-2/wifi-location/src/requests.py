@@ -35,8 +35,7 @@ def sendFriendRequest(self,json_obj):
 			
 		#check if request already exist
 		q = db.GqlQuery(("SELECT * FROM FriendRequests " + "WHERE user_id = :1 and friend_id = :2" ), int(json_obj["friend_id"]),int(json_obj["user_id"]))
-		#print q.count()
-		#print q[0]
+
 		if q.count() > 0:
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"request_id" : q[0].key().id(), "status" : 3}))
@@ -47,6 +46,13 @@ def sendFriendRequest(self,json_obj):
 		if p.count() > 0:
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"request_id" : p[0].key().id(), "status" : 3}))
+			return
+
+		k = db.GqlQuery(("SELECT * FROM Friends " + "WHERE user = :1 and friend_id = :2" ), Users.get_by_id(int(json_obj["user_id"])),int(json_obj["friend_id"]))
+		
+		if k.count() > 0:
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"request_id" : "unknown", "status" : 5}))
 			return
 			
 		#sends request	   
