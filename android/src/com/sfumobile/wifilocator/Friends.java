@@ -40,9 +40,6 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
-		
-		loadList populate = new loadList();
-		populate.execute();
 
 		requestHandler = new RequestHandler(this);
 		
@@ -55,6 +52,11 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
 		
+	}
+	
+	public void onStart(){
+		loadList populate = new loadList();
+		populate.execute();
 	}
 	
 	public class FriendAdapter extends BaseExpandableListAdapter {
