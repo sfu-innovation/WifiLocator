@@ -14,6 +14,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -124,9 +125,30 @@ public class RequestHandler {
 		return -1;
 	}
 	
-	public JSONObject getFriendRequests(){
+	public static int acceptFriendRequest(int request_id){
 		JSONObject requestBody = new JSONObject();
 		JSONObject response = null;
+		try {
+			requestBody.put("request_id", request_id);
+			response = postRequest(requestBody,	RequestConstants.ACCEPT_FRIEND_REQUEST_URL);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		if(response!=null){
+			try {
+				return response.getInt("status");
+			} catch (JSONException e) {
+				Log.d("AcceptFriendRequest","Couldn't Convert Status to Int");
+				return -1;
+			}
+		}
+		return -1;
+	}
+	
+	public ArrayList<JSONObject> getFriendRequests(){
+		JSONObject requestBody = new JSONObject();
+		JSONObject response = null;
+		ArrayList<JSONObject> result;
 		try {
 			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
 			response = postRequest(requestBody,RequestConstants.GET_FRIEND_REQUESTS_URL);
@@ -134,12 +156,30 @@ public class RequestHandler {
 			e.printStackTrace();
 		}
 		if(response!=null){
-			return response;
+			return parseFriendRequests(response);
 		}
-		return null;
+		result = new ArrayList<JSONObject>();
+		return result;
 	}
 	
-	public JSONObject postRequest(JSONObject body, String url){
+	public ArrayList<JSONObject> parseFriendRequests(JSONObject response){
+		Log.d("FriendRequests",response.toString());
+		ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+		try {
+			if(response.getInt("status")!=2){
+				JSONArray requests = response.getJSONArray("requests");
+				for(int i=0; i < requests.length(); i++){
+					result.add(requests.getJSONObject(i));
+				}
+				return result;
+			}
+		} catch (JSONException e) {
+			Log.d("ParseFriendRequests",e.getLocalizedMessage());
+		}
+		return result;
+	}
+	
+	public static JSONObject postRequest(JSONObject body, String url){
 		
 		HttpClient httpClient   = new DefaultHttpClient();
 		HttpPost post           = new HttpPost(url);
