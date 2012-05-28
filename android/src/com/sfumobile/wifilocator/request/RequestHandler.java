@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -18,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.CompareScanResult;
 import com.sfumobile.wifilocator.WifiLocatorActivity;
 
 
@@ -127,10 +125,11 @@ public class RequestHandler {
 	}
 	
 	public static int acceptFriendRequest(int request_id){
+		
 		ConfirmFriendshipRequest fr = new ConfirmFriendshipRequest(request_id);
-		String url = fr.getURL();
-		JSONObject body = fr.getPayload();
-		JSONObject response = postRequest(body, url);
+		String url                  = fr.getURL();
+		JSONObject body             = fr.getPayload();
+		JSONObject response         = postRequest(body, url);
 		
 		if(response!=null){
 			try {
@@ -144,15 +143,13 @@ public class RequestHandler {
 	}
 	
 	public ArrayList<JSONObject> getFriendRequests(){
-		JSONObject requestBody = new JSONObject();
-		JSONObject response = null;
+		
 		ArrayList<JSONObject> result;
-		try {
-			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
-			response = postRequest(requestBody,RequestConstants.GET_FRIEND_REQUESTS_URL);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		FriendshipsPendingRequest fr = new FriendshipsPendingRequest(WifiLocatorActivity.USER_ID);
+		String url                   = fr.getURL();
+		JSONObject body              = fr.getPayload();
+		JSONObject response          = postRequest(body, url);
+		
 		if(response!=null){
 			return parseFriendRequests(response);
 		}
