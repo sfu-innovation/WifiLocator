@@ -23,6 +23,7 @@ import com.sfumobile.wifilocator.WifiLocatorActivity;
 
 
 import android.content.Context;
+import android.net.wifi.ScanResult;
 import android.util.Log;
 
 
@@ -38,26 +39,24 @@ public class RequestHandler {
 		return wm;
 	}
 	
-	public JSONObject getZoneInfo(){
-
-		/*
-	    List<ScanResult> apList = wm.getStrongestAPs();
-		
-	    List<String> zones = new ArrayList<String>();
+	public JSONObject accurateScan(){
+		List<ScanResult> apList = wm.getStrongestAPs();
+	    List<String> zones      = new ArrayList<String>();
 	    List<JSONObject> jsonResponses = new ArrayList<JSONObject>();
 	    
+	    LocationRequest lr;
+        JSONObject body;
+        JSONObject response;
+
 	    //Get zone names for 3 strongest signal levels
 	    if(apList.size() > 2){
 		    for(ScanResult result : apList.subList(0, 3)){
-		        JSONObject requestBody = new JSONObject();
-				JSONObject response = null;
-				try {
-					requestBody.put("mac_address", result.BSSID);
-					requestBody.put("user_id", WifiLocatorActivity.USER_ID);
-					response = postRequest(requestBody,RequestConstants.GETZONE_URL);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+				
+				lr = new LocationRequest(WifiLocatorActivity.USER_ID, result.BSSID);
+				String url = lr.getURL();
+				body = lr.getPayload();
+				response = postRequest(body,url);
+
 		        try {
 		        	jsonResponses.add(response);
 					zones.add(response.getString("zone_name"));
@@ -69,11 +68,14 @@ public class RequestHandler {
 	    //If there aren't 3 ap's, return the strongest one
 	    else{
 	    	try{
-	    		String address =  RequestConstants.GETZONE_URL + WifiLocatorActivity.USER_ID + "/" + apList.get(0).BSSID;
-	        	return HttpGET.connect(address);
+				lr = new LocationRequest(WifiLocatorActivity.USER_ID, apList.get(0).BSSID);
+				String url = lr.getURL();
+				body = lr.getPayload();
+				response = postRequest(body,url);
+	        	return response;
 	    	}
 	    	catch(IndexOutOfBoundsException e){
-	    		
+	    		System.out.println(e.getLocalizedMessage());
 	    	}
 	    }
 	    
@@ -84,19 +86,23 @@ public class RequestHandler {
 	    else{
 	    	return jsonResponses.get(0);
 		}
-		
+	}
+	
+	public JSONObject getZoneInfo(){
+		JSONObject response;
+
+		/*
+	    
+		response = accurateScan();
 
 		*/
 		
-		JSONObject requestBody = new JSONObject();
-		JSONObject response = null;
-		try {
-			requestBody.put("mac_address", wm.getBSSID());
-			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
-			response = postRequest(requestBody,RequestConstants.GETZONE_URL);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		LocationRequest lr = new LocationRequest(WifiLocatorActivity.USER_ID, wm.getBSSID());
+		String url = lr.getURL();
+		JSONObject body = lr.getPayload();
+		
+		response = postRequest(body,url);
+
 		return response;
 	}
 	
