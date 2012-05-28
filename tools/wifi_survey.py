@@ -17,23 +17,24 @@ import time
 # ----------------------
 
 # Parameters
-samples = 21
-network = "((SFUNET-SECURE)|(SFUNET)|(eduroam))"
+samples = 1
+network = "(SFUNET)|(eduroam)"
 area = "zone0"
 
 if (len(sys.argv) > 1):
 	area = sys.argv[1]
 validnetwork = False
-f = open(area + '.txt', 'w')
+f = open(area + '.txt', 'a')
 
 for i in range(samples):
 	print "Waiting for input"
 	chr = ""
 	while chr != "\n":
 		chr = sys.stdin.read(1)
-	print "Taking Sample " + str(i)
+	
 	result = os.popen("netsh wlan show networks mode=Bssid").read()
 	resultlines = result.split("\n")
+	f.write("--TEST--\n")
 	for line in resultlines:
 		line = re.sub(" ", "", line)
 		line = re.sub(":", ",", line, 1)
@@ -47,4 +48,4 @@ for i in range(samples):
 			f.write(line + "\n")
 	
 f.close()
-print "Script Exited Successfully"
+#print "Script Exited Successfully"

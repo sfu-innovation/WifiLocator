@@ -11,11 +11,12 @@ public class RequestPackage {
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
 	
+	
 	public RequestPackage( RequestDelegateScreen rd, Request req ){
 		_rd = rd;
 		_request = req;
 	}
-	private String[] allowedSSIDs = {"BlueEagle"};
+	
 	
 	
 	private boolean contains( String[] list, String val ){
@@ -33,14 +34,14 @@ public class RequestPackage {
 		System.out.println("[SFUMOBILE] - starting init");
 		if ( WLANContext.isAssociated() == WLANContext.WLAN_RADIO_CONNECTED){
 			System.out.println("[SFUMOBILE] - connected to an SSID");
-			//if ( contains( allowedSSIDs , WLANContext.getCurrentSSID())){
+			if ( contains( RequestConstants.allowedSSIDs , WLANContext.getCurrentSSID())){
 			
 			int type = _request.getType();
 			String url = _request.getURL();
 
 			if ( type == RequestTypes.ZONE){
 				_request.setProperty("mac_address",
-						 "00:1f:45:64:17:d1"/*WLANContext.getBSSID()*/,
+						 WLANContext.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload();
@@ -58,9 +59,9 @@ public class RequestPackage {
 			}else {
 			    app.invokeLater( _thread );
 			}
-			//} else {
-			// _rd.handleError(RequestTypes.REQUEST_ZONE_TYPE, 1, "INCORRECT NETWORK");
-			//}
+			} else {
+			 _rd.handleError(RequestTypes.ZONE, 1, "INCORRECT NETWORK");
+			}
 		}
 		else {
 			String reasonString = null;
