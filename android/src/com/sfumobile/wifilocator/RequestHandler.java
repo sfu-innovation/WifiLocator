@@ -99,7 +99,7 @@ public class RequestHandler {
         String address =  url + WifiLocatorActivity.USER + "/" + wm.getConnectionInfo().getBSSID();
         JSONObject zone_info = HttpGET.connect(address);
 		*/
-    	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1"; 
+    	JSONObject zone_info = getStrongestAP(); //"00:1f:45:64:12:f1";
         return zone_info;
 	}
 	
