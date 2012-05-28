@@ -102,15 +102,13 @@ public class RequestHandler {
 	
 	public int sendFriendRequest(int id){
 
-		JSONObject requestBody = new JSONObject();
-		JSONObject response = null;
-		try {
-			requestBody.put("friend_id", id);
-			requestBody.put("user_id", WifiLocatorActivity.USER_ID);
-			response = postRequest(requestBody,RequestConstants.FRIEND_REQUEST_URL);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		FriendshipRequest fr = new FriendshipRequest(WifiLocatorActivity.USER_ID, id);
+		JSONObject body = null;
+
+		String url = fr.getURL();
+		body = fr.getPayload();
+
+		JSONObject response = postRequest(body,url);
 		if(response!=null){
 			try {
 				return response.getInt("status");
