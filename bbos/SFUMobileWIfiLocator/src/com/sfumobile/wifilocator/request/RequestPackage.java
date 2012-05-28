@@ -40,7 +40,7 @@ public class RequestPackage {
 
 			if ( type == RequestTypes.ZONE){
 				_request.setProperty("mac_address",
-						 "00:1f:45:64:17:d1"/*WLANContext.getBSSID()*/,
+						 WLANContext.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload();
