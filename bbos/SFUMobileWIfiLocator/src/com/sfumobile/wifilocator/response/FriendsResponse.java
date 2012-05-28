@@ -31,6 +31,7 @@ public class FriendsResponse extends ResponseHandler {
 						  temp2.getString("friend_name"),
 						  temp2.getString("friend_location"),
 						  temp2.getString("last_update")));
+						  
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

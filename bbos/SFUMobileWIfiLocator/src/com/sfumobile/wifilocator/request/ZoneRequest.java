@@ -6,22 +6,22 @@ import com.sfumobile.wifilocator.request.WifiLocatorRequestThread;
 
 public class ZoneRequest extends Request {
 	
-	private RequestDelegateScreen _rd;
-	private String          _bssid;
-	private String          _url;
-	private String          _user;
-	
+	private int          _user;
+	private String       _bssid;
+
 	WifiLocatorRequestThread _thread;
-	public ZoneRequest( String user ){
+	public ZoneRequest( int userid, String bssid){
 		super(RequestTypes.ZONE);
-		_user = user;
-		_url = RequestConstants.GET_ZONE_BASE_URL + _user +"/";
+		_user = userid;
+		_bssid = bssid;
 	}
 	
 	
 	public String getURL() {
+		setProperty("user_id", ""+_user, RequestTypes.INT_TYPE);
+		setProperty("mac_address", _bssid, RequestTypes.STRING_TYPE);
 		
-		return _url;
+		return RequestConstants.GET_ZONE_BASE_URL;
 	}
 	
 }
