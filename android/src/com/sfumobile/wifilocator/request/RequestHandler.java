@@ -38,11 +38,11 @@ public class RequestHandler {
 	}
 	
 	public JSONObject accurateScan(){
-		List<ScanResult> apList = wm.getStrongestAPs();
-	    List<String> zones      = new ArrayList<String>();
+		List<ScanResult> apList        = wm.getStrongestAPs();
+	    List<String> zones             = new ArrayList<String>();
 	    List<JSONObject> jsonResponses = new ArrayList<JSONObject>();
 	    
-	    LocationRequest lr;
+	    LocationRequest request;
         JSONObject body;
         JSONObject response;
 
@@ -50,10 +50,10 @@ public class RequestHandler {
 	    if(apList.size() > 2){
 		    for(ScanResult result : apList.subList(0, 3)){
 				
-				lr = new LocationRequest(WifiLocatorActivity.USER_ID, result.BSSID);
-				String url = lr.getURL();
-				body = lr.getPayload();
-				response = postRequest(body,url);
+				request    = new LocationRequest(WifiLocatorActivity.USER_ID, result.BSSID);
+				String url = request.getURL();
+				body       = request.getPayload();
+				response   = postRequest(body,url);
 
 		        try {
 		        	jsonResponses.add(response);
@@ -66,9 +66,9 @@ public class RequestHandler {
 	    //If there aren't 3 ap's, return the strongest one
 	    else{
 	    	try{
-				lr = new LocationRequest(WifiLocatorActivity.USER_ID, apList.get(0).BSSID);
-				String url = lr.getURL();
-				body = lr.getPayload();
+				request = new LocationRequest(WifiLocatorActivity.USER_ID, apList.get(0).BSSID);
+				String url = request.getURL();
+				body = request.getPayload();
 				response = postRequest(body,url);
 	        	return response;
 	    	}
@@ -95,22 +95,20 @@ public class RequestHandler {
 
 		*/
 		
-		LocationRequest lr = new LocationRequest(WifiLocatorActivity.USER_ID, wm.getBSSID());
-		String url = lr.getURL();
-		JSONObject body = lr.getPayload();
-		
-		response = postRequest(body,url);
+		LocationRequest request = new LocationRequest(WifiLocatorActivity.USER_ID, wm.getBSSID());
+		String url              = request.getURL();
+		JSONObject body         = request.getPayload();
+		response                = postRequest(body,url);
 
 		return response;
 	}
 	
 	public int sendFriendRequest(int id){
 
-		FriendshipRequest fr = new FriendshipRequest(WifiLocatorActivity.USER_ID, id);
-		JSONObject body = null;
-
-		String url = fr.getURL();
-		body = fr.getPayload();
+		FriendshipRequest request = new FriendshipRequest(WifiLocatorActivity.USER_ID, id);
+		JSONObject body           = null;
+		String url                = request.getURL();
+		body                      = request.getPayload();
 
 		JSONObject response = postRequest(body,url);
 		if(response!=null){
@@ -126,10 +124,10 @@ public class RequestHandler {
 	
 	public static int acceptFriendRequest(int request_id){
 		
-		ConfirmFriendshipRequest fr = new ConfirmFriendshipRequest(request_id);
-		String url                  = fr.getURL();
-		JSONObject body             = fr.getPayload();
-		JSONObject response         = postRequest(body, url);
+		FriendshipConfirmRequest request = new FriendshipConfirmRequest(request_id);
+		String url                       = request.getURL();
+		JSONObject body                  = request.getPayload();
+		JSONObject response              = postRequest(body, url);
 		
 		if(response!=null){
 			try {
@@ -145,10 +143,10 @@ public class RequestHandler {
 	public ArrayList<JSONObject> getFriendRequests(){
 		
 		ArrayList<JSONObject> result;
-		FriendshipsPendingRequest fr = new FriendshipsPendingRequest(WifiLocatorActivity.USER_ID);
-		String url                   = fr.getURL();
-		JSONObject body              = fr.getPayload();
-		JSONObject response          = postRequest(body, url);
+		FriendshipsPendingRequest request = new FriendshipsPendingRequest(WifiLocatorActivity.USER_ID);
+		String url                        = request.getURL();
+		JSONObject body                   = request.getPayload();
+		JSONObject response               = postRequest(body, url);
 		
 		if(response!=null){
 			return parseFriendRequests(response);

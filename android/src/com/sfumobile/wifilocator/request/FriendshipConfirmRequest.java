@@ -1,10 +1,10 @@
 package com.sfumobile.wifilocator.request;
 
-public class ConfirmFriendshipRequest extends Request{
+public class FriendshipConfirmRequest extends Request{
 
 	private int _request_id;
 	
-	public ConfirmFriendshipRequest(int request_id) {
+	public FriendshipConfirmRequest(int request_id) {
 		super(1);
 		_request_id = request_id;
 	}
