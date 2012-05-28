@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.RequestHandler;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,13 +18,13 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
-public class RequestAdapter extends BaseAdapter{
+public class FriendRequestAdapter extends BaseAdapter{
 
 	private LayoutInflater mInflater;
 	private Context context;
 	private static ArrayList<JSONObject> data;
 	
-	public RequestAdapter(Context context, ArrayList<JSONObject> data){
+	public FriendRequestAdapter(Context context, ArrayList<JSONObject> data){
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		mInflater = LayoutInflater.from(context);
 		this.context = context;
