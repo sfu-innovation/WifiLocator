@@ -6,8 +6,6 @@ import java.util.Hashtable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public abstract class Request {
 
 	private Hashtable _properties;
@@ -54,7 +52,9 @@ public abstract class Request {
 					String type = (String)_propertiesTypes.get( key );
 						obj.put(key, (String)_properties.get(key));
 				}
-				
+				else {
+					obj.put(key, (String)_properties.get(key));
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

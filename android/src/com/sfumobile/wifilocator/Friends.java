@@ -1,12 +1,14 @@
 package com.sfumobile.wifilocator;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
+import com.sfumobile.wifilocator.request.FriendshipRequest;
+import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
+import com.sfumobile.wifilocator.request.RequestPackage;
+import com.sfumobile.wifilocator.request.SingleRequestLauncher;
+import com.sfumobile.wifilocator.response.FriendshipRequestResponse;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,11 +24,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.TextView;
 
-public class Friends extends ExpandableListActivity implements OnClickListener{
+public class Friends extends RequestDelegateActivity implements OnClickListener{
 	
 	private FriendAdapter mAdapter;
 	private String[] friends, loc;
@@ -58,7 +61,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 	
 	public void onStart(){
 		super.onStart();
-		loadList populate = new loadList();
+		loadList populate = new loadList(this);
 		populate.execute();
 	}
 	
@@ -156,13 +159,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			
 		case R.id.addButton:
 			int result = -1;
-			try{
-				result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-			}
-			catch(NumberFormatException e){
-				Log.e("AddFriend", "Can't convert string to int");
-			}
-			handleResult(result);
+			addFriend();
 			break;
 		
 		case R.id.cancelButton:
@@ -181,36 +178,24 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		}
 	}
 
-	private void handleResult(int result) {
-		String message = "";
-		
-		switch(result){
-		case -1:
-			message = "Error trying to add friend";
-			break;
-		case 0:
-			message = "Friend request sent";
-			addFriendDialog.cancel();
-			break;
-		case 1:
-			message = "User not found.  How are you logged in even?";
-			break;
-		case 2:
-			message = "Friend id not found.";
-			break;
-		case 3:
-			message = "There is already a friend request pending for that user.";
-			break;
-		case 4:
-			message = "You can't add yourself as a friend.";
-			break;
+	private void addFriend() {
+		try{
+			FriendshipRequest  _req = new FriendshipRequest(WifiLocatorActivity.USER_ID, Integer.parseInt(friendIDText.getText().toString()));
+			RequestPackage _package = new RequestPackage(this, _req);
+			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+			launcher.sendRequest(this, _package);
 		}
-		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		t.show();
-		
+		catch(NumberFormatException e){
+			Log.e("AddFriend", "Can't convert string to int");
+			Toast t = Toast.makeText(this, "Not a valid friend id", Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
+		}
 	}
 
+	/*
+	 * Handles response from qr scanning activity
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -219,20 +204,19 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			String id = extras.get("SCAN_RESULT").toString().substring(10);
 			if(id != null){
 				friendIDText.setText(id);
-				int result = -1;
-				try{
-					result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-				}
-				catch(NumberFormatException e){
-					Log.e("AddFriend", "Can't convert string to int");
-				}
-				handleResult(result);
+				addFriend();
 			}
 		}
 	}
 
 	class loadList extends AsyncTask<Void, Void, Void> {	
 		private ProgressDialog dialog = new ProgressDialog(Friends.this);
+		
+		ExpandableListView list;
+		
+		public loadList(Activity ctx){
+			list = (ExpandableListView)ctx.findViewById(R.id.friendList);
+		}
 		
 		@Override
 		protected void onPreExecute(){
@@ -263,7 +247,7 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		@Override
 		protected void onPostExecute(Void result){
 			dialog.dismiss();
-			setListAdapter(mAdapter);
+			list.setAdapter(mAdapter);
 		}
 	}
 
@@ -291,6 +275,35 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public void handleStringValue(int type, String val) {
+		FriendshipRequestResponse _response = new FriendshipRequestResponse(val);
+		String message = (String)_response.handleResponse();
+		
+		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+		t.setGravity(Gravity.CENTER, 0, 0);
+		t.show();
+		
+	}
+
+	@Override
+	public void handleIntValue(int type, int val) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleError(int type, int errorCode, Object errorString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleImageDataValue(int type, String data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
