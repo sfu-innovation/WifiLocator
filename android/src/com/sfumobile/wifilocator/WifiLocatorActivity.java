@@ -158,7 +158,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		        	_package = new RequestPackage(_rd, _req);
 		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
 		        	sl.sendRequest(_rd, _package);
-		        	Thread.sleep(1000*5);
+		        	Thread.sleep(1000*30);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();

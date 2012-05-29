@@ -20,7 +20,7 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 		super(data);
 	}
 
-	public Object handleResponse() {
+	public ArrayList<JSONObject> handleResponse() {
 		int status = -1;
 		try {
 			status = Integer.parseInt(_data.getString("status"));
@@ -35,7 +35,7 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 			ArrayList<JSONObject> data = parseFriendRequests(_data);
 			return data;
 		}else {
-			return null;
+			return new ArrayList<JSONObject>();
 		}
 
 	}

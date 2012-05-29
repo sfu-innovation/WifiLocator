@@ -3,8 +3,6 @@ package com.sfumobile.wifilocator.response;
 import org.json.JSONException;
 
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 public class FriendshipRequestResponse extends ResponseHandler{
 

@@ -15,7 +15,7 @@ public class RequestPackage {
 	public RequestPackage( RequestDelegateActivity rd, Request req ){
 		_rd = rd;
 		_request = req;
-		wifiHandler = new WifiHandler(rd);
+		wifiHandler = new WifiHandler(_rd);
 	}
 		
 	private boolean contains( String[] list, String val ){

@@ -102,45 +102,7 @@ public class RequestHandler {
 
 		return response;
 	}
-	
-	public int sendFriendRequest(int id){
-
-		FriendshipRequest request = new FriendshipRequest(WifiLocatorActivity.USER_ID, id);
-		JSONObject body           = null;
-		String url                = request.getURL();
-		body                      = request.getPayload();
-
-		JSONObject response = postRequest(body,url);
-		if(response!=null){
-			try {
-				return response.getInt("status");
-			} catch (JSONException e) {
-				Log.d("FriendRequest","Couldn't Convert Status to Int");
-				return -1;
-			}
-		}
-		return -1;
-	}
-	
-	public static int acceptFriendRequest(int request_id){
-		
-		FriendshipConfirmRequest request = new FriendshipConfirmRequest(request_id);
-		String url                       = request.getURL();
-		JSONObject body                  = request.getPayload();
-		JSONObject response              = postRequest(body, url);
-		
-		if(response!=null){
-			try {
-				return response.getInt("status");
-			} catch (JSONException e) {
-				Log.d("AcceptFriendRequest","Couldn't Convert Status to Int");
-				return -1;
-			}
-		}
-		return -1;
-	}
-	
-	public static JSONObject postRequest(JSONObject body, String url){
+		public static JSONObject postRequest(JSONObject body, String url){
 		
 		HttpClient httpClient   = new DefaultHttpClient();
 		HttpPost post           = new HttpPost(url);

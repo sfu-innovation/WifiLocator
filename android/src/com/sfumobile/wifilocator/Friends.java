@@ -1,22 +1,15 @@
 package com.sfumobile.wifilocator;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 import com.sfumobile.wifilocator.request.FriendshipRequest;
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.FriendshipRequestResponse;
-import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;

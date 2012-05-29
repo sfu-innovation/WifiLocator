@@ -6,8 +6,6 @@ import java.util.Hashtable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Log;
-
 public abstract class Request {
 
 	private Hashtable _properties;

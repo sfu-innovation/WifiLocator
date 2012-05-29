@@ -9,12 +9,14 @@ import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
+import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
 import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
-import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class FriendRequestsActivity extends RequestDelegateActivity{
 	
@@ -25,7 +27,6 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	
 	private FriendshipsPendingRequest  _req;
 	private RequestPackage             _package;
-	private FriendshipsPendingResponse _response;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +49,18 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
-			_response = new FriendshipsPendingResponse( val );
+			FriendshipsPendingResponse _response = new FriendshipsPendingResponse( val );
 			
-		    data = (ArrayList<JSONObject>) _response.handleResponse();			
+		    data = _response.handleResponse();			
 			adapter = new FriendRequestAdapter(this,data);
-			friendList.setAdapter(adapter);
-			
+			friendList.setAdapter(adapter);	
+		}
+		else if(type == RequestTypes.CONFIRM_FRIENDSHIP_REQUEST){
+			FriendshipConfirmResponse _response = new FriendshipConfirmResponse( val );
+		    String message = (String) _response.handleResponse();
+			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
 		}
 	}
 
