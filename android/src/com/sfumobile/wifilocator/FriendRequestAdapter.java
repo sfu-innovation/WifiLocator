@@ -13,6 +13,7 @@ import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 	private LayoutInflater mInflater;
 	private RequestDelegateActivity _rd;
 	private static ArrayList<JSONObject> _data;
-
+	private Handler handler;
 	private FriendshipConfirmRequest  _req;
 	private RequestPackage            _package;
 	
@@ -37,6 +38,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 		mInflater = LayoutInflater.from(rd);
 		_rd = rd;
 		_data = data;
+		handler = new Handler();
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -70,7 +72,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			_package = new RequestPackage(_rd, _req);
+			_package = new RequestPackage(_rd, _req, handler);
 			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
 			launcher.sendRequest(_rd, _package);
 			_data.remove(position);
