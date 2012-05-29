@@ -6,7 +6,10 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.FriendListRequest;
 import com.sfumobile.wifilocator.request.HttpGET;
+import com.sfumobile.wifilocator.request.MapRequest;
+import com.sfumobile.wifilocator.request.RequestPackage;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -20,7 +23,8 @@ import android.widget.ImageView;
 public class MapActivity extends Activity{
 	private Drawable image;
 	private ImageView img;
-	private String host = "http://wifi-location.appspot.com";
+	private MapRequest  _req;
+	private RequestPackage     _package;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	//	EditText url;
@@ -29,8 +33,12 @@ public class MapActivity extends Activity{
 		setContentView(R.layout.zone_map);
 		
 		img = (ImageView) findViewById(R.id.imageView1);
-		getimg map = new getimg();
-    	map.execute(img);
+		_req = new MapRequest(User.getInstance().get_map());
+		image = getImage(_req.getURL());
+		img.setImageDrawable(image);
+		
+	//	getimg map = new getimg();
+    //	map.execute(img);
 
 	}
 	
@@ -57,7 +65,7 @@ public class MapActivity extends Activity{
 		return map_path;
 	}
 	*/
-	class getimg extends AsyncTask<ImageView, Drawable, Void> {	
+/*	class getimg extends AsyncTask<ImageView, Drawable, Void> {	
 		private ProgressDialog dialog = new ProgressDialog(MapActivity.this);
 		
 		@Override
@@ -84,6 +92,6 @@ public class MapActivity extends Activity{
 		}
 
 
-	}
+	}*/
 
 }

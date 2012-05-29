@@ -13,7 +13,7 @@ import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.WifiHandler;
-import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
+import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.response.LocationResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
@@ -31,6 +31,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
 
+
+
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
 	private String bssid, ssid, zone, zone_name;
@@ -47,7 +49,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private LocationResponse _response;
 	
 	//public static final String USER = "Catherine"; //Hedy, 45006
-	public static final int USER_ID = 28001;
+	//public static final int USER_ID = 28001;
 
 	
 	/** Called when the activity is first created. */
@@ -72,11 +74,13 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
+        
+        User.getInstance().set_userID(45001);
     }
     
     public void onStart(){
     	super.onStart();
-    	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
+    /*	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
 				new DialogInterface.OnClickListener() {
 			
 			public void onClick(DialogInterface dialog, int which) {
@@ -84,7 +88,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 				finish();
 			}
 		}).create();
-    	/*
+    	
     	if(!wifiHandler.wifi_check()){
     		alert.setTitle("WiFi Error");
     		alert.setMessage("No WiFi connection detected.");
@@ -99,7 +103,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		auto = new AutoPoll(this);
         	auto.execute();
         	pollButton.setTag(1);
-    	
+    	//}
     }
     
 	public void onClick(View src) {
@@ -119,7 +123,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			}
 			break;
 		case R.id.friendButton:
-    		Intent nextScreen = new Intent(getApplicationContext(),Friends.class);
+    		Intent nextScreen = new Intent(src.getContext(),Friends.class);
     		startActivity(nextScreen);
     		break;
 		case R.id.twitterIcon:
@@ -128,7 +132,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			startActivity(myIntent);
 			break;
 		case R.id.mapbutton:
-			myIntent = new Intent(getApplicationContext(), GetMap.class);
+			myIntent = new Intent(getApplicationContext(), MapActivity.class);
 			myIntent.putExtra("zone", zone);
 			startActivity(myIntent);
 		}
@@ -154,7 +158,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			
 			while(!isCancelled()) {
 		        try{
-		        	_req     = new LocationRequest(WifiLocatorActivity.USER_ID, wifiHandler.getBSSID());
+		        	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
 		        	_package = new RequestPackage(_rd, _req);
 		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
 		        	sl.sendRequest(_rd, _package);
@@ -172,20 +176,17 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.ZONE){
 			_response = new LocationResponse( val );
-			
+			 bssid     = wifiHandler.getBSSID();
+		     ssid      = wifiHandler.getSSID();
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
-				zone_name = data.getString("zone_name");
-		        zone      = data.getString("map_name");
-		        bssid     = wifiHandler.getBSSID();
-		        ssid      = wifiHandler.getSSID();
+				User.getInstance().set_zone(data.getString("zone_name"));
+		        User.getInstance().set_map(data.getString("map_name"));		       
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
-				bssid = wifiHandler.getBSSID();
-				ssid  = wifiHandler.getSSID();	
 			} finally {
 			//	zoneText.setText(zone);
-				zoneName.setText(zone_name);
+				zoneName.setText(User.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
 			}

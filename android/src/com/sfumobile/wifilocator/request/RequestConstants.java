@@ -11,5 +11,6 @@ public class RequestConstants {
 	public static String GET_FRIENDS_URL = "http://wifi-location.appspot.com/request/friendlist";
 	public static String GET_FRIEND_REQUESTS_URL = "http://wifi-location.appspot.com/request/pending/friendships";
 	public static String ACCEPT_FRIEND_REQUEST_URL = "http://wifi-location.appspot.com/accept/friendship";
+	public static String host = "http://wifi-location.appspot.com";
 
 }

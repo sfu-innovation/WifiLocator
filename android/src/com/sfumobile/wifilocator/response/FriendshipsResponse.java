@@ -12,12 +12,15 @@ import android.util.Log;
 
 import com.sfumobile.wifilocator.WifiLocatorActivity;
 import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
+import com.sfumobile.wifilocator.types.RequestTypes;
 
 //import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 
-public class FriendshipsPendingResponse extends ResponseHandler {
-	public FriendshipsPendingResponse(String data){
+public class FriendshipsResponse extends ResponseHandler {
+	private int _type;
+	public FriendshipsResponse(String data, int type){
 		super(data);
+		_type = type;
 	}
 
 	public ArrayList<JSONObject> handleResponse() {
@@ -29,10 +32,10 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();			//	zoneText.setText(zone);
 		}
 		if ( status == 0 ) {
-			ArrayList<JSONObject> data = parseFriendRequests(_data);
+			ArrayList<JSONObject> data = parseFriendRequests(_data, _type);
 			return data;
 		}else {
 			return new ArrayList<JSONObject>();
@@ -40,15 +43,27 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 
 	}
 	
-	public ArrayList<JSONObject> parseFriendRequests(JSONObject response){
+	public ArrayList<JSONObject> parseFriendRequests(JSONObject response, int type){
 		Log.d("FriendRequests",response.toString());
 		ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+		String req_type = "";
+		switch (type){
+		case RequestTypes.GET_FRIENDS:
+			req_type = "friend_list";
+			break;
+		case RequestTypes.GET_FRIENDSHIP_REQUESTS:
+			req_type = "requests";
+			break;
+		}
+		Log.d("Type", req_type);
 		try {
 			if(response.getInt("status")!=2){
-				JSONArray requests = response.getJSONArray("requests");
+				JSONArray requests = response.getJSONArray(req_type);
+				Log.d("length", Integer.toString(requests.length()));
 				for(int i=0; i < requests.length(); i++){
 					result.add(requests.getJSONObject(i));
 				}
+				Log.d("result", result.toString());
 				return result;
 			}
 		} catch (JSONException e) {

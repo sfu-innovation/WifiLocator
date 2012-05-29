@@ -13,11 +13,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.WifiLocatorActivity;
+import com.sfumobile.wifilocator.User;
 
 
 import android.content.Context;
@@ -50,7 +49,7 @@ public class RequestHandler {
 	    if(apList.size() > 2){
 		    for(ScanResult result : apList.subList(0, 3)){
 				
-				request    = new LocationRequest(WifiLocatorActivity.USER_ID, result.BSSID);
+				request    = new LocationRequest(User.getInstance().get_userID(), result.BSSID);
 				String url = request.getURL();
 				body       = request.getPayload();
 				response   = postRequest(body,url);
@@ -66,7 +65,7 @@ public class RequestHandler {
 	    //If there aren't 3 ap's, return the strongest one
 	    else{
 	    	try{
-				request = new LocationRequest(WifiLocatorActivity.USER_ID, apList.get(0).BSSID);
+				request = new LocationRequest(User.getInstance().get_userID(), apList.get(0).BSSID);
 				String url = request.getURL();
 				body = request.getPayload();
 				response = postRequest(body,url);
@@ -95,7 +94,7 @@ public class RequestHandler {
 
 		*/
 		
-		LocationRequest request = new LocationRequest(WifiLocatorActivity.USER_ID, wm.getBSSID());
+		LocationRequest request = new LocationRequest(User.getInstance().get_userID(), wm.getBSSID());
 		String url              = request.getURL();
 		JSONObject body         = request.getPayload();
 		response                = postRequest(body,url);

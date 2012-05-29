@@ -1,11 +1,13 @@
 package com.sfumobile.wifilocator.request;
 
+import com.sfumobile.wifilocator.types.RequestTypes;
+
 public class FriendListRequest extends Request{
 	
 	private int _user_id;
 	
 	public FriendListRequest(int id){
-		super(RequestTypes.FRIENDLIST);
+		super(RequestTypes.GET_FRIENDS);
 		_user_id = id;
 	}
 	

@@ -1,52 +1,54 @@
 package com.sfumobile.wifilocator;
 
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import com.sfumobile.wifilocator.request.FriendListRequest;
 import com.sfumobile.wifilocator.request.FriendshipRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
-import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
-import com.sfumobile.wifilocator.response.FriendshipRequestResponse;
+import com.sfumobile.wifilocator.response.FriendshipsResponse;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.TextView;
 
 public class Friends extends RequestDelegateActivity implements OnClickListener{
 	
 	private FriendAdapter mAdapter;
-	private String[] friends, loc;
-	private String[][] status;
 	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
-	private RequestHandler requestHandler;
+//	private RequestHandler requestHandler;
 	private ImageView qrImage;
+	private ExpandableListView friendList;
 	
 	private final int ADD_FRIEND_DIALOG_ID = 0;
+
+	private static ArrayList<JSONObject> data;
+	
+	private FriendListRequest  _req;
+	private RequestPackage     _package;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
 
-		requestHandler = new RequestHandler(this);
+		friendList = (ExpandableListView)this.findViewById(R.id.friendList);
 		
 		addFriendButton      = (Button)findViewById(R.id.addFriendButton);
 		friendRequestsButton = (Button)findViewById(R.id.friendRequestsButton);
@@ -57,88 +59,17 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
 		
+		_req = new FriendListRequest(User.getInstance().get_userID());
+		_package = new RequestPackage(this, _req);
+		
 	}
 	
 	public void onStart(){
 		super.onStart();
-		loadList populate = new loadList(this);
-		populate.execute();
+		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+		launcher.sendRequest(this, _package );
 	}
-	
-	public class FriendAdapter extends BaseExpandableListAdapter {
-		public Object getChild(int groupPosition, int childPosition) {
-			return status[groupPosition][childPosition];
-		}
 
-		public long getChildId(int groupPosition, int childPosition) {
-			return childPosition;
-		}
-
-		public TextView getGenericView() {
-			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-					ViewGroup.LayoutParams.FILL_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			
-			TextView txtView = new TextView(Friends.this);
-			txtView.setLayoutParams(params);
-			txtView.setPadding(60, 5, 0, 5);
-			return txtView;
-		}
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-
-			//View inflatedView = View.inflate(getApplicationContext(), R.layout.friend_sub, null);
-			//inflatedView.setPadding(50, 0, 0, 0);
-			//TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
-			
-		//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
-		//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
-			TextView txtView = getGenericView();
-			
-			txtView.setTextSize(15);
-			txtView.setText(getChild(groupPosition, childPosition).toString());
-		/*	txtView.setOnClickListener(new View.OnClickListener() {
-				
-				public void onClick(View v) {
-					// TODO Auto-generated method stub				
-					startActivity(i);
-				}
-			});
-			*/
-			return txtView;
-		}
-
-		public int getChildrenCount(int groupPosition) {
-			return status[groupPosition].length;
-		}
-
-		public Object getGroup(int groupPosition) {
-			return friends[groupPosition];
-		}
-
-		public int getGroupCount() {
-			return friends.length;
-		}
-
-		public long getGroupId(int groupPosition) {
-			return groupPosition;
-		}
-
-		public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-			TextView txtView = getGenericView();
-			txtView.setText(getGroup(groupPosition).toString());
-			return txtView;
-		}
-
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-			return true;
-		}
-	}
 
 	public void onClick(View v) {
 		Intent intent;
@@ -153,12 +84,11 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 			break;
 			
 		case R.id.qrButton:
-			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
+			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + User.getInstance().get_userID());
 			qrImage.setImageBitmap(bitmap);
 			break;
 			
 		case R.id.addButton:
-			int result = -1;
 			addFriend();
 			break;
 		
@@ -180,7 +110,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 
 	private void addFriend() {
 		try{
-			FriendshipRequest  _req = new FriendshipRequest(WifiLocatorActivity.USER_ID, Integer.parseInt(friendIDText.getText().toString()));
+			FriendshipRequest  _req = new FriendshipRequest(User.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
 			RequestPackage _package = new RequestPackage(this, _req);
 			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
 			launcher.sendRequest(this, _package);
@@ -206,48 +136,6 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 				friendIDText.setText(id);
 				addFriend();
 			}
-		}
-	}
-
-	class loadList extends AsyncTask<Void, Void, Void> {	
-		private ProgressDialog dialog = new ProgressDialog(Friends.this);
-		
-		ExpandableListView list;
-		
-		public loadList(Activity ctx){
-			list = (ExpandableListView)ctx.findViewById(R.id.friendList);
-		}
-		
-		@Override
-		protected void onPreExecute(){
-			dialog.setMessage("Loading...");
-			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			dialog.show();
-		}
-		@Override
-		protected Void doInBackground(Void... params) {
-			
-
-			UserProfile id = new UserProfile();
-
-			friends = id.get_friends();	
-			loc = id.get_loc();
-
-			
-			if (friends != null){
-				status = new String[loc.length][1];		
-				for (int i=0; i< loc.length; i++)
-					status[i][0] = loc[i];
-			}
-			
-			mAdapter = new FriendAdapter();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result){
-			dialog.dismiss();
-			list.setAdapter(mAdapter);
 		}
 	}
 
@@ -279,13 +167,14 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 
 	@Override
 	public void handleStringValue(int type, String val) {
-		FriendshipRequestResponse _response = new FriendshipRequestResponse(val);
-		String message = (String)_response.handleResponse();
 		
-		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		t.show();
 		
+		FriendshipsResponse _response = new FriendshipsResponse( val, type);
+		
+	    data = _response.handleResponse();		
+	    Log.d("Friends", data.toString());
+	    mAdapter = new FriendAdapter(this, data);
+	    friendList.setAdapter(mAdapter);	
 	}
 
 	@Override

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
+import com.sfumobile.wifilocator.request.RequestDelegateActivity;
+import com.sfumobile.wifilocator.request.RequestPackage;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,23 +19,22 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 public class FriendAdapter extends BaseExpandableListAdapter {
-	private Context context;
-	private static ArrayList<JSONObject> data;
+	private Context _rd;
+	private static ArrayList<JSONObject> _data;
 	private String[] friends, loc;
 	private String[][] status;
-	
-	public FriendAdapter(Context context, ArrayList<JSONObject> data){
 
-		this.context = context;
-		this.data = data;
+	
+	public FriendAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
+		_data = data;
+		_rd = rd;
 		
-		
-		friends = new String[data.size()];
-		loc = new String[data.size()];
+		friends = new String[_data.size()];
+		loc = new String[_data.size()];
 		try{
-			for (int i=0; i<data.size(); i++){
-				friends[i] = data.get(i).getString("friend_name");
-				loc[i] = data.get(i).getString("friend_location")+", "+data.get(i).getString("last_update");
+			for (int i=0; i<_data.size(); i++){
+				friends[i] = _data.get(i).getString("friend_name");
+				loc[i] = _data.get(i).getString("friend_location")+", "+data.get(i).getString("last_update");
 			}
 		} catch (JSONException jse) {
 			Log.e("JSON Exception", jse.toString());
@@ -57,7 +60,7 @@ public class FriendAdapter extends BaseExpandableListAdapter {
 				ViewGroup.LayoutParams.FILL_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		
-		TextView txtView = new TextView(context);
+		TextView txtView = new TextView(_rd);
 		txtView.setLayoutParams(params);
 		txtView.setPadding(60, 5, 0, 5);
 		return txtView;
