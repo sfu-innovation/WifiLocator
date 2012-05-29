@@ -4,6 +4,7 @@ import java.util.Vector;
 import com.sfumobile.wifilocator.utils.WLANContext;
 
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.util.StringUtilities;
 
 public class WifiChangePollingService {
 	
@@ -12,11 +13,11 @@ public class WifiChangePollingService {
 		private RequestThread _pollingThread;
 		private int _pollingThreadID = 2;
 		private Vector _actions;
-		private String _currentBSSID;
+		private long _currentBSSID;
 		private WifiChangePollingService(){
 			_pollingThread = new RequestThread();
 			_actions = new Vector();
-			_currentBSSID = null;
+			_currentBSSID = 0L;
 		}
 		
 		
@@ -51,9 +52,9 @@ public class WifiChangePollingService {
 	class RequestThread extends Thread{
 			
 			public void run(){
-				String newBSSID = WLANContext.getBSSID();
-				if ( _currentBSSID == null || !_currentBSSID.equals(newBSSID)){
-					_currentBSSID = newBSSID;
+				
+				long newBSSID =  StringUtilities.stringHashToLong(WLANContext.getBSSID());
+				if ( _currentBSSID != newBSSID) {
 					for(int i = 0; i < _actions.size(); i++){
 						RequestPackage currentRequest = (RequestPackage)_actions.elementAt( i );
 						currentRequest.init();
