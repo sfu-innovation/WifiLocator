@@ -14,6 +14,7 @@ import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	RequestHandler requestHandler;
 	private static ArrayList<JSONObject> data;
 	private ListView friendList;
-	
+	private Handler handler;
 	private FriendshipsPendingRequest  _req;
 	private RequestPackage             _package;
 	
@@ -34,9 +35,10 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 		setContentView(R.layout.friend_requests);
 		friendList = (ListView)this.findViewById(R.id.friendList);
 		requestHandler = new RequestHandler(this);
+		handler = new Handler();
 		
 		_req = new FriendshipsPendingRequest( User.getInstance().get_userID() );
-		_package = new RequestPackage(this, _req);
+		_package = new RequestPackage(this, _req, handler);
 	}
 
 	@Override
