@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator.screens;
 import java.util.Vector;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
+import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendshipRequestRetrieval;
 import com.sfumobile.wifilocator.request.RequestDelegateScreen;
 import com.sfumobile.wifilocator.request.RequestPackage;
@@ -22,7 +23,6 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 	private ObjectListField         _pendingFriendships;
 	private TemporaryPollingService _pollService;
 	private WifiLocatorFriendship[] _pendingFriendshipsData;
-	private int                     _userid;
 	private FriendshipRequestRetrieval _req;
 	private RequestPackage             _package;
 	private FriendshipRetrievalResponse _response;
@@ -37,9 +37,8 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 		_pendingFriendships.set(_pendingFriendshipsData);
 		_pendingFriendships.setChangeListener( this );
 		add( _pendingFriendships );
-		_userid = 27001;
 		_pollService  = TemporaryPollingService.getInstance();
-		_req = new FriendshipRequestRetrieval( _userid );
+		_req = new FriendshipRequestRetrieval( WifiLocatorUser.getInstance().getID() );
 		_package = new RequestPackage(this, _req);
 		
 	}

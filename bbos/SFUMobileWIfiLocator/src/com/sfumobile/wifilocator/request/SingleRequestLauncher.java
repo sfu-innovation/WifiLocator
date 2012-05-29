@@ -1,7 +1,5 @@
 package com.sfumobile.wifilocator.request;
 
-import net.rim.device.api.ui.UiApplication;
-
 public class SingleRequestLauncher {
 	public static SingleRequestLauncher _launcher;
 	
@@ -17,10 +15,8 @@ public class SingleRequestLauncher {
 	}
 	
 	public void sendRequest(RequestPackage request){
-		UiApplication.getUiApplication().invokeLater( new SingleRequestThread( request ));
+		new SingleRequestThread( request ).start();
 	}
-	
-	
 }
 class SingleRequestThread extends Thread{
 	private RequestPackage _reqPackage;
