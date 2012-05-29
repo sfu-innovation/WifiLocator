@@ -140,38 +140,6 @@ public class RequestHandler {
 		return -1;
 	}
 	
-	public ArrayList<JSONObject> getFriendRequests(){
-		
-		ArrayList<JSONObject> result;
-		FriendshipsPendingRequest request = new FriendshipsPendingRequest(WifiLocatorActivity.USER_ID);
-		String url                        = request.getURL();
-		JSONObject body                   = request.getPayload();
-		JSONObject response               = postRequest(body, url);
-		
-		if(response!=null){
-			return parseFriendRequests(response);
-		}
-		result = new ArrayList<JSONObject>();
-		return result;
-	}
-	
-	public ArrayList<JSONObject> parseFriendRequests(JSONObject response){
-		Log.d("FriendRequests",response.toString());
-		ArrayList<JSONObject> result = new ArrayList<JSONObject>();
-		try {
-			if(response.getInt("status")!=2){
-				JSONArray requests = response.getJSONArray("requests");
-				for(int i=0; i < requests.length(); i++){
-					result.add(requests.getJSONObject(i));
-				}
-				return result;
-			}
-		} catch (JSONException e) {
-			Log.d("ParseFriendRequests",e.getLocalizedMessage());
-		}
-		return result;
-	}
-	
 	public static JSONObject postRequest(JSONObject body, String url){
 		
 		HttpClient httpClient   = new DefaultHttpClient();

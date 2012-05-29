@@ -1,11 +1,21 @@
 package com.sfumobile.wifilocator;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
+import com.sfumobile.wifilocator.request.LocationRequest;
 import com.sfumobile.wifilocator.request.RequestConstants;
+import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
+import com.sfumobile.wifilocator.request.RequestPackage;
+import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.WifiHandler;
+import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
+import com.sfumobile.wifilocator.response.LocationResponse;
+import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,11 +26,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
 
-public class WifiLocatorActivity extends Activity implements OnClickListener{
+public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
 	private String bssid, ssid, zone, zone_name;
 	private TextView bssidText, ssidText, zoneText, zoneName;
@@ -30,6 +41,10 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	private RequestHandler requestHandler;
 	private WifiHandler wifiHandler;
 	private AlertDialog alert;
+	
+	private LocationRequest            _req;
+	private RequestPackage             _package;
+	private LocationResponse _response;
 	
 	//public static final String USER = "Catherine"; //Hedy, 45006
 	public static final int USER_ID = 28001;
@@ -69,20 +84,22 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				finish();
 			}
 		}).create();
-    	
-    	if (!wifiHandler.wifi_check()){
+    	/*
+    	if(!wifiHandler.wifi_check()){
     		alert.setTitle("WiFi Error");
     		alert.setMessage("No WiFi connection detected.");
     		alert.show();
-    	} else if (!RequestConstants.SSIDs.contains(wifiHandler.getSSID())){	
+    	}
+    	else if (!RequestConstants.SSIDs.contains(wifiHandler.getSSID())){	
     		alert.setTitle("Connection Error");
     		alert.setMessage("The network you are connected to appears to be invalid.");
     		alert.show();
-    	} else {   
-    		auto = new AutoPoll();
+    	}
+    	else {*/
+    		auto = new AutoPoll(this);
         	auto.execute();
         	pollButton.setTag(1);
-    	}
+    	
     }
     
 	public void onClick(View src) {
@@ -96,7 +113,7 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				src.setTag(0);
 			}else{
 				pollButton.setText("Stop Polling");
-				auto = new AutoPoll();
+				auto = new AutoPoll(this);
 		    	auto.execute();
 				src.setTag(1);
 			}
@@ -126,13 +143,21 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
+		RequestDelegateActivity _rd;
+		
+		public AutoPoll(RequestDelegateActivity rd){
+	        _rd = rd;
+		}
+		
 		@Override
 		protected Void doInBackground(String... params) {
-	  
+			
 			while(!isCancelled()) {
 		        try{
-		            JSONObject zone_info = requestHandler.getZoneInfo();
-		            publishProgress(zone_info);
+		        	_req     = new LocationRequest(WifiLocatorActivity.USER_ID, wifiHandler.getBSSID());
+		        	_package = new RequestPackage(_rd, _req);
+		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+		        	sl.sendRequest(_rd, _package);
 		        	Thread.sleep(1000*5);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
@@ -141,15 +166,19 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 			}
 			return null;
 		}
-		@Override
-		protected void onProgressUpdate(JSONObject... zones){
+	}
+
+	@Override
+	public void handleStringValue(int type, String val) {
+		if ( type == RequestTypes.ZONE){
+			_response = new LocationResponse( val );
 			
-			try{
-				zone_name = zones[0].getString("zone_name");
-		        zone = zones[0].getString("map_name");
-		        Log.d("map", zone);
-		        bssid = wifiHandler.getBSSID();
-		        ssid = wifiHandler.getSSID();
+		    JSONObject data = (JSONObject)_response.handleResponse();			
+		    try{
+				zone_name = data.getString("zone_name");
+		        zone      = data.getString("map_name");
+		        bssid     = wifiHandler.getBSSID();
+		        ssid      = wifiHandler.getSSID();
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 				bssid = wifiHandler.getBSSID();
@@ -160,8 +189,26 @@ public class WifiLocatorActivity extends Activity implements OnClickListener{
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
 			}
+			
 		}
+		
+	}
 
+	@Override
+	public void handleIntValue(int type, int val) {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void handleError(int type, int errorCode, Object errorString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleImageDataValue(int type, String data) {
+		// TODO Auto-generated method stub
+		
 	}
 }
