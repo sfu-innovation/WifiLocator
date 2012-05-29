@@ -22,7 +22,7 @@ public class UserProfile {
 		
 		try{
 			request.put("user_id", WifiLocatorActivity.USER_ID);
-			response = RequestHandler.postRequest(request,RequestConstants.GET_FRIEND_REQUESTS_URL);
+			response = RequestHandler.postRequest(request,RequestConstants.GET_FRIENDS_URL);
 
 		} catch (JSONException jse) {
 			//some exception stuff

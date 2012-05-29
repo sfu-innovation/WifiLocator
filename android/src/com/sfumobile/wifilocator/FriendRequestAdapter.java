@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
+import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
+import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
+import com.sfumobile.wifilocator.request.RequestPackage;
+import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,14 +26,17 @@ import android.widget.Toast;
 public class FriendRequestAdapter extends BaseAdapter{
 
 	private LayoutInflater mInflater;
-	private Context context;
-	private static ArrayList<JSONObject> data;
+	private RequestDelegateActivity _rd;
+	private static ArrayList<JSONObject> _data;
+
+	private FriendshipConfirmRequest  _req;
+	private RequestPackage            _package;
 	
-	public FriendRequestAdapter(Context context, ArrayList<JSONObject> data){
+	public FriendRequestAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
 		// Cache the LayoutInflate to avoid asking for a new one each time.
-		mInflater = LayoutInflater.from(context);
-		this.context = context;
-		this.data = data;
+		mInflater = LayoutInflater.from(rd);
+		_rd = rd;
+		_data = data;
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
@@ -54,20 +62,20 @@ public class FriendRequestAdapter extends BaseAdapter{
 		holder.rejectButton = (Button) convertView.findViewById(R.id.rejectButton);
 		
 		holder.confirmButton.setOnClickListener(new OnClickListener() {
-		private int pos = position;
-		
+	
 		public void onClick(View v) {
-			int result = -1;
+					
 			try {
-				result = RequestHandler.acceptFriendRequest(data.get(position).getInt("request_id"));
-				data.remove(position);
-				notifyDataSetChanged();
+				_req = new FriendshipConfirmRequest( _data.get(position).getString("request_id") );
 			} catch (JSONException e) {
-				Log.d("ConfirmFriendRequest", e.getLocalizedMessage());
+				e.printStackTrace();
 			}
-			if(result == 0){
-				Toast.makeText(context, "Friend Added", Toast.LENGTH_SHORT).show();
-			}
+			_package = new RequestPackage(_rd, _req);
+			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+			launcher.sendRequest(_rd, _package);
+			_data.remove(position);
+			notifyDataSetChanged();
+
 		 
 		}
 		});
@@ -77,7 +85,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 		 
 		
 		public void onClick(View v) {
-		Toast.makeText(context, "Reject-" + String.valueOf(pos), Toast.LENGTH_SHORT).show();
+		Toast.makeText(_rd, "Reject-" + String.valueOf(pos), Toast.LENGTH_SHORT).show();
 		 
 		}
 		});
@@ -91,7 +99,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 		 
 		// Bind the data efficiently with the holder.
 		try {
-			holder.friendText.setText(data.get(position).getString("friend_name"));
+			holder.friendText.setText(_data.get(position).getString("friend_name"));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -100,11 +108,11 @@ public class FriendRequestAdapter extends BaseAdapter{
 	}
 		 
 	public int getCount() {
-		return data.size();
+		return _data.size();
 	}
 
 	public Object getItem(int index) {
-		return data.get(index);
+		return _data.get(index);
 	}
 
 	public long getItemId(int arg0) {

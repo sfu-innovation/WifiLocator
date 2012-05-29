@@ -1,24 +1,23 @@
 package com.sfumobile.wifilocator.request;
 
-import net.rim.device.api.ui.UiApplication;
+import android.app.Activity;
 
 import com.sfumobile.wifilocator.types.RequestTypes;
-import com.sfumobile.wifilocator.utils.WLANContext;
 
 public class RequestPackage {
 
-	private RequestDelegateScreen _rd;
+	private RequestDelegateActivity _rd;
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
+	private WifiHandler wifiHandler;
 	
 	
-	public RequestPackage( RequestDelegateScreen rd, Request req ){
+	public RequestPackage( RequestDelegateActivity rd, Request req ){
 		_rd = rd;
 		_request = req;
+		wifiHandler = new WifiHandler(_rd);
 	}
-	
-	
-	
+		
 	private boolean contains( String[] list, String val ){
 		int length = list.length;
 		boolean retVal = false;
@@ -32,19 +31,18 @@ public class RequestPackage {
 	}
 	public void init() {
 		System.out.println("[SFUMOBILE] - starting init");
-		if ( WLANContext.isAssociated() == WLANContext.WLAN_RADIO_CONNECTED){
+		if (wifiHandler.wifi_check()){
 			System.out.println("[SFUMOBILE] - connected to an SSID");
-			if ( contains( RequestConstants.allowedSSIDs , WLANContext.getCurrentSSID())){
-			
+						
 			int type = _request.getType();
 			String url = _request.getURL();
 
 			if ( type == RequestTypes.ZONE){
 				_request.setProperty("mac_address",
-						 WLANContext.getBSSID(),
+						 wifiHandler.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
-			String payload = _request.getPayload();
+			String payload = _request.getPayload().toString();
 			System.out.println( "[SFUMOBILE] The payload - "+payload);
 			//special case since this request is dynamic
 			System.out.println("[SFUMOBILE] - testing out this url "+url);
@@ -53,16 +51,14 @@ public class RequestPackage {
 					payload,
 					_rd);
 			
-			UiApplication app = UiApplication.getUiApplication();
-			if (app == null ) {
+			if (_rd == null ) {
 				System.out.println("Unable to get instance of the application");
-			}else {
-			    app.invokeLater( _thread );
 			}
-			} else {
-			 _rd.handleError(RequestTypes.ZONE, 1, "INCORRECT NETWORK");
+			else {
+				_rd.runOnUiThread(_thread);
 			}
 		}
+		/*
 		else {
 			String reasonString = null;
 			switch( WLANContext.isAssociated()){
@@ -73,6 +69,6 @@ public class RequestPackage {
 			}
 			System.out.println("[SFUMOBILE] error - "+WLANContext.isAssociated()  + " - "+reasonString);
 			_rd.handleError(RequestTypes.ZONE, WLANContext.isAssociated(), reasonString);
-		}
+		}*/
 	}
 }
