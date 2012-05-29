@@ -20,6 +20,7 @@ class Users(db.Model):
 	last_name = db.StringProperty(required=False)
 	last_location = db.ReferenceProperty(Areas, collection_name='userlocation', required=False)
 	last_update = db.DateTimeProperty(auto_now = True, required=False)
+	signal_strength = db.IntegerProperty(required=False)
 	
 class Friends(db.Model):
 	user = db.ReferenceProperty(Users, collection_name='friends')

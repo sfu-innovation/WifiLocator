@@ -37,6 +37,7 @@ indexes:
   - name: last_name
   - name: last_location
   - name: last_update
+  - name: signal_strength
 
 - kind: ZoneMaps
   properties:
