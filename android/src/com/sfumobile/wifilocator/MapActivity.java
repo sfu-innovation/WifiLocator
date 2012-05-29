@@ -17,7 +17,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 
-public class GetMap extends Activity{
+public class MapActivity extends Activity{
 	private Drawable image;
 	private ImageView img;
 	private String host = "http://wifi-location.appspot.com";
@@ -44,7 +44,7 @@ public class GetMap extends Activity{
 		}
 	}
 	
-	private String gen_URL(String loc){
+/*	private String gen_URL(String loc){
 		String map_path;
 		String url = host+loc;
 		JSONObject map_addr = HttpGET.connect(url);
@@ -56,9 +56,9 @@ public class GetMap extends Activity{
 		//String url = "http://wifi-location.appspot.com/media/zonemaps/map2.png";
 		return map_path;
 	}
-	
+	*/
 	class getimg extends AsyncTask<ImageView, Drawable, Void> {	
-		private ProgressDialog dialog = new ProgressDialog(GetMap.this);
+		private ProgressDialog dialog = new ProgressDialog(MapActivity.this);
 		
 		@Override
 		protected void onPreExecute(){
