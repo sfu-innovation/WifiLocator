@@ -1,12 +1,11 @@
 package com.sfumobile.wifilocator.request;
+import com.sfumobile.wifilocator.types.RequestTypes;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
 
 public abstract class Request {
 
@@ -52,9 +51,13 @@ public abstract class Request {
 			try {
 				if ( _propertiesTypes.containsKey( key )){
 					String type = (String)_propertiesTypes.get( key );
+					if(type.equals(RequestTypes.INT_TYPE)){
+						obj.put(key, Integer.parseInt((String)_properties.get(key)));
+					}
+					else {
 						obj.put(key, (String)_properties.get(key));
+					}
 				}
-				
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

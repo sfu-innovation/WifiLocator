@@ -6,7 +6,10 @@ import java.net.URL;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.FriendListRequest;
 import com.sfumobile.wifilocator.request.HttpGET;
+import com.sfumobile.wifilocator.request.MapRequest;
+import com.sfumobile.wifilocator.request.RequestPackage;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,10 +20,11 @@ import android.util.Log;
 import android.widget.ImageView;
 
 
-public class GetMap extends Activity{
+public class MapActivity extends Activity{
 	private Drawable image;
 	private ImageView img;
-	private String host = "http://wifi-location.appspot.com";
+	private MapRequest  _req;
+	private RequestPackage     _package;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	//	EditText url;
@@ -29,8 +33,12 @@ public class GetMap extends Activity{
 		setContentView(R.layout.zone_map);
 		
 		img = (ImageView) findViewById(R.id.imageView1);
-		getimg map = new getimg();
-    	map.execute(img);
+		_req = new MapRequest(User.getInstance().get_map());
+		image = getImage(_req.getURL());
+		img.setImageDrawable(image);
+		
+	//	getimg map = new getimg();
+    //	map.execute(img);
 
 	}
 	
@@ -44,7 +52,7 @@ public class GetMap extends Activity{
 		}
 	}
 	
-	private String gen_URL(String loc){
+/*	private String gen_URL(String loc){
 		String map_path;
 		String url = host+loc;
 		JSONObject map_addr = HttpGET.connect(url);
@@ -56,9 +64,9 @@ public class GetMap extends Activity{
 		//String url = "http://wifi-location.appspot.com/media/zonemaps/map2.png";
 		return map_path;
 	}
-	
-	class getimg extends AsyncTask<ImageView, Drawable, Void> {	
-		private ProgressDialog dialog = new ProgressDialog(GetMap.this);
+	*/
+/*	class getimg extends AsyncTask<ImageView, Drawable, Void> {	
+		private ProgressDialog dialog = new ProgressDialog(MapActivity.this);
 		
 		@Override
 		protected void onPreExecute(){
@@ -84,6 +92,6 @@ public class GetMap extends Activity{
 		}
 
 
-	}
+	}*/
 
 }
