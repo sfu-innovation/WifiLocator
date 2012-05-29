@@ -1,11 +1,17 @@
 package com.sfumobile.wifilocator.response;
 
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.util.Log;
+
+import com.sfumobile.wifilocator.WifiLocatorActivity;
+import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 
 //import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 
@@ -16,7 +22,6 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 
 	public Object handleResponse() {
 		int status = -1;
-		Vector friendshipRequests = new Vector();
 		try {
 			status = Integer.parseInt(_data.getString("status"));
 		} catch (NumberFormatException e) {
@@ -27,27 +32,29 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 			e.printStackTrace();
 		}
 		if ( status == 0 ) {
-			JSONObject temp = null;
-			try {
-				JSONArray arr = (JSONArray) _data.get("requests");
-				int length = arr.length();
-				/*
-				WifiLocatorFriendship tempFriendship;
-				for(int i = 0; i < length; i++){
-					temp = arr.getJSONObject(i);
-					
-					friendshipRequests.addElement(new WifiLocatorFriendship(
-							temp.getString("friend_name"),
-							temp.getInt("request_id")
-					));
-				}*/
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ArrayList<JSONObject> data = parseFriendRequests(_data);
+			return data;
 		}else {
 			return null;
 		}
-		return friendshipRequests;
+
 	}
+	
+	public ArrayList<JSONObject> parseFriendRequests(JSONObject response){
+		Log.d("FriendRequests",response.toString());
+		ArrayList<JSONObject> result = new ArrayList<JSONObject>();
+		try {
+			if(response.getInt("status")!=2){
+				JSONArray requests = response.getJSONArray("requests");
+				for(int i=0; i < requests.length(); i++){
+					result.add(requests.getJSONObject(i));
+				}
+				return result;
+			}
+		} catch (JSONException e) {
+			Log.d("ParseFriendRequests",e.getLocalizedMessage());
+		}
+		return result;
+	}
+	
 }

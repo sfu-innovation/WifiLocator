@@ -54,7 +54,9 @@ public abstract class Request {
 					String type = (String)_propertiesTypes.get( key );
 						obj.put(key, (String)_properties.get(key));
 				}
-				
+				else {
+					obj.put(key, (String)_properties.get(key));
+				}
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
