@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +44,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private RequestHandler requestHandler;
 	private WifiHandler wifiHandler;
 	private AlertDialog alert;
-	
+	private Handler handler;
 	private LocationRequest            _req;
 	private RequestPackage             _package;
 	private LocationResponse _response;
@@ -72,6 +73,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         friendButton.setOnClickListener(this);  
         locButton.setOnClickListener(this);
         
+        handler        = new Handler();
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         
@@ -159,7 +161,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			while(!isCancelled()) {
 		        try{
 		        	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
-		        	_package = new RequestPackage(_rd, _req);
+		        	_package = new RequestPackage(_rd, _req, handler);
 		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
 		        	sl.sendRequest(_rd, _package);
 		        	Thread.sleep(1000*30);

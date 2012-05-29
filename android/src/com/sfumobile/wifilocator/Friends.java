@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -36,9 +37,8 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 //	private RequestHandler requestHandler;
 	private ImageView qrImage;
 	private ExpandableListView friendList;
-	
 	private final int ADD_FRIEND_DIALOG_ID = 0;
-
+	private Handler handler;
 	private static ArrayList<JSONObject> data;
 	
 	private FriendListRequest  _req;
@@ -58,9 +58,10 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		addFriendButton.setOnClickListener(this);
 		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
-		
+
+		handler = new Handler();
 		_req = new FriendListRequest(User.getInstance().get_userID());
-		_package = new RequestPackage(this, _req);
+		_package = new RequestPackage(this, _req, handler);
 		
 	}
 	
@@ -111,7 +112,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	private void addFriend() {
 		try{
 			FriendshipRequest  _req = new FriendshipRequest(User.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
-			RequestPackage _package = new RequestPackage(this, _req);
+			RequestPackage _package = new RequestPackage(this, _req, handler);
 			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
 			launcher.sendRequest(this, _package);
 		}

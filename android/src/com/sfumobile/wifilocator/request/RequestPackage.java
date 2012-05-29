@@ -1,6 +1,7 @@
 package com.sfumobile.wifilocator.request;
 
 import android.app.Activity;
+import android.os.Handler;
 
 import com.sfumobile.wifilocator.types.RequestTypes;
 
@@ -10,11 +11,13 @@ public class RequestPackage {
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
 	private WifiHandler wifiHandler;
+	private Handler _handler;
 	
 	
-	public RequestPackage( RequestDelegateActivity rd, Request req ){
+	public RequestPackage( RequestDelegateActivity rd, Request req, Handler handler){
 		_rd = rd;
 		_request = req;
+		_handler = handler;
 		wifiHandler = new WifiHandler(_rd);
 	}
 		
@@ -49,13 +52,14 @@ public class RequestPackage {
 			_thread = new WifiLocatorRequestThread(type,
 					url,
 					payload,
-					_rd);
+					_rd,
+					_handler);
 			
 			if (_rd == null ) {
 				System.out.println("Unable to get instance of the application");
 			}
 			else {
-				_rd.runOnUiThread(_thread);
+				_thread.start();
 			}
 		}
 		/*
