@@ -1,6 +1,7 @@
 package com.sfumobile.wifilocator.request;
 
 import com.sfumobile.wifilocator.types.RequestTypes;
+import com.sfumobile.wifilocator.request.RequestConstants;
 
 public class FriendshipConfirmRequest extends Request {
 	
