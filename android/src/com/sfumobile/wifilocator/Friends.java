@@ -1,50 +1,56 @@
 package com.sfumobile.wifilocator;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import com.sfumobile.wifilocator.request.FriendListRequest;
+import com.sfumobile.wifilocator.request.FriendshipRequest;
+import com.sfumobile.wifilocator.request.RequestDelegateActivity;
+import com.sfumobile.wifilocator.request.RequestPackage;
+import com.sfumobile.wifilocator.request.SingleRequestLauncher;
+import com.sfumobile.wifilocator.response.FriendshipRequestResponse;
+import com.sfumobile.wifilocator.response.FriendshipsResponse;
+import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.app.Dialog;
-import android.app.ExpandableListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.TextView;
 
-public class Friends extends ExpandableListActivity implements OnClickListener{
+public class Friends extends RequestDelegateActivity implements OnClickListener{
 	
 	private FriendAdapter mAdapter;
-	private String[] friends, loc;
-	private String[][] status;
 	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
-	private RequestHandler requestHandler;
+//	private RequestHandler requestHandler;
 	private ImageView qrImage;
-	
+	private ExpandableListView friendList;
 	private final int ADD_FRIEND_DIALOG_ID = 0;
+	private Handler handler;
+	private static ArrayList<JSONObject> data;
+	
+	private FriendListRequest  _req;
+	private RequestPackage     _package;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_screen);
-		
-		loadList populate = new loadList();
-		populate.execute();
 
-		requestHandler = new RequestHandler(this);
+		friendList = (ExpandableListView)this.findViewById(R.id.friendList);
 		
 		addFriendButton      = (Button)findViewById(R.id.addFriendButton);
 		friendRequestsButton = (Button)findViewById(R.id.friendRequestsButton);
@@ -54,83 +60,19 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		addFriendButton.setOnClickListener(this);
 		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
+
+		handler = new Handler();
+		_req = new FriendListRequest(User.getInstance().get_userID());
+		_package = new RequestPackage(this, _req, handler);
 		
 	}
 	
-	public class FriendAdapter extends BaseExpandableListAdapter {
-		public Object getChild(int groupPosition, int childPosition) {
-			return status[groupPosition][childPosition];
-		}
-
-		public long getChildId(int groupPosition, int childPosition) {
-			return childPosition;
-		}
-
-		public TextView getGenericView() {
-			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-					ViewGroup.LayoutParams.FILL_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-			
-			TextView txtView = new TextView(Friends.this);
-			txtView.setLayoutParams(params);
-			txtView.setPadding(60, 5, 0, 5);
-			return txtView;
-		}
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
-
-			//View inflatedView = View.inflate(getApplicationContext(), R.layout.friend_sub, null);
-			//inflatedView.setPadding(50, 0, 0, 0);
-			//TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
-			
-		//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
-		//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
-			TextView txtView = getGenericView();
-			
-			txtView.setTextSize(15);
-			txtView.setText(getChild(groupPosition, childPosition).toString());
-		/*	txtView.setOnClickListener(new View.OnClickListener() {
-				
-				public void onClick(View v) {
-					// TODO Auto-generated method stub				
-					startActivity(i);
-				}
-			});
-			*/
-			return txtView;
-		}
-
-		public int getChildrenCount(int groupPosition) {
-			return status[groupPosition].length;
-		}
-
-		public Object getGroup(int groupPosition) {
-			return friends[groupPosition];
-		}
-
-		public int getGroupCount() {
-			return friends.length;
-		}
-
-		public long getGroupId(int groupPosition) {
-			return groupPosition;
-		}
-
-		public View getGroupView(int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-			TextView txtView = getGenericView();
-			txtView.setText(getGroup(groupPosition).toString());
-			return txtView;
-		}
-
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		public boolean isChildSelectable(int groupPosition, int childPosition) {
-			return true;
-		}
+	public void onStart(){
+		super.onStart();
+		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+		launcher.sendRequest(this, _package );
 	}
+
 
 	public void onClick(View v) {
 		Intent intent;
@@ -145,19 +87,12 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			break;
 			
 		case R.id.qrButton:
-			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + WifiLocatorActivity.USER_ID);
+			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + User.getInstance().get_userID());
 			qrImage.setImageBitmap(bitmap);
 			break;
 			
 		case R.id.addButton:
-			int result = -1;
-			try{
-				result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-			}
-			catch(NumberFormatException e){
-				Log.e("AddFriend", "Can't convert string to int");
-			}
-			handleResult(result);
+			addFriend();
 			break;
 		
 		case R.id.cancelButton:
@@ -176,36 +111,25 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		}
 	}
 
-	private void handleResult(int result) {
-		String message = "";
-		
-		switch(result){
-		case -1:
-			message = "Error trying to add friend";
-			break;
-		case 0:
-			message = "Friend request sent";
-			addFriendDialog.cancel();
-			break;
-		case 1:
-			message = "User not found.  How are you logged in even?";
-			break;
-		case 2:
-			message = "Friend id not found.";
-			break;
-		case 3:
-			message = "There is already a friend request pending for that user.";
-			break;
-		case 4:
-			message = "You can't add yourself as a friend.";
-			break;
+	private void addFriend() {
+		try{
+			System.out.println("[SFUMOBILE] - USER_ID = "+User.getInstance().get_userID());
+			FriendshipRequest  _req = new FriendshipRequest(User.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
+			RequestPackage _package = new RequestPackage(this, _req, handler);
+			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+			launcher.sendRequest(this, _package);
 		}
-		Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
-		t.setGravity(Gravity.CENTER, 0, 0);
-		t.show();
-		
+		catch(NumberFormatException e){
+			Log.e("AddFriend", "Can't convert string to int");
+			Toast t = Toast.makeText(this, "Not a valid friend id", Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
+		}
 	}
 
+	/*
+	 * Handles response from qr scanning activity
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -214,51 +138,8 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 			String id = extras.get("SCAN_RESULT").toString().substring(10);
 			if(id != null){
 				friendIDText.setText(id);
-				int result = -1;
-				try{
-					result = requestHandler.sendFriendRequest(Integer.parseInt(friendIDText.getText().toString()));
-				}
-				catch(NumberFormatException e){
-					Log.e("AddFriend", "Can't convert string to int");
-				}
-				handleResult(result);
+				addFriend();
 			}
-		}
-	}
-
-	class loadList extends AsyncTask<Void, Void, Void> {	
-		private ProgressDialog dialog = new ProgressDialog(Friends.this);
-		
-		@Override
-		protected void onPreExecute(){
-			dialog.setMessage("Loading...");
-			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			dialog.show();
-		}
-		@Override
-		protected Void doInBackground(Void... params) {
-			
-
-			UserProfile id = new UserProfile();
-
-			friends = id.get_friends();	
-			loc = id.get_loc();
-
-			
-			if (friends != null){
-				status = new String[loc.length][1];		
-				for (int i=0; i< loc.length; i++)
-					status[i][0] = loc[i];
-			}
-			
-			mAdapter = new FriendAdapter();
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result){
-			dialog.dismiss();
-			setListAdapter(mAdapter);
 		}
 	}
 
@@ -286,6 +167,46 @@ public class Friends extends ExpandableListActivity implements OnClickListener{
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public void handleStringValue(int type, String val) {
+		
+		if(type == RequestTypes.GET_FRIENDS){
+			FriendshipsResponse _response = new FriendshipsResponse( val, type);
+		    data = _response.handleResponse();		
+		    Log.d("Friends", data.toString());
+		    mAdapter = new FriendAdapter(this, data);
+		    friendList.setAdapter(mAdapter);
+		}
+		else if(type == RequestTypes.FRIENDSHIP_REQUEST){
+			FriendshipRequestResponse _response = new FriendshipRequestResponse(val);
+		    String message = (String) _response.handleResponse();
+			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
+			addFriendDialog.cancel();
+			
+		}
+	
+	}
+
+	@Override
+	public void handleIntValue(int type, int val) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleError(int type, int errorCode, Object errorString) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleImageDataValue(int type, String data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

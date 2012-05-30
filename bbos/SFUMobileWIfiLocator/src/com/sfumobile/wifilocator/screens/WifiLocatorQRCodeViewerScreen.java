@@ -8,11 +8,12 @@ import javax.microedition.media.MediaException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendshipRequest;
-import com.sfumobile.wifilocator.request.RequestDelegateScreen;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.FriendshipResponse;
+import com.sfumobile.wifilocator.screens.test.WifiLocatorMenuItems;
 import com.sfumobile.wifilocator.utils.QRUtils;
 
 
@@ -25,17 +26,23 @@ import net.rim.device.api.ui.TransitionContext;
 import net.rim.device.api.ui.Ui;
 import net.rim.device.api.ui.UiApplication;
 import net.rim.device.api.ui.UiEngineInstance;
+import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.LabelField;
 import net.rim.device.api.ui.container.MainScreen;
 
-public class WifiLocatorQRCodeViewerAScreen extends RequestDelegateScreen {
+public class WifiLocatorQRCodeViewerScreen extends RequestDelegateScreen {
 	ImageDecoderListener _imageDecoderListener;
 	private ImageScanner _scanner;
 	private FriendshipRequest _req;
 	private RequestPackage    _package;
-	private WifiLocatorQRCodeViewerAScreen _screen;
-	
-	public WifiLocatorQRCodeViewerAScreen(){
+	private WifiLocatorQRCodeViewerScreen _screen;
+	private Dialog _dialog;
+	public WifiLocatorQRCodeViewerScreen(){
+		_dialog =  new Dialog(Dialog.D_OK,
+	              "Friend request sent",
+	              0,
+	              null,
+	              0);
 	}
 	
     public boolean onClose(){
@@ -50,6 +57,7 @@ public class WifiLocatorQRCodeViewerAScreen extends RequestDelegateScreen {
 		Hashtable hints = new Hashtable();
 		formats.addElement(BarcodeFormat.QR_CODE);
 		hints.put(DecodeHintType.POSSIBLE_FORMATS, formats);
+		
 		_imageDecoderListener = new ImageDecoderListener()
 	    {
 
@@ -64,9 +72,9 @@ public class WifiLocatorQRCodeViewerAScreen extends RequestDelegateScreen {
 	                {
 	                	closeScanner();
 	                	Result res = (Result) decoded;
-	                	int alexuserid = 27001;
 	                	int friendid = Integer.parseInt(QRUtils.getTargetContact(res.getText()));
-	                    _req = new FriendshipRequest( alexuserid, friendid );
+	                    _req = new FriendshipRequest( WifiLocatorUser.getInstance().getID()
+	                    		, friendid );
 	                    _package = new RequestPackage( _screen, _req );
 	                    SingleRequestLauncher.getInstance().sendRequest(_package);
 	                	inform((Result)decoded);
@@ -124,26 +132,8 @@ public class WifiLocatorQRCodeViewerAScreen extends RequestDelegateScreen {
 
 	public void inform(Result result)
 	{
-	    // Close the viewfinder first
+		_dialog.doModal();
 	    UiApplication.getUiApplication().popScreen();
-	
-	 /*   MainScreen resultsScreen = new MainScreen();
-	
-	    LabelField text = new LabelField("Barcode Text: " + result.getText());
-	    text.setPadding(4, 4, 4, 4);
-	
-	    LabelField type = new LabelField("Barcode Type: " + result.getBarcodeFormat().toString());
-	    type.setPadding(4, 4, 4, 4);
-	
-	    TransitionContext context = new TransitionContext(TransitionContext.TRANSITION_SLIDE);
-	    context.setIntAttribute(TransitionContext.ATTR_DIRECTION, TransitionContext.KIND_OUT);
-	
-	    Ui.getUiEngineInstance().setTransition(null, resultsScreen, UiEngineInstance.TRIGGER_PUSH, context);
-	
-	    resultsScreen.add(text);
-	    resultsScreen.add(type);
-	
-	    UiApplication.getUiApplication().pushScreen(resultsScreen);*/
 	}
 
 	public void handleStringValue(int type, String val) {

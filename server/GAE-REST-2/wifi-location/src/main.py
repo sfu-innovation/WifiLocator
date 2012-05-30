@@ -5,7 +5,7 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
-from django.utils import simplejson as json
+import logging
 
 from src.models import *
 from src.friends import *
@@ -14,6 +14,7 @@ from src.requests import *
 from src.users import *
 from src.accepts import *
 
+from django.utils import simplejson as json
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -87,11 +88,15 @@ class MainPage(webapp.RequestHandler):
 
 
 class RequestHandler(webapp.RequestHandler):
-
+	
 	def post(self, request_type):
 		try:
+			
 			json_obj = json.loads(self.request.body)
-		
+			input = json.dumps(json_obj)
+			#print str(input)
+			#print "Json object recieved: ", input
+			logging.debug("JSON object recieved to RequestHandler: " + str(input))
 			
 			#get a list of friends and friends info
 			if (request_type == "friendlist"):
@@ -109,12 +114,21 @@ class RequestHandler(webapp.RequestHandler):
 				getFriendRequests(self, json_obj)
 			
 			#get zone_id by mac_address and 
-			elif (request_type == "updatezone"):
+			elif (request_type == "zone"):
 				
 				updateZone(self, json_obj)
+			
+			elif (request_type == "events"):
 				
-		except ValueError:
+				getEvents(self, json_obj)
+			
+			else:
+				logging.error("request type unknown")
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"status" : 11}))
+		except:
 			# if json is empty
+			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
 			
@@ -123,18 +137,54 @@ class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):
 		try:
 			json_obj = json.loads(self.request.body)
+			input = json.dumps(json_obj)
+			logging.debug("JSON object received to AcceptHandler: " + str(input))
 
 			if (accept_type == "friendship"):
 				acceptFriendRequest(self, json_obj)
-				
-				
-				
-		except ValueError:
+						
+		except:
 			# if json is empty
+			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
 			
-
+class CSVImporter(webapp.RequestHandler):
+	def get(self):
+		try:
+			surrey_zones = [3007,4006,7007,13004,14005,15005]
+			
+			for i in surrey_zones:
+			#areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
+				curr_zone = Areas.get_by_id(i)
+				#print curr_zone.key().id()
+				removelist = db.GqlQuery("SELECT * FROM BSSIDZones " + "WHERE zones = :1" , curr_zone)
+				#print removelist.count()
+				if removelist.count() > 0:
+				
+					for k in removelist:
+						db.delete(k)
+					print "zone: " + str(i) + " deleted"	
+				else: 
+					print "zone not found"
+					return
+			#for row in areaReader:
+			#	Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+			#	print "areas imported"
+		except:
+			print "delete fail"	
+		try:
+			csvReader = csv.reader(open(('res.csv'),'rU'), delimiter=',')
+			for row in csvReader:
+				curr_area = Areas.all()
+				temp = curr_area.filter("zone_id =", (int(row[1])+20))
+	
+				for area in temp:
+					#print "[" + str(area.zone_id) + "]"
+					BSSIDZones(zones = area, mac_address = row[0]).put()
+			print "bssid imported"
+		except:
+			print "import fail"
 		
 	
 

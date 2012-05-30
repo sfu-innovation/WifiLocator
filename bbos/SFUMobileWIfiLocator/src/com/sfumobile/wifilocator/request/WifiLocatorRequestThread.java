@@ -11,6 +11,8 @@ import javax.microedition.io.InputConnection;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
+import com.sfumobile.wifilocator.screens.RequestDelegateScreen;
+
 import net.rim.device.api.io.transport.ConnectionDescriptor;
 import net.rim.device.api.io.transport.ConnectionFactory;
 import net.rim.device.api.io.transport.TransportInfo;

@@ -20,6 +20,14 @@ indexes:
   - name: zone_id
   - name: mac_address
 
+- kind: Events
+  properties:
+  - name: name
+  - name: organizer
+  - name: datetime
+  - name: location
+  - name: zone
+
 - kind: FriendRequests
   properties:
   - name: user_id
@@ -37,6 +45,7 @@ indexes:
   - name: last_name
   - name: last_location
   - name: last_update
+  - name: signal_strength
 
 - kind: ZoneMaps
   properties:

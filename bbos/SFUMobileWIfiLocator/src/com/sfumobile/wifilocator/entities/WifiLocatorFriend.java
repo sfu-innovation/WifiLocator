@@ -4,14 +4,17 @@ public class WifiLocatorFriend {
 	private String _name;
 	private String _location;
 	private String _time;
-	
 	public String toString(){
 		return _name+" -> location : "+_location;
 	}
-	public WifiLocatorFriend( String name, String location, String time ){
+	public WifiLocatorFriend( String name, String location, String time){
 		_name = name;
 		_location = location;
 		_time = time;
+	}
+	
+	public WifiLocatorFriend(){
+		
 	}
 	
 	public String getLocation(){
@@ -25,6 +28,5 @@ public class WifiLocatorFriend {
 	public String getTime(){
 		return _time;
 	}
-	
 	
 }

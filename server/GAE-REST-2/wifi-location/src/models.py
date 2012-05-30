@@ -20,6 +20,7 @@ class Users(db.Model):
 	last_name = db.StringProperty(required=False)
 	last_location = db.ReferenceProperty(Areas, collection_name='userlocation', required=False)
 	last_update = db.DateTimeProperty(auto_now = True, required=False)
+	signal_strength = db.IntegerProperty(required=False)
 	
 class Friends(db.Model):
 	user = db.ReferenceProperty(Users, collection_name='friends')
@@ -36,3 +37,11 @@ class ZoneMaps(db.Model):
 class FriendRequests(db.Model):
 	user_id = db.IntegerProperty(required=True)
 	friend_id = db.IntegerProperty (required=True)
+	
+class Events(db.Model):
+	name =  db.StringProperty(required=True)
+	organizer = db.StringProperty(required=True)
+	datetime = db.DateTimeProperty(required=True, auto_now = False)
+	location = db.StringProperty(required=True)
+	zone = db.ReferenceProperty(Areas, collection_name='event_locatoin')
+	
