@@ -238,7 +238,8 @@ application = webapp.WSGIApplication([
 									('/request/(.*)', RequestHandler),
 									('/accept/(.*)', AcceptHandler),
 									('/getmap/(.*)', MapHandler),
-									('/rest/.*', rest.Dispatcher), 
+									('/rest/.*', rest.Dispatcher),
+									('/getuserid/', GetUserId),
 									('/setfriend/', SetFriend),
 									('/setuser/', SetUser)],
 									debug=True)
