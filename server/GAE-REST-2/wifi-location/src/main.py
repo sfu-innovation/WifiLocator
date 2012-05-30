@@ -6,6 +6,8 @@ import wsgiref.handlers
 import csv
 import rest
 import logging
+import src.iso8601
+
 
 from src.models import *
 from src.friends import *
@@ -66,8 +68,17 @@ class MainPage(webapp.RequestHandler):
 		Friends(user = catherine, friend_id = 30001).put()
 		friend = Users.get_by_id(30001)
 		Friends(user = friend, friend_id = 28001).put()
-		'''	
 		
+		from datetime import datetime
+		
+		timetest = datetime.now()
+		print timetest.ctime()
+		
+		mytime = pretty_date(timetest)
+		
+		print mytime
+		
+		'''	
 		bssid_query = db.GqlQuery("SELECT * "
 				"FROM BSSIDZones ")
 		area_query = db.GqlQuery("SELECT * "
@@ -125,7 +136,7 @@ class RequestHandler(webapp.RequestHandler):
 			else:
 				logging.error("request type unknown")
 				self.response.headers['Content-Type'] = "application/json"
-				self.response.out.write(json.dumps({"status" : 11}))
+				self.response.out.write(json.dumps({"status" : 12}))
 		except:
 			# if json is empty
 			logging.error("No JSON received")
