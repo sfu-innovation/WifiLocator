@@ -115,6 +115,11 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     	}*/
     }
     
+    public void onRestart(){
+    	super.onRestart();
+    	User.getInstance().set_map("");
+    }
+    
 	public void onClick(View src) {
 		Intent myIntent;
 		switch(src.getId()){
@@ -207,7 +212,21 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		}
 		
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putString("bssid", (String) bssidText.getText());
+		outState.putString("ssid", (String) ssidText.getText());
+	}
 
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		bssidText.setText(savedInstanceState.getString("bssid"));
+		ssidText.setText(savedInstanceState.getString("ssid"));
+	}
+	
 	@Override
 	public void handleIntValue(int type, int val) {
 		// TODO Auto-generated method stub
