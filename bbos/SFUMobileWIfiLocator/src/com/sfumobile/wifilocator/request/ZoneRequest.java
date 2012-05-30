@@ -10,16 +10,14 @@ public class ZoneRequest extends Request {
 	private String       _bssid;
 
 	WifiLocatorRequestThread _thread;
-	public ZoneRequest( int userid/*, String bssid*/){
+	public ZoneRequest( int userid){
 		super(RequestTypes.ZONE);
 		_user = userid;
-		//_bssid = bssid;
 	}
 	
 	
 	public String getURL() {
 		setProperty("user_id", ""+_user, RequestTypes.INT_TYPE);
-		//setProperty("mac_address", _bssid, RequestTypes.STRING_TYPE);
 		
 		return RequestConstants.GET_ZONE_BASE_URL;
 	}

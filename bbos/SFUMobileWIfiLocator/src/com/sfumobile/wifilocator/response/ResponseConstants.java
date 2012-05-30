@@ -2,6 +2,11 @@ package com.sfumobile.wifilocator.response;
 
 public class ResponseConstants {
 	
+	//Status codes general across all responses
+	
+	public static final int SERVER_NO_JSON_RECIEVED = 11;
+	public static final int SERVER_REQUEST_NOT_RECOGNIZED = 12;
+	
 	//Status codes for each response
 	
 	public static final int ZONE_RESPONSE_SUCCESS = 0;

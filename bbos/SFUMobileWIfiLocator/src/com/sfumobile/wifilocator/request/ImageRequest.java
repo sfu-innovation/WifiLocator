@@ -11,7 +11,7 @@ public class ImageRequest extends Request {
 	}
 	public String getURL() {
 		// TODO Auto-generated method stub
-		return _url;
+		return RequestConstants.BASE_IMAGE_URL+_url;
 	}
 
 }

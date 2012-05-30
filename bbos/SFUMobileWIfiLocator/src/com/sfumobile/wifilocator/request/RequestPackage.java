@@ -11,7 +11,7 @@ public class RequestPackage {
 	private RequestDelegateScreen _rd;
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
-	
+	private static final boolean home = false;
 	
 	public RequestPackage( RequestDelegateScreen rd, Request req ){
 		_rd = rd;
@@ -42,7 +42,7 @@ public class RequestPackage {
 
 			if ( type == RequestTypes.ZONE){
 				_request.setProperty("mac_address",
-						 "00:1f:45:64:0f:28"/*WLANContext.getBSSID()*/,
+						 home?"00:1f:45:64:1f:98":WLANContext.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload();
