@@ -185,6 +185,8 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
 			t.setGravity(Gravity.CENTER, 0, 0);
 			t.show();
+			addFriendDialog.cancel();
+			
 		}
 	
 	}
