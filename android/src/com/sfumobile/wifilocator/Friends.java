@@ -9,7 +9,9 @@ import com.sfumobile.wifilocator.request.FriendshipRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
+import com.sfumobile.wifilocator.response.FriendshipRequestResponse;
 import com.sfumobile.wifilocator.response.FriendshipsResponse;
+import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -111,6 +113,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 
 	private void addFriend() {
 		try{
+			System.out.println("[SFUMOBILE] - USER_ID = "+User.getInstance().get_userID());
 			FriendshipRequest  _req = new FriendshipRequest(User.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
 			RequestPackage _package = new RequestPackage(this, _req, handler);
 			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
@@ -169,13 +172,23 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	@Override
 	public void handleStringValue(int type, String val) {
 		
-		
-		FriendshipsResponse _response = new FriendshipsResponse( val, type);
-		
-	    data = _response.handleResponse();		
-	    Log.d("Friends", data.toString());
-	    mAdapter = new FriendAdapter(this, data);
-	    friendList.setAdapter(mAdapter);	
+		if(type == RequestTypes.GET_FRIENDS){
+			FriendshipsResponse _response = new FriendshipsResponse( val, type);
+		    data = _response.handleResponse();		
+		    Log.d("Friends", data.toString());
+		    mAdapter = new FriendAdapter(this, data);
+		    friendList.setAdapter(mAdapter);
+		}
+		else if(type == RequestTypes.FRIENDSHIP_REQUEST){
+			FriendshipRequestResponse _response = new FriendshipRequestResponse(val);
+		    String message = (String) _response.handleResponse();
+			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
+			addFriendDialog.cancel();
+			
+		}
+	
 	}
 
 	@Override

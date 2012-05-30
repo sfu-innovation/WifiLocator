@@ -61,25 +61,6 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
 
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/zoneLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/zone_label" />
-
-        <TextView
-            android:id="@+id/zoneText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    </TableRow>
-
     <Button
         android:id="@+id/pollButton"
         android:layout_width="wrap_content"

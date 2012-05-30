@@ -36,8 +36,8 @@ import android.widget.Button;
 
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
-	private String bssid, ssid, zone, zone_name;
-	private TextView bssidText, ssidText, zoneText, zoneName;
+	private String bssid, ssid;
+	private TextView bssidText, ssidText, zoneName;
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
@@ -61,7 +61,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
-        zoneText     = (TextView)this.findViewById(R.id.zoneText);
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
         pollButton   = (Button)this.findViewById(R.id.pollButton);
         locButton    = (Button)this.findViewById(R.id.mapbutton);
@@ -76,8 +75,9 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         handler        = new Handler();
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
+        bssid          = "";
         
-        User.getInstance().set_userID(45001);
+        User.getInstance().set_userID(45006);
     }
     
     public void onStart(){
@@ -130,12 +130,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		break;
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterActivity.class);
-			myIntent.putExtra("zone", zone);
+			myIntent.putExtra("zone", User.getInstance().get_zone());
 			startActivity(myIntent);
 			break;
 		case R.id.mapbutton:
 			myIntent = new Intent(getApplicationContext(), MapActivity.class);
-			myIntent.putExtra("zone", zone);
+			myIntent.putExtra("zone", User.getInstance().get_zone());
 			startActivity(myIntent);
 		}
 	}
@@ -160,11 +160,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			
 			while(!isCancelled()) {
 		        try{
-		        	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
-		        	_package = new RequestPackage(_rd, _req, handler);
-		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
-		        	sl.sendRequest(_rd, _package);
-		        	Thread.sleep(1000*30);
+		        	//Check every second to see if the bssid has changed
+		        	//Only poll the server if it has
+		        	if(bssidChanged()){
+		        		updateZoneInfo(_rd);
+		        	}
+		        	Thread.sleep(1000);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
@@ -174,6 +175,24 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		}
 	}
 
+	public boolean bssidChanged(){
+		String current_bssid = wifiHandler.getBSSID();
+		System.out.println(bssid.hashCode() + " " + bssid);
+		System.out.println(current_bssid.hashCode() + " " + current_bssid);
+		if(current_bssid.hashCode() != bssid.hashCode()){
+			bssid = current_bssid;
+			return true;
+		}
+		return false;
+	}
+	
+	public void updateZoneInfo(RequestDelegateActivity rd){
+    	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
+    	_package = new RequestPackage(rd, _req, handler);
+    	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+    	sl.sendRequest(rd, _package);
+	}
+	
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.ZONE){
@@ -182,12 +201,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		     ssid      = wifiHandler.getSSID();
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
+		    	Log.d("zone request", data.toString());
 				User.getInstance().set_zone(data.getString("zone_name"));
 		        User.getInstance().set_map(data.getString("map_name"));		       
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 			} finally {
-			//	zoneText.setText(zone);
 				zoneName.setText(User.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
