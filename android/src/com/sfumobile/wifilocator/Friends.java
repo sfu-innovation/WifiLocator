@@ -31,7 +31,7 @@ import android.widget.Toast;
 public class Friends extends RequestDelegateActivity implements OnClickListener{
 	
 	private FriendAdapter mAdapter;
-	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
+	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton, getListButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
 //	private RequestHandler requestHandler;
@@ -52,12 +52,14 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		
 		addFriendButton      = (Button)findViewById(R.id.addFriendButton);
 		friendRequestsButton = (Button)findViewById(R.id.friendRequestsButton);
+		getListButton		 = (Button)findViewById(R.id.getListButton);
 		qrButton             = (Button)findViewById(R.id.qrButton);
 		qrImage              = (ImageView)findViewById(R.id.qrImage);
 		
 		addFriendButton.setOnClickListener(this);
 		friendRequestsButton.setOnClickListener(this);
 		qrButton.setOnClickListener(this);
+		getListButton.setOnClickListener(this);
 
 		handler = new Handler();
 		_req = new FriendListRequest(User.getInstance().get_userID());
@@ -67,8 +69,8 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	
 	public void onStart(){
 		super.onStart();
-		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
-		launcher.sendRequest(this, _package );
+	//	SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+	//	launcher.sendRequest(this, _package );
 	}
 
 
@@ -105,6 +107,10 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		case R.id.friendIDText:
 			friendIDText.setText("");
 			friendIDText.setTextColor(Color.BLACK);
+			break;
+		case R.id.getListButton:
+			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+			launcher.sendRequest(this, _package );
 			break;
 		}
 	}

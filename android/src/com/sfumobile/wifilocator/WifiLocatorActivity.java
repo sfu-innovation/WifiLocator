@@ -40,7 +40,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private TextView bssidText, ssidText, zoneText, zoneName;
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
-	private AutoPoll auto;
+//	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	private WifiHandler wifiHandler;
 	private AlertDialog alert;
@@ -48,6 +48,8 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private LocationRequest            _req;
 	private RequestPackage             _package;
 	private LocationResponse _response;
+	
+	RequestDelegateActivity _rd;
 	
 	//public static final String USER = "Catherine"; //Hedy, 45006
 	//public static final int USER_ID = 28001;
@@ -58,6 +60,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        User.getInstance().set_userID(45006);
 
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
@@ -77,11 +80,15 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         
-        User.getInstance().set_userID(45006);
+        _req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
+    	_package = new RequestPackage(this, _req, handler);
+        
+     
     }
     
     public void onStart(){
     	super.onStart();
+    	
     /*	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
 				new DialogInterface.OnClickListener() {
 			
@@ -101,28 +108,31 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		alert.setMessage("The network you are connected to appears to be invalid.");
     		alert.show();
     	}
-    	else {*/
+    	else {
     		auto = new AutoPoll(this);
         	auto.execute();
-        	pollButton.setTag(1);
-    	//}
+        	pollButton.setTag(0);
+    	}*/
     }
     
 	public void onClick(View src) {
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
-			final int status = (Integer) src.getTag();
-			if(status ==1){
+		//	final int status = (Integer) src.getTag();
+			
+        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+        	sl.sendRequest(this, _package);
+		/*	if(status ==1){
 				pollButton.setText("Auto Poll");
 				auto.cancel(true);
-				src.setTag(0);
+				src.setTag(1);
 			}else{
 				pollButton.setText("Stop Polling");
 				auto = new AutoPoll(this);
 		    	auto.execute();
-				src.setTag(1);
-			}
+				src.setTag(0);
+			}*/
 			break;
 		case R.id.friendButton:
     		Intent nextScreen = new Intent(src.getContext(),Friends.class);
@@ -142,12 +152,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	
 	public void onStop(){
 		super.onStop();
-		if (auto!=null) {
+/*		if (auto!=null) {
 			auto.cancel(true);
-		}
+		}*/
 	}
 	
-	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
+/*	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
 		RequestDelegateActivity _rd;
 		
@@ -172,7 +182,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			}
 			return null;
 		}
-	}
+	}*/
 
 	@Override
 	public void handleStringValue(int type, String val) {
