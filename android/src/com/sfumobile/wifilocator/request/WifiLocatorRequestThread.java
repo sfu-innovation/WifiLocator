@@ -16,6 +16,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.Handler;
+
 public class WifiLocatorRequestThread extends Thread {
 	private String _url;
 	private RequestDelegateActivity _delegate;
@@ -23,20 +25,23 @@ public class WifiLocatorRequestThread extends Thread {
 	private static final int CONNECTION_FAILED = 1;
 	private String _data;
 	private byte[] data;
-	public WifiLocatorRequestThread( int type,  String url, String data, RequestDelegateActivity delegate ) {
+	private Handler _handler;
+	public WifiLocatorRequestThread( int type,  String url, String data, RequestDelegateActivity delegate, Handler handler) {
 		_url = url;
 		_delegate = delegate;
 		_type  = type;
 		_data = data;
+		_handler = handler;
 	}
 	public void run(){
-		if ( _url == null ) {
-			return;
-		}
-        String url = _url;
-        String data = postRequest(_data, url);
-        _delegate.handleByteValue( _type, data );
-           
+        
+        _handler.post(new Runnable() {
+        	String url = _url;
+            String data = postRequest(_data, url);
+            public void run() {
+                _delegate.handleByteValue( _type, data );
+            }
+        });
     }
 	
 	public static String postRequest(String body, String url){

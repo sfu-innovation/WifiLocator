@@ -10,10 +10,11 @@ import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
-import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
+import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	RequestHandler requestHandler;
 	private static ArrayList<JSONObject> data;
 	private ListView friendList;
-	
+	private Handler handler;
 	private FriendshipsPendingRequest  _req;
 	private RequestPackage             _package;
 	
@@ -34,9 +35,10 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 		setContentView(R.layout.friend_requests);
 		friendList = (ListView)this.findViewById(R.id.friendList);
 		requestHandler = new RequestHandler(this);
+		handler = new Handler();
 		
-		_req = new FriendshipsPendingRequest( WifiLocatorActivity.USER_ID );
-		_package = new RequestPackage(this, _req);
+		_req = new FriendshipsPendingRequest( User.getInstance().get_userID() );
+		_package = new RequestPackage(this, _req, handler);
 	}
 
 	@Override
@@ -49,7 +51,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
-			FriendshipsPendingResponse _response = new FriendshipsPendingResponse( val );
+			FriendshipsResponse _response = new FriendshipsResponse( val, type);
 			
 		    data = _response.handleResponse();			
 			adapter = new FriendRequestAdapter(this,data);

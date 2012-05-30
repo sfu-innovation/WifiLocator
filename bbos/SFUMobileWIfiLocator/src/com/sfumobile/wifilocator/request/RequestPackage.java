@@ -34,7 +34,7 @@ public class RequestPackage {
 		System.out.println("[SFUMOBILE] - starting init");
 		if ( WLANContext.isAssociated() == WLANContext.WLAN_RADIO_CONNECTED){
 			System.out.println("[SFUMOBILE] - connected to an SSID");
-			if ( contains( RequestConstants.allowedSSIDs , WLANContext.getCurrentSSID())){
+		//	if ( contains( RequestConstants.allowedSSIDs , WLANContext.getCurrentSSID())){
 			
 			int type = _request.getType();
 			String url = _request.getURL();
@@ -59,9 +59,9 @@ public class RequestPackage {
 			}else {
 			    app.invokeLater( _thread );
 			}
-			} else {
+			/*} else {
 			 _rd.handleError(RequestTypes.ZONE, 1, "INCORRECT NETWORK");
-			}
+			}*/
 		}
 		else {
 			String reasonString = null;
