@@ -20,6 +20,14 @@ indexes:
   - name: zone_id
   - name: mac_address
 
+- kind: Events
+  properties:
+  - name: name
+  - name: organizer
+  - name: datetime
+  - name: location
+  - name: zone
+
 - kind: FriendRequests
   properties:
   - name: user_id
@@ -53,13 +61,3 @@ indexes:
   properties:
   - name: zones
   - name: mac_address
-
-- kind: Events
-  properties: 
-  - name: name
-  - name: organizer
-  - name: date
-  - name: time
-  - name: location
-  - name: zone
-  
