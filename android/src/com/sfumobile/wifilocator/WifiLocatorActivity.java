@@ -36,8 +36,8 @@ import android.widget.Button;
 
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
-	private String bssid, ssid, zone, zone_name;
-	private TextView bssidText, ssidText, zoneText, zoneName;
+	private String bssid, ssid;
+	private TextView bssidText, ssidText, zoneName;
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
@@ -61,7 +61,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
-        zoneText     = (TextView)this.findViewById(R.id.zoneText);
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
         pollButton   = (Button)this.findViewById(R.id.pollButton);
         locButton    = (Button)this.findViewById(R.id.mapbutton);
@@ -131,12 +130,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		break;
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterActivity.class);
-			myIntent.putExtra("zone", zone);
+			myIntent.putExtra("zone", User.getInstance().get_zone());
 			startActivity(myIntent);
 			break;
 		case R.id.mapbutton:
 			myIntent = new Intent(getApplicationContext(), MapActivity.class);
-			myIntent.putExtra("zone", zone);
+			myIntent.putExtra("zone", User.getInstance().get_zone());
 			startActivity(myIntent);
 		}
 	}
@@ -208,7 +207,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 			} finally {
-			//	zoneText.setText(zone);
 				zoneName.setText(User.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
