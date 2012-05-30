@@ -77,7 +77,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         
-        User.getInstance().set_userID(45001);
+        User.getInstance().set_userID(45006);
     }
     
     public void onStart(){
@@ -182,6 +182,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		     ssid      = wifiHandler.getSSID();
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
+		    	Log.d("zone request", data.toString());
 				User.getInstance().set_zone(data.getString("zone_name"));
 		        User.getInstance().set_map(data.getString("map_name"));		       
 			} catch (JSONException e) {
