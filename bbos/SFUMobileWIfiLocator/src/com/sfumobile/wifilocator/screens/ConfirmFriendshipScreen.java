@@ -9,7 +9,6 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
-import com.sfumobile.wifilocator.request.RequestDelegateScreen;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
@@ -45,13 +44,13 @@ public class ConfirmFriendshipScreen extends RequestDelegateScreen implements Fi
 		_resultLabel = new LabelField();
 		add( _resultLabel);
 		
-		
-		
+		setTitle("Confirm Friendship");
+		_messageLabel.setText("Would you like to accept the friendship request from "+friendship.getFriendName());
 	}
 	
 	protected void onUiEngineAttached( boolean attached ) {
 		if ( attached ) {
-			_messageLabel.setText("Confirm Friendship\nUser : "+_friendship.getFriendName());
+			
 			
 		}
 	}
@@ -81,11 +80,7 @@ public class ConfirmFriendshipScreen extends RequestDelegateScreen implements Fi
 
 	public void fieldChanged(Field field, int context) {
 		if ( field == _confirmButton ) {
-			_req = new FriendshipConfirmRequest( _friendship.getID());
-			System.out.println( _req.getURL() + "\n\n" + _req.getPayload());
-			_package = new RequestPackage( this , _req );
-			SingleRequestLauncher instance = SingleRequestLauncher.getInstance();
-			instance.sendRequest( _package);
+			
 			//UiApplication.getUiApplication().popScreen();
 			
 		}

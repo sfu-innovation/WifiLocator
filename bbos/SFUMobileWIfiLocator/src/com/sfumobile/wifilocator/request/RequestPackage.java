@@ -2,6 +2,7 @@ package com.sfumobile.wifilocator.request;
 
 import net.rim.device.api.ui.UiApplication;
 
+import com.sfumobile.wifilocator.screens.RequestDelegateScreen;
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.WLANContext;
 
