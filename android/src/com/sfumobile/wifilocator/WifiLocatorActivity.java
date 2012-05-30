@@ -76,6 +76,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         handler        = new Handler();
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
+        bssid          = "";
         
         User.getInstance().set_userID(45006);
     }
@@ -160,11 +161,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			
 			while(!isCancelled()) {
 		        try{
-		        	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
-		        	_package = new RequestPackage(_rd, _req, handler);
-		        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
-		        	sl.sendRequest(_rd, _package);
-		        	Thread.sleep(1000*30);
+		        	//Check every second to see if the bssid has changed
+		        	//Only poll the server if it has
+		        	if(bssidChanged()){
+		        		updateZoneInfo(_rd);
+		        	}
+		        	Thread.sleep(1000);
 		        } catch (InterruptedException e) {
 		        	Thread.currentThread().destroy();
 					e.printStackTrace();
@@ -174,6 +176,24 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		}
 	}
 
+	public boolean bssidChanged(){
+		String current_bssid = wifiHandler.getBSSID();
+		System.out.println(bssid.hashCode() + " " + bssid);
+		System.out.println(current_bssid.hashCode() + " " + current_bssid);
+		if(current_bssid.hashCode() != bssid.hashCode()){
+			bssid = current_bssid;
+			return true;
+		}
+		return false;
+	}
+	
+	public void updateZoneInfo(RequestDelegateActivity rd){
+    	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
+    	_package = new RequestPackage(rd, _req, handler);
+    	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+    	sl.sendRequest(rd, _package);
+	}
+	
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.ZONE){
