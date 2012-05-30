@@ -151,13 +151,29 @@ class AcceptHandler(webapp.RequestHandler):
 			
 class CSVImporter(webapp.RequestHandler):
 	def get(self):
-		try: 
-			areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
-		
+		try:
+			surrey_zones = [3007,4006,7007,13004,14005,15005]
+			
+			for i in surrey_zones:
+			#areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
+				curr_zone = Areas.get_by_id(i)
+				#print curr_zone.key().id()
+				removelist = db.GqlQuery("SELECT * FROM BSSIDZones " + "WHERE zones = :1" , curr_zone)
+				#print removelist.count()
+				if removelist.count() > 0:
+				
+					for k in removelist:
+						db.delete(k)
+					print "zone: " + str(i) + " deleted"	
+				else: 
+					print "zone not found"
+					return
 			#for row in areaReader:
 			#	Areas(zone_id=int(row[0]),zone_name=row[1]).put()
 			#	print "areas imported"
-
+		except:
+			print "delete fail"	
+		try:
 			csvReader = csv.reader(open(('res.csv'),'rU'), delimiter=',')
 			for row in csvReader:
 				curr_area = Areas.all()
@@ -167,8 +183,9 @@ class CSVImporter(webapp.RequestHandler):
 					#print "[" + str(area.zone_id) + "]"
 					BSSIDZones(zones = area, mac_address = row[0]).put()
 			print "bssid imported"
-		except: 
-			print "error on importing"
+		except:
+			print "import fail"
+		
 	
 
 def pretty_date(time=False):
@@ -223,8 +240,7 @@ application = webapp.WSGIApplication([
 									('/getmap/(.*)', MapHandler),
 									('/rest/.*', rest.Dispatcher), 
 									('/setfriend/', SetFriend),
-									('/setuser/', SetUser),
-									('/csvimport/', CSVImporter)],
+									('/setuser/', SetUser)],
 									debug=True)
 
 
