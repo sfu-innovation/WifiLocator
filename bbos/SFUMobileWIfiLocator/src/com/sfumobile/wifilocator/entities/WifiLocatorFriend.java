@@ -13,6 +13,10 @@ public class WifiLocatorFriend {
 		_time = time;
 	}
 	
+	public WifiLocatorFriend(){
+		
+	}
+	
 	public String getLocation(){
 		return _location;
 	}

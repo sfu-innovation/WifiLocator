@@ -34,15 +34,21 @@ def getFriendList(self, json_obj):
 	for item in q:
 		friend = Users.get_by_id(item.friend_id)
 		friendname = friend.short_name
+		map_name = "unknown"
+		last_location = "unknown"
 		if friend.last_location is not None:
 			last_location = friend.last_location.zone_name
-		else:
-			last_location = "unknown"
+			
+			zonemap = db.GqlQuery(("SELECT * FROM ZoneMaps " +
+				"WHERE zones = :1"), friend.last_location.key())
+			if zonemap.count() > 0:
+				map_name = str(zonemap[0].map_name)
 		
 		data["status"] = 0
 		data["friend_list"].append({'friend_name' : friendname,
 						   'friend_location' : last_location,
-						   'last_update' : main.pretty_date(friend.last_update)}
+						   'last_update' : main.pretty_date(friend.last_update),
+						   'map_name' : map_name}
 							)
 	self.response.headers['Content-Type'] = "application/json"
 	self.response.out.write(json.dumps(data))

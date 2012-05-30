@@ -44,3 +44,19 @@ class SetUser(webapp.RequestHandler):
 		else:
 			data = {'status' : 1, 'message' : 'invalid command'}
 		self.response.out.write(json.dumps(data))
+
+class GetUserId(webapp.RequestHandler):
+	def get(self):
+		data = {'status' : 1, 'message' : 'requires post request'}
+		self.response.out.write(json.dumps(data))
+	def post(self):
+		json_obj = json.loads(self.request.body)
+		self.response.headers['Content-Type'] = "application/json"
+		data = {}
+		
+		userobj = db.GqlQuery(("SELECT * FROM Users " + "WHERE short_name = :1"), urllib.unquote_plus(json_obj["short_name"]))
+		if userobj.count() <= 0:
+			data = {'status' : 1, 'message' : 'user not found'}
+		else:
+			data = {'status' : 0, 'message' : 'user found', 'user_id': userobj[0].key().id()}
+		self.response.out.write(json.dumps(data))

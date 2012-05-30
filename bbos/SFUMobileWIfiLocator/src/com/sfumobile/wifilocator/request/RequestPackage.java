@@ -2,6 +2,7 @@ package com.sfumobile.wifilocator.request;
 
 import net.rim.device.api.ui.UiApplication;
 
+import com.sfumobile.wifilocator.screens.RequestDelegateScreen;
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.WLANContext;
 
@@ -10,7 +11,7 @@ public class RequestPackage {
 	private RequestDelegateScreen _rd;
 	private Request _request;
 	private WifiLocatorRequestThread _thread;
-	
+	private static final boolean home = false;
 	
 	public RequestPackage( RequestDelegateScreen rd, Request req ){
 		_rd = rd;
@@ -41,7 +42,7 @@ public class RequestPackage {
 
 			if ( type == RequestTypes.ZONE){
 				_request.setProperty("mac_address",
-						 WLANContext.getBSSID(),
+						 home?"00:1f:45:64:1f:98":WLANContext.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload();
