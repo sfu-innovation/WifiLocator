@@ -36,7 +36,7 @@ def acceptFriendRequest(self, json_obj):
 		new2 = Friends(user = friend, friend_id = request.user_id )
 		new2.put()
 		
-		logging.debug(this_user.short_name + " and " + friend.short_name + "are now friends")
+		logging.debug(this_user.short_name + " and " + friend.short_name + " are now friends")
 		logging.debug("Friends IDs: " + str(new1.key().id()) +  " & " + str(new2.key().id()) )
 		
 	except:

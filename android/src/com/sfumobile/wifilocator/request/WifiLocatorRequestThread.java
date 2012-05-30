@@ -34,12 +34,12 @@ public class WifiLocatorRequestThread extends Thread {
 		_handler = handler;
 	}
 	public void run(){
-
-        String url = _url;
-        String data = postRequest(_data, url);
+        
         _handler.post(new Runnable() {
+        	String url = _url;
+            String data = postRequest(_data, url);
             public void run() {
-                _delegate.handleByteValue( _type, _data );
+                _delegate.handleByteValue( _type, data );
             }
         });
     }
