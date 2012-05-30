@@ -53,3 +53,13 @@ indexes:
   properties:
   - name: zones
   - name: mac_address
+
+- kind: Events
+  properties: 
+  - name: name
+  - name: organizer
+  - name: date
+  - name: time
+  - name: location
+  - name: zone
+  

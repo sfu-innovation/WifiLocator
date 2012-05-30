@@ -37,3 +37,12 @@ class ZoneMaps(db.Model):
 class FriendRequests(db.Model):
 	user_id = db.IntegerProperty(required=True)
 	friend_id = db.IntegerProperty (required=True)
+	
+class Events(db.Model):
+	name =  db.StringProperty(required=True)
+	organizer = db.StringProperty(required=True)
+	date = db.DateProperty(require=True)
+	time = db.TimeProper(require =  False)
+	location = db.StringProperty(required=True)
+	zone = db.ReferenceProperty(Areas, collection_name='event_locatoin')
+	

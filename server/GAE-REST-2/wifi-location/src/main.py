@@ -114,11 +114,20 @@ class RequestHandler(webapp.RequestHandler):
 				getFriendRequests(self, json_obj)
 			
 			#get zone_id by mac_address and 
-			elif (request_type == "updatezone"):
+			elif (request_type == "zone"):
 				
 				updateZone(self, json_obj)
+			
+			elif (request_type == "events"):
 				
-		except ValueError:
+				getEvents(self, json_obj)
+			
+			else:
+				logging.error("request type unknown")
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"status" : 11})
+				
+		except:
 			# if json is empty
 			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
@@ -134,17 +143,31 @@ class AcceptHandler(webapp.RequestHandler):
 
 			if (accept_type == "friendship"):
 				acceptFriendRequest(self, json_obj)
-				
-				
-				
-		except ValueError:
+						
+		except:
 			# if json is empty
 			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
 			
-
+class CSVImopter(webapp.RequestHandler):
+	def get(self):
+		try: 
+			areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
 		
+			for row in areaReader:
+				Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+
+			csvReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
+			for row in csvReader:
+			curr_area = Areas.all()
+			temp = curr_area.filter("zone_id =", (int(row[1])+20))
+
+			for area in temp:
+				#print "[" + str(area.zone_id) + "]"
+				BSSIDZones(zones = area, mac_address = row[0]).put()
+			except: 
+				print "error on importing"
 	
 
 def pretty_date(time=False):
@@ -199,7 +222,8 @@ application = webapp.WSGIApplication([
 									('/getmap/(.*)', MapHandler),
 									('/rest/.*', rest.Dispatcher), 
 									('/setfriend/', SetFriend),
-									('/setuser/', SetUser)],
+									('/setuser/', SetUser),
+									('/csvimport/', CSVImporter)],
 									debug=True)
 
 
