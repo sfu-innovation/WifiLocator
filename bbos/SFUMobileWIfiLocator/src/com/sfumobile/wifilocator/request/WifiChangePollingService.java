@@ -14,6 +14,8 @@ public class WifiChangePollingService {
 		private int _pollingThreadID = 2;
 		private Vector _actions;
 		private long _currentBSSID;
+		
+		private String _testBSSID;
 		private WifiChangePollingService(){
 			_pollingThread = new RequestThread();
 			_actions = new Vector();
@@ -54,7 +56,11 @@ public class WifiChangePollingService {
 			public void run(){
 				
 				long newBSSID =  StringUtilities.stringHashToLong(WLANContext.getBSSID());
+				System.out.println("[SFUMOBILE] *");
 				if ( _currentBSSID != newBSSID) {
+					_currentBSSID = newBSSID;
+					//_testBSSID = WLANContext.getBSSID();
+					System.out.println("[SFUMOBILE] There was a change in BSSID");
 					for(int i = 0; i < _actions.size(); i++){
 						RequestPackage currentRequest = (RequestPackage)_actions.elementAt( i );
 						currentRequest.init();
