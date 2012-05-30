@@ -15,7 +15,7 @@ public abstract class  RequestDelegateScreen extends MainScreen {
 		
 	}
 	
-	protected void onUiEngineAttached( boolean attached ){
+	/*protected void onUiEngineAttached( boolean attached ){
 		if ( attached ){
 			addMenuItem( new MenuItem("Update Zone", 110, 10){
 				public void run(){
@@ -37,7 +37,7 @@ public abstract class  RequestDelegateScreen extends MainScreen {
 				
 			});
 		}
-	}
+	}*/
 	public abstract void handleStringValue( int type, String val );
 	public abstract void handleIntValue( int type, int val);
 	public abstract void handleError( int type, int errorCode, Object errorString);

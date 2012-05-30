@@ -16,13 +16,14 @@ public class FriendsResponse extends ResponseHandler {
 	public Object handleResponse() {
 		Vector friends = new Vector();
 		JSONArray temp = null;
-		
 		try {
-			temp =  _data.getJSONArray("Alex");
+			
+			temp =  _data.getJSONArray("friend_list");
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		JSONObject temp2 = null;
 		for(int  i = 0; i < temp.length(); i++){
 			try {
@@ -31,7 +32,6 @@ public class FriendsResponse extends ResponseHandler {
 						  temp2.getString("friend_name"),
 						  temp2.getString("friend_location"),
 						  temp2.getString("last_update")));
-						  
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

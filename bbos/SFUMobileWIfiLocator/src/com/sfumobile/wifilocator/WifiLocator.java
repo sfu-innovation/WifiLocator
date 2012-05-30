@@ -7,6 +7,7 @@ import com.sfumobile.wifilocator.request.PollingService;
 import com.sfumobile.wifilocator.request.WifiChangePollingService;
 import com.sfumobile.wifilocator.screens.WifiLocatorFriendsScreen;
 import com.sfumobile.wifilocator.screens.WifiLocatorAddFriendScreen;
+import com.sfumobile.wifilocator.screens.WifiLocatorMainScreen;
 
 /**
  * This class extends the UiApplication class, providing a
@@ -37,7 +38,8 @@ public class WifiLocator extends UiApplication
   //  	WifiChangePollingService pollService = WifiChangePollingService.getInstance();
       //  pushScreen(new WifiLocatorFriendsScreen());
     	//pushScreen( new WifiLocatorAddFriendScreen());
-    	pushScreen( new WifiLocatorFriendsScreen());
+    	//pushScreen( new WifiLocatorFriendsScreen());
+    	pushScreen( new WifiLocatorMainScreen());
     }
 
 

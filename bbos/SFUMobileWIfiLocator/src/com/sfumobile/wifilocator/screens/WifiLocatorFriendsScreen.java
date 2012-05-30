@@ -24,6 +24,7 @@ import com.sfumobile.wifilocator.request.PollingService;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.ZoneRequest;
+import com.sfumobile.wifilocator.response.FriendsResponse;
 import com.sfumobile.wifilocator.screens.test.WifiLocatorMenuItems;
 import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.JSONWifiLocatorParser;
@@ -116,7 +117,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen {
 	public void handleStringValue(int type, String val) {
 		System.out.println("[SFUMOBILE] - Handling a string - "+val);
 		if ( type == RequestTypes.GET_FRIENDS){
-		_friends = JSONWifiLocatorParser.getFriends(val);
+		_friends = (Vector)(new FriendsResponse(val).handleResponse());
 		
 		int length = _friends.size()+1;
 		friendsArray = new WifiLocatorFriend[length];
