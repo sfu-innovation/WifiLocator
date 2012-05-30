@@ -15,6 +15,7 @@ from src.zones import *
 from src.requests import *
 from src.users import *
 from src.accepts import *
+from src.importcsv import *
 
 from django.utils import simplejson as json
 from google.appengine.ext.webapp import template
@@ -22,7 +23,7 @@ from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-
+from google.appengine.ext.db import djangoforms
 
 class MainPage(webapp.RequestHandler):
 	def get(self):
@@ -88,13 +89,18 @@ class MainPage(webapp.RequestHandler):
 					"FROM Users ")
 		friend_query = db.GqlQuery("SELECT * "
 					"FROM Friends ")
+					
+		event_query =  db.GqlQuery("SELECT * "
+					"FROM Events ")
+
 		template_values = {
     		'bssid': bssid_query,
 			'areas': area_query,
 			'friends' : friend_query,
-			'users' : user_query
+			'users' : user_query,
+			'events' : event_query
 		}
-		path = os.path.join(os.path.dirname(__file__), 'index.html')
+		path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'index.html')
 		self.response.out.write(template.render(path,template_values))
 
 
@@ -159,46 +165,33 @@ class AcceptHandler(webapp.RequestHandler):
 			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
-			
-class CSVImporter(webapp.RequestHandler):
-	def get(self):
-		try:
-			surrey_zones = [3007,4006,7007,13004,14005,15005]
-			
-			for i in surrey_zones:
-			#areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
-				curr_zone = Areas.get_by_id(i)
-				#print curr_zone.key().id()
-				removelist = db.GqlQuery("SELECT * FROM BSSIDZones " + "WHERE zones = :1" , curr_zone)
-				#print removelist.count()
-				if removelist.count() > 0:
-				
-					for k in removelist:
-						db.delete(k)
-					print "zone: " + str(i) + " deleted"	
-				else: 
-					print "zone not found"
-					return
-			#for row in areaReader:
-			#	Areas(zone_id=int(row[0]),zone_name=row[1]).put()
-			#	print "areas imported"
-		except:
-			print "delete fail"	
-		try:
-			csvReader = csv.reader(open(('res.csv'),'rU'), delimiter=',')
-			for row in csvReader:
-				curr_area = Areas.all()
-				temp = curr_area.filter("zone_id =", (int(row[1])+20))
+					
 	
-				for area in temp:
-					#print "[" + str(area.zone_id) + "]"
-					BSSIDZones(zones = area, mac_address = row[0]).put()
-			print "bssid imported"
-		except:
-			print "import fail"
-		
-	
+class EventCreator(webapp.RequestHandler):
 
+	def get(self):
+		
+		template_values = {
+	    		'eventform' : EventForm()
+			}
+		path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'event.html')
+		self.response.out.write(template.render(path,template_values))
+	
+	def post(self):
+		data  = EventForm(data=self.request.POST)
+		if data.is_valid():
+			entity = data.save(commit = False)
+			entity.put()
+			print "event created"
+			self.redirect('/')
+		else:
+			template_values = {
+	    		'eventform' : data
+			}
+			path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'event.html')
+			self.response.out.write(template.render(path,template_values))
+
+	
 def pretty_date(time=False):
 		"""
 		Get a datetime object or a int() Epoch timestamp and return a
@@ -244,16 +237,6 @@ def pretty_date(time=False):
 		
 
 	
-application = webapp.WSGIApplication([
-									('/', MainPage), 
-									('/request/(.*)', RequestHandler),
-									('/accept/(.*)', AcceptHandler),
-									('/getmap/(.*)', MapHandler),
-									('/rest/.*', rest.Dispatcher),
-									('/getuserid/', GetUserId),
-									('/setfriend/', SetFriend),
-									('/setuser/', SetUser)],
-									debug=True)
 
 
 
@@ -276,7 +259,19 @@ rest.Dispatcher.add_models_from_module(__name__)
 #rest.Dispatcher.authorizer = MyAuthorizer()
                                      
 def main():
-    run_wsgi_app(application)
+	application = webapp.WSGIApplication([
+										('/', MainPage), 
+										('/request/(.*)', RequestHandler),
+										('/accept/(.*)', AcceptHandler),
+										('/getmap/(.*)', MapHandler),
+										('/rest/.*', rest.Dispatcher),
+										('/getuserid/', GetUserId),
+										('/setfriend/', SetFriend),
+										('/setuser/', SetUser),
+										('/importcsv', CSVImporter),
+										('/event', EventCreator)],
+										debug=True)
+	run_wsgi_app(application)
 
 if __name__ == "__friends__":
     main()

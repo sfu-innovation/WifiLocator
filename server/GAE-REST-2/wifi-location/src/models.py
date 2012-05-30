@@ -1,4 +1,14 @@
+import cgi
+
+from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp.util import run_wsgi_app
+
+from google.appengine.ext.db import djangoforms
+
+
 
 class Areas(db.Model):
 	zone_id = db.IntegerProperty(required=True)
@@ -42,6 +52,14 @@ class Events(db.Model):
 	name =  db.StringProperty(required=True)
 	organizer = db.StringProperty(required=True)
 	datetime = db.DateTimeProperty(required=True, auto_now = False)
-	location = db.StringProperty(required=True)
+	location = db.StringProperty(required=False)
+	category = db.StringProperty(required=True)
+	contact_name =  db.StringProperty(required=False)
+	contact_email = db.EmailProperty(required =True)
+	description = db.TextProperty(required=False)
 	zone = db.ReferenceProperty(Areas, collection_name='event_locatoin')
 	
+	
+class EventForm(djangoforms.ModelForm):
+	class Meta:
+		model = Events
