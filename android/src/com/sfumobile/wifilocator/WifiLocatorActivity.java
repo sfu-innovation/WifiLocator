@@ -36,6 +36,7 @@ import android.widget.Button;
 
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
+
 	private String bssid, ssid;
 	private TextView bssidText, ssidText, zoneName;
 	private Button pollButton, friendButton, locButton;
@@ -47,7 +48,10 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private Handler handler;
 	private LocationRequest            _req;
 	private RequestPackage             _package;
-	private LocationResponse _response;	
+	private LocationResponse _response;
+	
+	RequestDelegateActivity _rd;
+	
 	//public static final String USER = "Catherine"; //Hedy, 45006
 	//public static final int USER_ID = 28001;
 
@@ -57,6 +61,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        UserObject.getInstance().set_userID(45006);
 
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
@@ -76,13 +81,20 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         wifiHandler    = requestHandler.getWifiHandler();
         bssid          = "";
         
+
     	auto = new AutoPoll(this);
-    	
-        User.getInstance().set_userID(45006);
+
+
+        _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
+    	_package = new RequestPackage(this, _req, handler);
+        
+     
+
     }
     
     public void onStart(){
     	super.onStart();
+
     	if(!wifiHandler.wifiEnabled()){
     		alert = AlertDialogBuilder.createDialog(this, "Wifi isn't turned on");
     		alert.show();
@@ -110,15 +122,18 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		switch(src.getId()){
 		case R.id.pollButton:
 			final int status = (Integer) src.getTag();
+			
+       // 	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+       // 	sl.sendRequest(this, _package);
 			if(status ==1){
 				pollButton.setText("Auto Poll");
 				auto.cancel(true);
-				src.setTag(0);
+				src.setTag(1);
 			}else{
 				pollButton.setText("Stop Polling");
 				auto = new AutoPoll(this);
 		    	auto.execute();
-				src.setTag(1);
+				src.setTag(0);
 			}
 			break;
 		case R.id.friendButton:
@@ -127,21 +142,21 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		break;
 		case R.id.twitterIcon:
 			myIntent = new Intent(src.getContext(), TwitterActivity.class);
-			myIntent.putExtra("zone", User.getInstance().get_zone());
+			myIntent.putExtra("zone", UserObject.getInstance().get_zone());
 			startActivity(myIntent);
 			break;
 		case R.id.mapbutton:
 			myIntent = new Intent(getApplicationContext(), MapActivity.class);
-			myIntent.putExtra("zone", User.getInstance().get_zone());
+			myIntent.putExtra("map_name", UserObject.getInstance().get_map());
 			startActivity(myIntent);
 		}
 	}
 	
 	public void onStop(){
 		super.onStop();
-		if (auto!=null) {
+/*		if (auto!=null) {
 			auto.cancel(true);
-		}
+		}*/
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
@@ -183,7 +198,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	}
 	
 	public void updateZoneInfo(RequestDelegateActivity rd){
-    	_req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
+    	_req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
     	_package = new RequestPackage(rd, _req, handler);
     	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
     	sl.sendRequest(rd, _package);
@@ -198,12 +213,13 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
 		    	Log.d("zone request", data.toString());
-				User.getInstance().set_zone(data.getString("zone_name"));
-		        User.getInstance().set_map(data.getString("map_name"));		       
+				UserObject.getInstance().set_zone(data.getString("zone_name"));
+		        UserObject.getInstance().set_map(data.getString("map_name"));		
+		        
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 			} finally {
-				zoneName.setText(User.getInstance().get_zone());
+				zoneName.setText(UserObject.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
 			}
@@ -211,7 +227,22 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		}
 		
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		outState.putString("bssid", (String) bssidText.getText());
+		outState.putString("ssid", (String) ssidText.getText());
+	}
 
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		bssidText.setText(savedInstanceState.getString("bssid"));
+		ssidText.setText(savedInstanceState.getString("ssid"));
+		zoneName.setText(UserObject.getInstance().get_zone());
+	}
+	
 	@Override
 	public void handleIntValue(int type, int val) {
 		// TODO Auto-generated method stub
