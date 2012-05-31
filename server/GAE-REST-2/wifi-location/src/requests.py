@@ -92,9 +92,12 @@ def getFriendRequests(self, json_obj):
 			return
 		for requests in q:
 			friend = Users.get_by_id(requests.friend_id)
-			friendname = friend.short_name			
-			data["requests"].append({'friend_name' : friendname,
-								'request_id' : requests.key().id()})
+			friend_first_name = friend.first_name
+			friend_last_name = friend.last_name			
+			data["requests"].append({
+									'first_name' : friend_first_name,
+									'last_name' : friend_last_name,
+									'request_id' : requests.key().id()})
 
 			data["status"] = 0
 		self.response.headers['Content-Type'] = "application/json"
