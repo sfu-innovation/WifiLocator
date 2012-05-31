@@ -1,12 +1,28 @@
+import cgi
+
+from google.appengine.api import users
 from google.appengine.ext import db
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp.util import run_wsgi_app
+
+from google.appengine.ext.db import djangoforms
+
+
+class SuperZones(db.Model):
+	super_zone_name =  db.StringProperty(required=True)
+
 
 class Areas(db.Model):
-	zone_id = db.IntegerProperty(required=True)
+	zone_id = db.IntegerProperty(required=False)
 	zone_name = db.StringProperty(required=True)
+	super_zone = db.ReferenceProperty(SuperZones, required = False)
 
 class ZoneNames(db.Model):
 	zone_id = db.IntegerProperty(required=True)
 	zone_name = db.StringProperty(required=True)
+
+
 
 class Zones(db.Model):
 	#zone = db.ReferenceProperty(Zones, collection_name='addresses')
@@ -41,7 +57,16 @@ class FriendRequests(db.Model):
 class Events(db.Model):
 	name =  db.StringProperty(required=True)
 	organizer = db.StringProperty(required=True)
-	datetime = db.DateTimeProperty(required=True, auto_now = False)
-	location = db.StringProperty(required=True)
-	zone = db.ReferenceProperty(Areas, collection_name='event_locatoin')
+	start_time = db.DateTimeProperty(required=False, auto_now = False)
+	end_time = db.DateTimeProperty(required=False, auto_now = False)
+	location = db.StringProperty(required=False)
+	category = db.StringProperty(required=True)
+	contact_name =  db.StringProperty(required=False)
+	contact_email = db.EmailProperty(required =True)
+	description = db.TextProperty(required=False)
+	super_zone = db.ReferenceProperty(SuperZones, collection_name='event_super_zone', required=False)
 	
+	
+class EventForm(djangoforms.ModelForm):
+	class Meta:
+		model = Events
