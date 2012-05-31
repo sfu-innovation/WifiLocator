@@ -13,8 +13,7 @@ from src.zones import *
 from src.requests import *
 from src.users import *
 from src.accepts import *
-from src.importcsv import *
-
+from src.importcsv import CSVImporter
 from django.utils import simplejson as json
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
@@ -81,9 +80,23 @@ class MainPage(webapp.RequestHandler):
 		
 		print mytime
 		
-		'''
 		
-
+		areas = db.GqlQuery("SELECT * "
+						"FROM Areas ")
+		for items in areas:
+			if items.zone_name[:9] == "Galleria4":
+				superzone = SuperZones.get_by_id(67001)
+				items.super_zone = superzone
+				items.put()
+			elif items.zone_name[:9] == "Galleria3":
+				superzone = SuperZones.get_by_id(66001)
+				items.super_zone = superzone
+				items.put()		
+		'''				
+		#SuperZones(super_zone_name = "Galleria 3").put()
+		
+		#g3_3 = Areas.get_by_id(2345)
+		#BSSIDZones(zones = g3_3, mac_address = "00:1f:45:64:0f:41").put()
 		super_zones = db.GqlQuery("SELECT * "
 					"FROM SuperZones ")
 		bssid_query = db.GqlQuery("SELECT * "
@@ -115,49 +128,49 @@ class MainPage(webapp.RequestHandler):
 class RequestHandler(webapp.RequestHandler):
 	
 	def post(self, request_type):
-		#try:
-		
-		json_obj = json.loads(self.request.body)
-		input = json.dumps(json_obj)
-		#print str(input)
-		#print "Json object recieved: ", input
-		logging.debug("JSON object recieved to RequestHandler: " + str(input))
-		
-		#get a list of friends and friends info
-		if (request_type == "friendlist"):
-
-			getFriendList(self, json_obj)
-		
-		#send friendship request
-		elif (request_type == "friendship"):
+		try:
 			
-			sendFriendRequest(self, json_obj)
-		
-		#get a list of pending friend request
-		elif (request_type == "pending/friendships"):
-
-			getFriendRequests(self, json_obj)
-		
-		#get zone by mac_address and update user info
-		elif (request_type == "zone"):
+			json_obj = json.loads(self.request.body)
+			input = json.dumps(json_obj)
+			#print str(input)
+			#print "Json object recieved: ", input
+			logging.debug("JSON object recieved to RequestHandler: " + str(input))
 			
-			updateZone(self, json_obj)
-		
-		elif (request_type == "events"):
+			#get a list of friends and friends info
+			if (request_type == "friendlist"):
+	
+				getFriendList(self, json_obj)
 			
-			getEvents(self, json_obj)
+			#send friendship request
+			elif (request_type == "friendship"):
+				
+				sendFriendRequest(self, json_obj)
 			
-		
-		else:
-			logging.error("request type unknown")
+			#get a list of pending friend request
+			elif (request_type == "pending/friendships"):
+	
+				getFriendRequests(self, json_obj)
+			
+			#get zone_id by mac_address and 
+			elif (request_type == "zone"):
+				
+				updateZone(self, json_obj)
+			
+			elif (request_type == "events"):
+				
+				getEvents(self, json_obj)
+				
+			
+			else:
+				logging.error("request type unknown")
+				self.response.headers['Content-Type'] = "application/json"
+				self.response.out.write(json.dumps({"status" : 12}))
+		except:
+			# if json is empty
+			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"status" : 12}))
-	# 	except:
-# 			# if json is empty
-# 			logging.error("No JSON received")
-# 			self.response.headers['Content-Type'] = "application/json"
-# 			self.response.out.write(json.dumps({"status" : 11}))
-# 			
+			self.response.out.write(json.dumps({"status" : 11}))
+			
 
 class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):
@@ -199,6 +212,8 @@ class EventCreator(webapp.RequestHandler):
 			}
 			path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'event.html')
 			self.response.out.write(template.render(path,template_values))
+
+
 
 	
 def pretty_date(time=False):
@@ -277,7 +292,6 @@ def main():
 										('/getuserid/', GetUserId),
 										('/setfriend/', SetFriend),
 										('/setuser/', SetUser),
-										('/importcsv', CSVImporter),
 										('/event', EventCreator)],
 										debug=True)
 	run_wsgi_app(application)

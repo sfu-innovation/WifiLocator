@@ -28,7 +28,7 @@ indexes:
   - name: organizer
   - name: datetime
   - name: location
-  - name: zone
+  - name: super_zone
 
 - kind: FriendRequests
   properties:

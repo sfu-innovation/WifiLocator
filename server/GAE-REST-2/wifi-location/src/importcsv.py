@@ -53,7 +53,7 @@ class CSVImporter(webapp.RequestHandler):
 		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_events_UTF_8.csv')
 		csvReader = csv.reader(open(path,'rU'), delimiter=',')
 		#read the first row of header
-		header = csvReader.next()
+		#header = csvReader.next()
 		#print header[5]
 		
 		for row in csvReader:
@@ -78,7 +78,7 @@ class CSVImporter(webapp.RequestHandler):
 					 contact_email = row[4],
 					 start_time = formated_start_time,
 					 end_time = formated_end_time,
-					 #description = row[7],
+					 #description = row[7].decode("utf-8"))
 					 super_zone = superzone)
 				temp.put()
 
