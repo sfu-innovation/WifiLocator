@@ -128,6 +128,7 @@ def getEvents(self, json_obj):
 	logging.debug("location: " + curr_zone.zone_name)
 	try:
 		curr_super_zone = curr_zone.super_zone
+
 		for events in curr_super_zone.event_super_zone:
 			data["events"].append({'name' : events.name,
 								   'organizer' : events.organizer,

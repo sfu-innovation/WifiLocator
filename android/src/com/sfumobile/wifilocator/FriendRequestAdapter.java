@@ -101,7 +101,9 @@ public class FriendRequestAdapter extends BaseAdapter{
 		 
 		// Bind the data efficiently with the holder.
 		try {
-			holder.friendText.setText(_data.get(position).getString("friend_name"));
+			String last_name = _data.get(position).getString("last_name");
+			String first_name = _data.get(position).getString("first_name");
+			holder.friendText.setText(first_name + " " + last_name);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

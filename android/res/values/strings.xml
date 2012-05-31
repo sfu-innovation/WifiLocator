@@ -46,5 +46,6 @@
     <string name="view_friend_requests">View Friend Requests</string>
     <string name="reject">Reject</string>
     <string name="confirm">Confirm</string>
+    <string name="events">Events</string>
 
 </resources>
