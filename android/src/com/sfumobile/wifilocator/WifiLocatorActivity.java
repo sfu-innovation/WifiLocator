@@ -83,8 +83,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         
 
   //  	auto = new AutoPoll(this);
-    	
-        UserObject.getInstance().set_userID(45006);
+
 
         _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
     	_package = new RequestPackage(this, _req, handler);
