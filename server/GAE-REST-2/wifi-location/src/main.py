@@ -6,8 +6,6 @@ import wsgiref.handlers
 import csv
 import rest
 import logging
-import src.iso8601
-
 
 from src.models import *
 from src.friends import *
@@ -28,12 +26,16 @@ from google.appengine.ext.db import djangoforms
 class MainPage(webapp.RequestHandler):
 	def get(self):
 		'''
-		areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
+		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_super_zone.csv')
+		areaReader = csv.reader(open(path,'rU'), delimiter=',')
 		
 		for row in areaReader:
-			Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+			tempzone = Areas.get_by_id(int(row[1]))
+			SuperZones(zone = tempzone, super_zone_name = row[0]).put()
+			#Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+		print "imported super zone"
 	
-		
+	
 		macReader = csv.reader(open(('surrey_res.csv'),'rU'), delimiter=',')
 		
 
@@ -79,7 +81,11 @@ class MainPage(webapp.RequestHandler):
 		
 		print mytime
 		
-		'''	
+		'''
+		
+
+		super_zones = db.GqlQuery("SELECT * "
+					"FROM SuperZones ")
 		bssid_query = db.GqlQuery("SELECT * "
 				"FROM BSSIDZones ")
 		area_query = db.GqlQuery("SELECT * "
@@ -93,12 +99,14 @@ class MainPage(webapp.RequestHandler):
 		event_query =  db.GqlQuery("SELECT * "
 					"FROM Events ")
 
+		
 		template_values = {
     		'bssid': bssid_query,
 			'areas': area_query,
 			'friends' : friend_query,
 			'users' : user_query,
-			'events' : event_query
+			'events' : event_query,
+			'super_zones' : super_zones
 		}
 		path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'index.html')
 		self.response.out.write(template.render(path,template_values))
@@ -107,48 +115,49 @@ class MainPage(webapp.RequestHandler):
 class RequestHandler(webapp.RequestHandler):
 	
 	def post(self, request_type):
-		try:
+		#try:
+		
+		json_obj = json.loads(self.request.body)
+		input = json.dumps(json_obj)
+		#print str(input)
+		#print "Json object recieved: ", input
+		logging.debug("JSON object recieved to RequestHandler: " + str(input))
+		
+		#get a list of friends and friends info
+		if (request_type == "friendlist"):
+
+			getFriendList(self, json_obj)
+		
+		#send friendship request
+		elif (request_type == "friendship"):
 			
-			json_obj = json.loads(self.request.body)
-			input = json.dumps(json_obj)
-			#print str(input)
-			#print "Json object recieved: ", input
-			logging.debug("JSON object recieved to RequestHandler: " + str(input))
+			sendFriendRequest(self, json_obj)
+		
+		#get a list of pending friend request
+		elif (request_type == "pending/friendships"):
+
+			getFriendRequests(self, json_obj)
+		
+		#get zone by mac_address and update user info
+		elif (request_type == "zone"):
 			
-			#get a list of friends and friends info
-			if (request_type == "friendlist"):
-	
-				getFriendList(self, json_obj)
+			updateZone(self, json_obj)
+		
+		elif (request_type == "events"):
 			
-			#send friendship request
-			elif (request_type == "friendship"):
-				
-				sendFriendRequest(self, json_obj)
+			getEvents(self, json_obj)
 			
-			#get a list of pending friend request
-			elif (request_type == "pending/friendships"):
-	
-				getFriendRequests(self, json_obj)
-			
-			#get zone_id by mac_address and 
-			elif (request_type == "zone"):
-				
-				updateZone(self, json_obj)
-			
-			elif (request_type == "events"):
-				
-				getEvents(self, json_obj)
-			
-			else:
-				logging.error("request type unknown")
-				self.response.headers['Content-Type'] = "application/json"
-				self.response.out.write(json.dumps({"status" : 12}))
-		except:
-			# if json is empty
-			logging.error("No JSON received")
+		
+		else:
+			logging.error("request type unknown")
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"status" : 11}))
-			
+			self.response.out.write(json.dumps({"status" : 12}))
+	# 	except:
+# 			# if json is empty
+# 			logging.error("No JSON received")
+# 			self.response.headers['Content-Type'] = "application/json"
+# 			self.response.out.write(json.dumps({"status" : 11}))
+# 			
 
 class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):

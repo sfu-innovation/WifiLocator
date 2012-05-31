@@ -49,7 +49,8 @@ class CSVImporter(webapp.RequestHandler):
 		print datetime.ctime(newtime)
 		'''
 		
-		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'events.csv')
+		
+		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_events_UTF_8.csv')
 		csvReader = csv.reader(open(path,'rU'), delimiter=',')
 		#read the first row of header
 		header = csvReader.next()
@@ -63,22 +64,36 @@ class CSVImporter(webapp.RequestHandler):
 			#print "formatted: " + datetime.ctime(newtime)
 
 
-			time =  (row[5][5:22]).rstrip()
-			formatedtime = datetime.strptime(time, "%d %b %Y %H:%M")
-
-			area = Areas.get_by_id(int(row[7]))
-		
+			start_time =  (row[5][5:22]).rstrip()
+			formated_start_time = datetime.strptime(start_time, "%d %b %Y %H:%M")
+			end_time =  (row[6][5:22]).rstrip()
+			formated_end_time = datetime.strptime(end_time, "%d %b %Y %H:%M")
 			
-			temp = Events(name = row[0],
+			if row[8] != None:
+				superzone = SuperZones.get_by_id(int(row[8]))
+				temp = Events(name = row[0],
 					organizer = row[1],
 					 category = row[2],
 					 contact_name = row[3],
 					 contact_email = row[4],
-					 datetime = formatedtime,
-					 description = row[6],
-					 zone = area)
-			temp.put()
-			print "Event: " + row[0] + " is added."
-		#print "event imported"
+					 start_time = formated_start_time,
+					 end_time = formated_end_time,
+					 #description = row[7],
+					 super_zone = superzone)
+				temp.put()
 
+			else:
+				temp = Events(name = row[0],
+						organizer = row[1],
+						 category = row[2],
+						 contact_name = row[3],
+						 contact_email = row[4],
+						 start_time = formated_start_time,
+						 end_time = formated_end_time)
+						 #description = row[7],
+						 #super_zone = superzone)
+				temp.put()
+		print "Event: " + row[0] + " is added."
+		#print "event imported"
+		
 	

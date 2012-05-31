@@ -14,6 +14,7 @@ indexes:
   properties:
   - name: zone_id
   - name: zone_name
+  - name: super_zone
 
 - kind: BSSIDZones
   properties:
@@ -37,6 +38,10 @@ indexes:
   properties:
   - name: user_id
   - name: friend_id
+
+- kind: SuperZones
+  properties:
+  - name: super_zone_name
 
 - kind: Users
   properties:
