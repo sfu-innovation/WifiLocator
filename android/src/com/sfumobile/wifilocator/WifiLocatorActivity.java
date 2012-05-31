@@ -39,7 +39,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
 	private String bssid, ssid;
 	private TextView bssidText, ssidText, zoneName;
-
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
 //	private AutoPoll auto;
@@ -49,12 +48,10 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private Handler handler;
 	private LocationRequest            _req;
 	private RequestPackage             _package;
-
 	private LocationResponse _response;
 	
 	RequestDelegateActivity _rd;
 	
-
 	//public static final String USER = "Catherine"; //Hedy, 45006
 	//public static final int USER_ID = 28001;
 
@@ -83,30 +80,24 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         bssid          = "";
+        
+
+  //  	auto = new AutoPoll(this);
     	
         UserObject.getInstance().set_userID(45006);
+
         _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
     	_package = new RequestPackage(this, _req, handler);
+        
+     
 
     }
     
     public void onStart(){
     	super.onStart();
-
-    	
-    /*	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
-				new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		}).create();
-    	
-    	if(!wifiHandler.wifi_check()){
-    		alert.setTitle("WiFi Error");
-    		alert.setMessage("No WiFi connection detected.");
->>>>>>> hedy
+/*
+    	if(!wifiHandler.wifiEnabled()){
+    		alert = AlertDialogBuilder.createDialog(this, "Wifi isn't turned on");
     		alert.show();
     		if(auto.getStatus() == AsyncTask.Status.RUNNING){
     			auto.cancel(true);
@@ -131,11 +122,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         	auto.execute();
         	pollButton.setTag(0);
     	}*/
-    }
-    
-    public void onRestart(){
-    	super.onRestart();
-
     }
     
 	public void onClick(View src) {
