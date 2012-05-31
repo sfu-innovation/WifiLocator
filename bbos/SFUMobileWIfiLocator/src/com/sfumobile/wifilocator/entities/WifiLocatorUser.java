@@ -1,6 +1,7 @@
 package com.sfumobile.wifilocator.entities;
 
 public class WifiLocatorUser {
+	
 	private int _userID;
 	private String _lastUpdate, _zoneName, _mapName;
 	private static WifiLocatorUser _self;

@@ -18,19 +18,6 @@ public class RequestPackage {
 		_request = req;
 	}
 	
-	
-	
-	private boolean contains( String[] list, String val ){
-		int length = list.length;
-		boolean retVal = false;
-		for(int i = 0; i < length; i++){
-			if ( list[i].equals(val)){
-				retVal = true;
-				break;
-			}
-		}
-		return retVal;
-	}
 	public void init() {
 		System.out.println("[SFUMOBILE] - starting init");
 		if ( WLANContext.isAssociated() == WLANContext.WLAN_RADIO_CONNECTED){
@@ -40,9 +27,9 @@ public class RequestPackage {
 			int type = _request.getType();
 			String url = _request.getURL();
 
-			if ( type == RequestTypes.ZONE){
+			if ( _request instanceof LocationRequest){
 				_request.setProperty("mac_address",
-						 home?"00:1f:45:64:1f:98":WLANContext.getBSSID(),
+						 home?"00:1f:45:63:56:59":WLANContext.getBSSID(),
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload();

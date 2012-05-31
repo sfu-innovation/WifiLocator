@@ -2,6 +2,7 @@ package com.sfumobile.wifilocator.screens;
 
 import java.util.Vector;
 
+import com.sfumobile.wifilocator.entities.WifiLocatorData;
 import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
@@ -13,15 +14,18 @@ import com.sfumobile.wifilocator.response.FriendshipRetrievalResponse;
 import com.sfumobile.wifilocator.screens.test.WifiLocatorMenuItems;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
+import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
 import net.rim.device.api.ui.MenuItem;
 import net.rim.device.api.ui.UiApplication;
+import net.rim.device.api.ui.component.ButtonField;
 import net.rim.device.api.ui.component.Dialog;
 import net.rim.device.api.ui.component.ObjectListField;
+import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 	
-public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
+public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implements FieldChangeListener{
 	private ObjectListField         _pendingFriendships;
 	private TemporaryPollingService _pollService;
 	private WifiLocatorFriendship[] _pendingFriendshipsData;
@@ -30,6 +34,7 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 	private FriendshipRetrievalResponse _response;
 	private ViewPendingFriendshipsScreen _self;
 	private Dialog _confirmFriendshipDialog;
+	private ButtonField _backButton, _refreshButton;
 	
 	public ViewPendingFriendshipsScreen(){
 		// add the refresh button menu item
@@ -40,15 +45,30 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 	//	_pollService  = TemporaryPollingService.getInstance();
 		_req = new FriendshipRequestRetrieval( WifiLocatorUser.getInstance().getID() );
 		_package = new RequestPackage(this, _req);
+		
+		HorizontalFieldManager hfm = new HorizontalFieldManager();
+		_refreshButton = new ButtonField("Refresh", Field.USE_ALL_WIDTH){
+			public int getPreferredWidth() {
+				return Display.getWidth()/2;
+				}
+		};
+		
+		_refreshButton.setChangeListener( this );
+		
+		_backButton = new ButtonField("Back", Field.USE_ALL_WIDTH){
+			public int getPreferredWidth() {
+				return Display.getWidth()/2;
+				}
+		};
+		
+		_backButton.setChangeListener( this );
+		hfm.add( _refreshButton );
+		hfm.add( _backButton );
+		setStatus( hfm );
 	
 	}
 	
 	public boolean onClose(){
-	//	if ( _pollService.isActive()){
-	////		_pollService.stopPolling();
-	//	}
-	//	_pollService = null;
-	//	System.out.println("Closing polling!!!");
 		close();
 		return true;
 	}
@@ -56,7 +76,7 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 	//	_pollService.addRequest( _package );
 	//	_pollService.startPolling();
 		_self = this;
-		addMenuItem( WifiLocatorMenuItems.addGetRequests( this ));
+	//	addMenuItem( WifiLocatorMenuItems.addGetRequests( this ));
 		_pendingFriendships = new ObjectListField(){
 			protected boolean navigationClick(int status, int time) {
 				String[] choices = {"Accept", "Reject", "Cancel"};
@@ -78,7 +98,6 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 	            	break;
 	            	
 	            }
-	            foo();
 	            return true;
 	        }
 		};
@@ -92,11 +111,11 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 		    Vector tempFriendships = (Vector)_response.handleResponse();
 		    int length = tempFriendships.size();
 		    _pendingFriendshipsData = new WifiLocatorFriendship[length];
-		    for(int i = 0; i < tempFriendships.size(); i++){
+		    for(int i = 0; i < length; i++){
 		    	_pendingFriendshipsData[i] = (WifiLocatorFriendship)tempFriendships.elementAt(i);
 		    }
 			_pendingFriendships.set(_pendingFriendshipsData);
-			_pendingFriendships.setSize(_pendingFriendshipsData.length);
+			_pendingFriendships.setSize( length);
 			
 			
 		}
@@ -114,10 +133,17 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void foo(){
-		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
-		launcher.sendRequest( _package );
-		System.out.println(" Sending request now!");
+
+	public void fieldChanged(Field field, int context) {
+		// TODO Auto-generated method stub
+		if ( field == _backButton){
+			close();
+		}
+		else if ( field == _refreshButton ) {
+			FriendshipRequestRetrieval retrieval = new FriendshipRequestRetrieval(
+					WifiLocatorData.getInstance().getUser().getID());
+			RequestPackage _retrievalPackage = new RequestPackage( this, retrieval );
+			SingleRequestLauncher.getInstance().sendRequest( _retrievalPackage );
+		}
 	}
 }

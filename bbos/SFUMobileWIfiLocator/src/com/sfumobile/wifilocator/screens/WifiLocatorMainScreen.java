@@ -1,5 +1,6 @@
 package com.sfumobile.wifilocator.screens;
 
+import com.sfumobile.wifilocator.entities.WifiLocatorData;
 import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendsRequest;
 import com.sfumobile.wifilocator.request.ImageRequest;
@@ -26,7 +27,7 @@ import net.rim.device.api.ui.container.HorizontalFieldManager;
 
 public class WifiLocatorMainScreen extends RequestDelegateScreen implements FieldChangeListener {
 
-	private ButtonField _friendsButton;
+	private ButtonField _friendsButton, _eventsButton;
 	private HorizontalFieldManager _hfm;
 	private BitmapField _currentMap;
 	private BasicEditField _currentZone, _lastUpdatedField;
@@ -47,14 +48,24 @@ public class WifiLocatorMainScreen extends RequestDelegateScreen implements Fiel
 		
 		_friendsButton = new ButtonField("Friends", Field.USE_ALL_WIDTH){
 			public int getPreferredWidth() {
-				return Display.getWidth();
+				return Display.getWidth()/2;
 				}
 		};
 		_friendsButton.setChangeListener( this );
 		
 		_hfm.add( _friendsButton );
+		
+		_eventsButton = new ButtonField("Events", Field.USE_ALL_WIDTH){
+			public int getPreferredWidth() {
+				return Display.getWidth()/2;
+				}
+		};
+		_eventsButton.setChangeListener( this );
+		
+		_hfm.add( _eventsButton );
+		
 		setStatus(_hfm);
-		WifiLocatorUser.getInstance().setUserID(27001);
+		WifiLocatorData.getInstance().getUser().setUserID(27001);
 	}
 	
 	protected void onUiEngineAttached( boolean attached ) {
@@ -63,7 +74,7 @@ public class WifiLocatorMainScreen extends RequestDelegateScreen implements Fiel
 			final RequestDelegateScreen _screen = this;
 		//	addMenuItem( new MenuItem("Update Zone", 110, 10){
 		//		public void run(){
-					ZoneRequest zoneRequest = new ZoneRequest(WifiLocatorUser.getInstance().getID());
+					ZoneRequest zoneRequest = new ZoneRequest(	WifiLocatorData.getInstance().getUser().getID());
 					RequestPackage _zoneRequestPackage = new RequestPackage(_screen, zoneRequest);
 				WifiChangePollingService.getInstance().addRequest( _zoneRequestPackage );
 				WifiChangePollingService.getInstance().startPolling();
@@ -72,15 +83,7 @@ public class WifiLocatorMainScreen extends RequestDelegateScreen implements Fiel
 				
 		//	});
 			
-			addMenuItem( new MenuItem("Update Friends", 110, 10){
-				public void run(){
-					FriendsRequest friendsRequest = new FriendsRequest(WifiLocatorUser.getInstance().getID());
-					RequestPackage _friendsRequestPackage = new RequestPackage(_screen, friendsRequest);
-				
-					SingleRequestLauncher.getInstance().sendRequest(_friendsRequestPackage);
-				}
-				
-			});
+			
 		}
 		
 	}
@@ -128,16 +131,16 @@ public class WifiLocatorMainScreen extends RequestDelegateScreen implements Fiel
 				}
 			}
 			);
-			
-			
 		}
-		
 	}
 
 	public void fieldChanged(Field field, int context) {
 		// TODO Auto-generated method stub
 		if ( field == _friendsButton){
 			UiApplication.getUiApplication().pushScreen( new WifiLocatorFriendsScreen());
+		}
+		else if ( field == _eventsButton ){
+			UiApplication.getUiApplication().pushScreen( new WifiLocatorEventsScreen());
 		}
 	}
 }

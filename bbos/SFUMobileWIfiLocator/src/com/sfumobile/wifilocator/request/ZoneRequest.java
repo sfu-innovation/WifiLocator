@@ -4,7 +4,7 @@ import com.sfumobile.wifilocator.types.RequestTypes;
 import com.sfumobile.wifilocator.utils.WLANContext;
 import com.sfumobile.wifilocator.request.WifiLocatorRequestThread;
 
-public class ZoneRequest extends Request {
+public class ZoneRequest extends LocationRequest {
 	
 	private int          _user;
 	private String       _bssid;

@@ -20,6 +20,23 @@
     {% endfor %}
 
     </br> 
+    
+    <h3> List of Events </h3>
+	  {% for item in events %}
+    <b> {{ item.name }} | {{item.organizer }} </b> </br>
+    	Start Time: {{ item.start_time }}    	</br>
+    	End Time: {{ item.end_time }}    	</br>
+    	
+    	Area:  {{ item.super_zone.super_zone_name }} </br>
+    	
+    	Description: {{ item.description }} </br>
+
+
+    	</br>
+    {% endfor %}
+
+    </br> 
+
 	<h3> List of Friends </h3>
     {% for items in friends %}
     	User: {{ items.user_name }}

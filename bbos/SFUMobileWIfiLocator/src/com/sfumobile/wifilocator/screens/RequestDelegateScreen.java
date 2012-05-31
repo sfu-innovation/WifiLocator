@@ -50,6 +50,7 @@ public abstract class  RequestDelegateScreen extends MainScreen {
 		case RequestTypes.GET_FRIENDSHIP_REQUESTS:
 		case RequestTypes.INIT_FRIENDSHIP:
 		case RequestTypes.ZONE:
+		case RequestTypes.EVENTS_REQUEST:
 			handleStringValue( type, new String( data ));
 			break;
 		case RequestTypes.IMAGE_REQUEST:
