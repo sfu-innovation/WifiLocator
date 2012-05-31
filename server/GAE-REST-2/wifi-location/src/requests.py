@@ -130,9 +130,10 @@ def getEvents(self, json_obj):
 		curr_super_zone = curr_zone.super_zone
 
 		for events in curr_super_zone.event_super_zone:
+			#TODO: return super zone map
 			data["events"].append({'name' : events.name,
 								   'organizer' : events.organizer,
-								   'location(superzone)' : events.super_zone.super_zone_name,
+								   'location' : events.super_zone.super_zone_name,
 								   'start_time' :  datetime.ctime(events.start_time),
 								   'end_time' : datetime.ctime(events.end_time)})
 		data["status"] = 0
