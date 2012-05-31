@@ -135,7 +135,13 @@ class RequestHandler(webapp.RequestHandler):
 			#print str(input)
 			#print "Json object recieved: ", input
 			logging.debug("JSON object recieved to RequestHandler: " + str(input))
-			
+		except:
+			# if json is empty
+			logging.error("No JSON received")
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"status" : 11}))
+			return
+		try:
 			#get a list of friends and friends info
 			if (request_type == "friendlist"):
 	
@@ -159,18 +165,16 @@ class RequestHandler(webapp.RequestHandler):
 			elif (request_type == "events"):
 				
 				getEvents(self, json_obj)
-				
 			
-			else:
+			else: 	
 				logging.error("request type unknown")
 				self.response.headers['Content-Type'] = "application/json"
 				self.response.out.write(json.dumps({"status" : 12}))
 		except:
-			# if json is empty
-			logging.error("No JSON received")
+			logging.error("request fail")
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"status" : 11}))
-			
+			self.response.out.write(json.dumps({"status" : 13}))
+					
 
 class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):
