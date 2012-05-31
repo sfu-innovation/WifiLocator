@@ -46,8 +46,14 @@ public class FriendRequestsActivity extends RequestDelegateActivity implements O
 		getPending = (Button)findViewById(R.id.pendingButton);
 		handler = new Handler();
 		
-		_req = new FriendshipsPendingRequest( User.getInstance().get_userID() );
+		_req = new FriendshipsPendingRequest( UserObject.getInstance().get_userID() );
 		_package = new RequestPackage(this, _req, handler);
+		
+		
+		if (PendingListObject.getInstance().get_data()!=null){
+			 adapter = new FriendRequestAdapter(this, PendingListObject.getInstance().get_data());
+			 friendList.setAdapter(adapter);	
+		}
 	}
 
 	@Override
@@ -74,7 +80,8 @@ public class FriendRequestsActivity extends RequestDelegateActivity implements O
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
 			FriendshipsResponse _response = new FriendshipsResponse( val, type);
 			
-		    data = _response.handleResponse();			
+		    data = _response.handleResponse();		
+		    PendingListObject.getInstance().set_data(data);
 			adapter = new FriendRequestAdapter(this,data);
 			friendList.setAdapter(adapter);	
 		}

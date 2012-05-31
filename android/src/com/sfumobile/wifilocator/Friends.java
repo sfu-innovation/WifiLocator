@@ -1,5 +1,6 @@
 package com.sfumobile.wifilocator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -14,10 +15,12 @@ import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 public class Friends extends RequestDelegateActivity implements OnClickListener{
@@ -40,6 +44,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	private final int ADD_FRIEND_DIALOG_ID = 0;
 	private Handler handler;
 	private static ArrayList<JSONObject> data;
+	private FriendListObject fl;
 	
 	private FriendListRequest  _req;
 	private RequestPackage     _package;
@@ -62,8 +67,13 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		getListButton.setOnClickListener(this);
 
 		handler = new Handler();
-		_req = new FriendListRequest(User.getInstance().get_userID());
+		_req = new FriendListRequest(UserObject.getInstance().get_userID());
 		_package = new RequestPackage(this, _req, handler);
+		
+		if (FriendListObject.getInstance().get_data()!=null){
+			 mAdapter = new FriendAdapter(this, FriendListObject.getInstance().get_data());
+			 friendList.setAdapter(mAdapter);	
+		}
 		
 	}
 	
@@ -73,6 +83,9 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	//	launcher.sendRequest(this, _package );
 	}
 
+	public void onRestart(){
+		super.onRestart();
+	}
 
 	public void onClick(View v) {
 		Intent intent;
@@ -87,7 +100,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 			break;
 			
 		case R.id.qrButton:
-			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + User.getInstance().get_userID());
+			Bitmap bitmap = QRGenerator.generateQR("sfumobile." + UserObject.getInstance().get_userID());
 			qrImage.setImageBitmap(bitmap);
 			break;
 			
@@ -117,7 +130,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 
 	private void addFriend() {
 		try{
-			FriendshipRequest  _req = new FriendshipRequest(User.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
+			FriendshipRequest  _req = new FriendshipRequest(UserObject.getInstance().get_userID(), Integer.parseInt(friendIDText.getText().toString()));
 			RequestPackage _package = new RequestPackage(this, _req, handler);
 			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
 			launcher.sendRequest(this, _package);
@@ -179,9 +192,11 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		FriendshipsResponse _response = new FriendshipsResponse( val, type);
 		
 	    data = _response.handleResponse();		
+	    fl.getInstance().set_data(data);
 	    Log.d("Friends", data.toString());
 	    mAdapter = new FriendAdapter(this, data);
 	    friendList.setAdapter(mAdapter);	
+
 	}
 
 	@Override

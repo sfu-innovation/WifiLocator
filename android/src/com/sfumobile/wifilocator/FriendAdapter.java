@@ -10,6 +10,7 @@ import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestPackage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,20 +22,23 @@ import android.widget.TextView;
 public class FriendAdapter extends BaseExpandableListAdapter {
 	private Context _rd;
 	private static ArrayList<JSONObject> _data;
-	private String[] friends, loc;
+	private String[] friends, loc, map;
 	private String[][] status;
 
 	
 	public FriendAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
 		_data = data;
 		_rd = rd;
+		Log.d("FriendAdapter", data.toString());
 		
 		friends = new String[_data.size()];
 		loc = new String[_data.size()];
+		map = new String[_data.size()];
 		try{
 			for (int i=0; i<_data.size(); i++){
 				friends[i] = _data.get(i).getString("friend_name");
 				loc[i] = _data.get(i).getString("friend_location")+", "+data.get(i).getString("last_update");
+				map[i] = _data.get(i).getString("map_name");
 			}
 		} catch (JSONException jse) {
 			Log.e("JSON Exception", jse.toString());
@@ -72,20 +76,20 @@ public class FriendAdapter extends BaseExpandableListAdapter {
 	//	inflatedView.setPadding(50, 0, 0, 0);
 	//	TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
 		
-	//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
-	//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
+		final Intent i = new Intent(_rd, MapActivity.class);
+		i.putExtra("map_name", map[groupPosition]);
 		TextView txtView = getGenericView();
 		
 		txtView.setTextSize(15);
 		txtView.setText(getChild(groupPosition, childPosition).toString());
-	/*	txtView.setOnClickListener(new View.OnClickListener() {
+		txtView.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub				
-				startActivity(i);
+				_rd.startActivity(i);
 			}
 		});
-		*/
+		
 		return txtView;
 	}
 

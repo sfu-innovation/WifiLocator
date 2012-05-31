@@ -36,7 +36,7 @@ import android.widget.Button;
 
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
-	private String bssid, ssid, zone, zone_name;
+	private String bssid, ssid, zone, zone_name, map_name;
 	private TextView bssidText, ssidText, zoneText, zoneName;
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
@@ -60,7 +60,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        User.getInstance().set_userID(45006);
+        UserObject.getInstance().set_userID(45006);
 
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
@@ -80,7 +80,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         
-        _req     = new LocationRequest(User.getInstance().get_userID(), wifiHandler.getBSSID());
+        _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
     	_package = new RequestPackage(this, _req, handler);
         
      
@@ -117,7 +117,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     
     public void onRestart(){
     	super.onRestart();
-    	User.getInstance().set_map("");
     }
     
 	public void onClick(View src) {
@@ -150,7 +149,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			break;
 		case R.id.mapbutton:
 			myIntent = new Intent(getApplicationContext(), MapActivity.class);
-			myIntent.putExtra("zone", zone);
+			myIntent.putExtra("map_name", UserObject.getInstance().get_map());
 			startActivity(myIntent);
 		}
 	}
@@ -198,13 +197,14 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
 		    	Log.d("zone request", data.toString());
-				User.getInstance().set_zone(data.getString("zone_name"));
-		        User.getInstance().set_map(data.getString("map_name"));		       
+				UserObject.getInstance().set_zone(data.getString("zone_name"));
+		        UserObject.getInstance().set_map(data.getString("map_name"));		
+		        
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
 			} finally {
 			//	zoneText.setText(zone);
-				zoneName.setText(User.getInstance().get_zone());
+				zoneName.setText(UserObject.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
 			}
@@ -225,6 +225,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		super.onRestoreInstanceState(savedInstanceState);
 		bssidText.setText(savedInstanceState.getString("bssid"));
 		ssidText.setText(savedInstanceState.getString("ssid"));
+		zoneName.setText(UserObject.getInstance().get_zone());
 	}
 	
 	@Override
