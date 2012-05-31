@@ -123,15 +123,20 @@ def getEvents(self, json_obj):
 	user_obj.put()
 	logging.debug("user information updated")
 	logging.debug("location: " + curr_zone.zone_name)
+	try:
+		curr_super_zone = curr_zone.super_zone
+		for events in curr_super_zone.event_super_zone:
+			data["events"].append({'name' : events.name,
+								   'organizer' : events.organizer,
+								   'location(superzone)' : events.super_zone.super_zone_name,
+								   'start_time' :  datetime.ctime(events.start_time),
+								   'end_time' : datetime.ctime(events.end_time)})
+		data["status"] = 0
+		self.response.headers['Content-Type'] = "application/json"
+		self.response.out.write(json.dumps(data))
+		
+	except: 
 	
-	curr_super_zone = curr_zone.super_zone
-	for events in curr_super_zone.event_super_zone:
-		data["events"].append({'name' : events.name,
-					'organizer' : events.organizer,
-					'location(superzone)' : events.super_zone.super_zone_name,
-					'start_time' :  datetime.ctime(events.start_time),
-					'end_time' : datetime.ctime(events.end_time)})
-	data["status"] = 0
-	self.response.headers['Content-Type'] = "application/json"
-	self.response.out.write(json.dumps(data))
-	return
+	
+		logging.debug("cant not get events")
+	
