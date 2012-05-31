@@ -3,10 +3,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    <ListView android:id="@+id/friendList"
-    android:layout_width="fill_parent" 
-    android:layout_height="fill_parent" >
+
+    <ListView
+        android:id="@+id/friendList"
+        android:layout_width="fill_parent"
+        android:layout_height="392dp"
+        android:layout_weight="0.60" >
     </ListView>
+
+    <Button
+        android:id="@+id/pendingButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pendingButton" />
 
 </LinearLayout>

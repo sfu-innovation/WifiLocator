@@ -7,10 +7,11 @@
     <ExpandableListView
         android:id="@+id/friendList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="318dp"
+        android:layout_weight="1.13"
         android:divider="@null" >
     </ExpandableListView>
-
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
@@ -18,20 +19,21 @@
 
         <Button
             android:id="@+id/addFriendButton"
-            android:layout_width="wrap_content"
+            android:layout_width="74dp"
             android:layout_height="wrap_content"
             android:text="@string/add_friend" />
 
         <Button
             android:id="@+id/qrButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/qr_code" />
 
         <Button
             android:id="@+id/friendRequestsButton"
-            android:layout_width="wrap_content"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.31"
             android:text="@string/view_friend_requests" />
     </LinearLayout>
 
@@ -39,5 +41,11 @@
         android:id="@+id/qrImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/getListButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/get_friend_list" />
 
 </LinearLayout>

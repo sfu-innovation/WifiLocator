@@ -46,6 +46,7 @@ public class RequestPackage {
 						 RequestTypes.STRING_TYPE);
 			}
 			String payload = _request.getPayload().toString();
+			
 			System.out.println( "[SFUMOBILE] The payload - "+payload);
 			//special case since this request is dynamic
 			System.out.println("[SFUMOBILE] - testing out this url "+url);
