@@ -41,7 +41,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private TextView bssidText, ssidText, zoneName;
 	private Button pollButton, friendButton, locButton;
 	private ImageView twitterIcon;
-//	private AutoPoll auto;
+	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	private WifiHandler wifiHandler;
 	private AlertDialog alert;
@@ -82,7 +82,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         bssid          = "";
         
 
-  //  	auto = new AutoPoll(this);
+    	auto = new AutoPoll(this);
 
 
         _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
@@ -94,7 +94,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     
     public void onStart(){
     	super.onStart();
-/*
+
     	if(!wifiHandler.wifiEnabled()){
     		alert = AlertDialogBuilder.createDialog(this, "Wifi isn't turned on");
     		alert.show();
@@ -115,23 +115,17 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		        pollButton.setTag(1);
     		}
     	}
-
-    	else {
-    		auto = new AutoPoll(this);
-        	auto.execute();
-        	pollButton.setTag(0);
-    	}*/
     }
     
 	public void onClick(View src) {
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.pollButton:
-		//	final int status = (Integer) src.getTag();
+			final int status = (Integer) src.getTag();
 			
-        	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
-        	sl.sendRequest(this, _package);
-		/*	if(status ==1){
+       // 	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
+       // 	sl.sendRequest(this, _package);
+			if(status ==1){
 				pollButton.setText("Auto Poll");
 				auto.cancel(true);
 				src.setTag(1);
@@ -140,7 +134,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 				auto = new AutoPoll(this);
 		    	auto.execute();
 				src.setTag(0);
-			}*/
+			}
 			break;
 		case R.id.friendButton:
     		Intent nextScreen = new Intent(src.getContext(),Friends.class);
@@ -165,7 +159,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		}*/
 	}
 	
-/*	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
+	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
 
 		RequestDelegateActivity _rd;
 		
@@ -192,7 +186,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			}
 			return null;
 		}
-	}*/
+	}
 
 	public boolean bssidChanged(){
 		String current_bssid = wifiHandler.getBSSID();
