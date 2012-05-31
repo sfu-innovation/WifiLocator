@@ -6,9 +6,9 @@ public class FriendshipConfirmRequest extends Request{
 
 	private int _request_id;
 	
-	public FriendshipConfirmRequest(String request_id) {
+	public FriendshipConfirmRequest(int request_id) {
 		super(RequestTypes.CONFIRM_FRIENDSHIP_REQUEST);
-		_request_id = Integer.parseInt(request_id);
+		_request_id = request_id;
 	}
 
 	@Override

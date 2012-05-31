@@ -16,8 +16,15 @@ public class WifiHandler {
 	public WifiHandler(Context context){
 		 wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 	}
-	public Boolean wifi_check(){
+	public Boolean wifiEnabled(){
 		return wm.isWifiEnabled();
+	}
+	
+	public Boolean wifiConnected(){
+		if(wm.getConnectionInfo().getSSID() == null){
+			return false;
+		}
+		return true;
 	}
 
 	public String getBSSID(){

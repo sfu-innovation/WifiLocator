@@ -47,8 +47,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private Handler handler;
 	private LocationRequest            _req;
 	private RequestPackage             _package;
-	private LocationResponse _response;
-	
+	private LocationResponse _response;	
 	//public static final String USER = "Catherine"; //Hedy, 45006
 	//public static final int USER_ID = 28001;
 
@@ -77,35 +76,33 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         wifiHandler    = requestHandler.getWifiHandler();
         bssid          = "";
         
+    	auto = new AutoPoll(this);
+    	
         User.getInstance().set_userID(45006);
     }
     
     public void onStart(){
     	super.onStart();
-    /*	alert = new AlertDialog.Builder(this).setPositiveButton("OK",
-				new DialogInterface.OnClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		}).create();
-    	
-    	if(!wifiHandler.wifi_check()){
-    		alert.setTitle("WiFi Error");
-    		alert.setMessage("No WiFi connection detected.");
+    	if(!wifiHandler.wifiEnabled()){
+    		alert = AlertDialogBuilder.createDialog(this, "Wifi isn't turned on");
     		alert.show();
+    		if(auto.getStatus() == AsyncTask.Status.RUNNING){
+    			auto.cancel(true);
+    		}
     	}
-    	else if (!RequestConstants.SSIDs.contains(wifiHandler.getSSID())){	
-    		alert.setTitle("Connection Error");
-    		alert.setMessage("The network you are connected to appears to be invalid.");
+    	else if(!wifiHandler.wifiConnected()){
+    		alert = AlertDialogBuilder.createDialog(this, "You aren't connected to any networks.");
     		alert.show();
+    		if(auto.getStatus() == AsyncTask.Status.RUNNING){
+    			auto.cancel(true);
+    		}
     	}
-    	else {*/
-    		auto = new AutoPoll(this);
-        	auto.execute();
-        	pollButton.setTag(1);
-    	//}
+    	else{
+    		if(auto.getStatus() == AsyncTask.Status.PENDING || auto.isCancelled()){
+		        auto = (AutoPoll) new AutoPoll(this).execute();
+		        pollButton.setTag(1);
+    		}
+    	}
     }
     
 	public void onClick(View src) {
@@ -162,6 +159,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		        try{
 		        	//Check every second to see if the bssid has changed
 		        	//Only poll the server if it has
+		        	System.out.println("Running");
 		        	if(bssidChanged()){
 		        		updateZoneInfo(_rd);
 		        	}
@@ -177,8 +175,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
 	public boolean bssidChanged(){
 		String current_bssid = wifiHandler.getBSSID();
-		System.out.println(bssid.hashCode() + " " + bssid);
-		System.out.println(current_bssid.hashCode() + " " + current_bssid);
 		if(current_bssid.hashCode() != bssid.hashCode()){
 			bssid = current_bssid;
 			return true;

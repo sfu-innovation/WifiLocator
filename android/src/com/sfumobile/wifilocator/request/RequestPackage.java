@@ -34,7 +34,7 @@ public class RequestPackage {
 	}
 	public void init() {
 		System.out.println("[SFUMOBILE] - starting init");
-		if (wifiHandler.wifi_check()){
+		if (wifiHandler.wifiEnabled()){
 			System.out.println("[SFUMOBILE] - connected to an SSID");
 						
 			int type = _request.getType();

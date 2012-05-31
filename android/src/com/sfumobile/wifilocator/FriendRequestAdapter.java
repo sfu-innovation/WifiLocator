@@ -68,7 +68,7 @@ public class FriendRequestAdapter extends BaseAdapter{
 		public void onClick(View v) {
 					
 			try {
-				_req = new FriendshipConfirmRequest( _data.get(position).getString("request_id") );
+				_req = new FriendshipConfirmRequest( _data.get(position).getInt("request_id") );
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
