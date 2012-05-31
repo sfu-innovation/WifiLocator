@@ -1,6 +1,9 @@
 package com.sfumobile.wifilocator;
 
-public class Event {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Event implements Parcelable{
 
 	private String _location;
 	private String _organizer;
@@ -10,6 +13,10 @@ public class Event {
 	
 	public Event(){
 		
+	}
+	
+	public Event(Parcel in){
+		readFromParcel(in);
 	}
 	
 	public Event(String name, String location, String organizer, String start_time, String end_time){
@@ -59,6 +66,36 @@ public class Event {
 	public void set_end_time(String _end_time) {
 		this._end_time = _end_time;
 	}
+
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void writeToParcel(Parcel parcel, int flagss) {
+		parcel.writeString(_name);
+		parcel.writeString(_location);
+		parcel.writeString(_organizer);
+		parcel.writeString(_start_time);
+		parcel.writeString(_end_time);
+	}
 	
+	public void readFromParcel(Parcel parcel){
+		_name = parcel.readString();
+		_location = parcel.readString();
+		_organizer = parcel.readString();
+		_start_time = parcel.readString();
+		_end_time = parcel.readString();
+	}
+	
+	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+		public Event createFromParcel(Parcel in) {
+			return new Event(in);
+	    }
+	 
+	    public Event[] newArray(int size) {
+	    	return new Event[size];
+	    }
+	};
 	
 }

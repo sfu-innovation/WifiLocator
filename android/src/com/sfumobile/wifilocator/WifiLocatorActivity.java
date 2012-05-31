@@ -120,20 +120,20 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		Intent myIntent;
 		switch(src.getId()){
 		case R.id.eventsButton:
-    		myIntent = new Intent(src.getContext(),EventsActivity.class);
+    		myIntent = new Intent(this,EventsActivity.class);
     		startActivity(myIntent);
 			break;
 		case R.id.friendButton:
-    		Intent nextScreen = new Intent(src.getContext(),Friends.class);
+    		Intent nextScreen = new Intent(this,Friends.class);
     		startActivity(nextScreen);
     		break;
 		case R.id.twitterIcon:
-			myIntent = new Intent(src.getContext(), TwitterActivity.class);
+			myIntent = new Intent(this, TwitterActivity.class);
 			myIntent.putExtra("zone", UserObject.getInstance().get_zone());
 			startActivity(myIntent);
 			break;
 		case R.id.mapbutton:
-			myIntent = new Intent(getApplicationContext(), MapActivity.class);
+			myIntent = new Intent(this, MapActivity.class);
 			myIntent.putExtra("map_name", UserObject.getInstance().get_map());
 			startActivity(myIntent);
 		}
