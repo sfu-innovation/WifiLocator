@@ -3,6 +3,7 @@ package com.sfumobile.wifilocator.screens;
 import net.rim.device.api.system.Display;
 import net.rim.device.api.ui.Field;
 import net.rim.device.api.ui.FieldChangeListener;
+import net.rim.device.api.ui.component.BasicEditField;
 import net.rim.device.api.ui.component.ButtonField;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorEvent;
@@ -11,6 +12,9 @@ public class WifiLocatorEventDetailsScreen extends RequestDelegateScreen impleme
 
 	private WifiLocatorEvent _event;
 	private ButtonField _backButton;
+	private BasicEditField _location, _organizer,
+							_startTime, _name,
+							_endTime;
 	public WifiLocatorEventDetailsScreen( WifiLocatorEvent event ){
 		_event = event;
 		
@@ -22,9 +26,30 @@ public class WifiLocatorEventDetailsScreen extends RequestDelegateScreen impleme
 		
 		_backButton.setChangeListener( this );
 		
+		_location  = new BasicEditField(" Location : ","", 1024, Field.NON_FOCUSABLE);
+		_organizer = new BasicEditField(" Organizer : ","", 1024, Field.NON_FOCUSABLE);
+		_startTime = new BasicEditField(" Start Time : ","", 1024, Field.NON_FOCUSABLE);
+		_name      = new BasicEditField(" Name : ","", 1024, Field.NON_FOCUSABLE);
+		_endTime   = new BasicEditField(" End Time : ","", 1024, Field.NON_FOCUSABLE);
+		
+		add( _location );
+		add( _organizer );
+		add( _startTime );
+		add( _name );
+		add( _endTime );
+		refresh();
 		setStatus( _backButton );
 	}
 	
+	private void refresh(){
+		
+		_location.setText( _event.getLocation() );
+		_organizer.setText( _event.getOrganizer() );
+		_startTime.setText( _event.getStartTime() );
+		_name.setText( _event.getName() );
+		_endTime.setText( _event.getEndTime() );
+		
+	}
 	protected void onUiEngineAttached( boolean attached ) {
 		if ( attached ) {
 			

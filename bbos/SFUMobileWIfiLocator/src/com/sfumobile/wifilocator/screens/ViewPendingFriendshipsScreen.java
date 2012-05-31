@@ -111,11 +111,11 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 		    Vector tempFriendships = (Vector)_response.handleResponse();
 		    int length = tempFriendships.size();
 		    _pendingFriendshipsData = new WifiLocatorFriendship[length];
-		    for(int i = 0; i < tempFriendships.size(); i++){
+		    for(int i = 0; i < length; i++){
 		    	_pendingFriendshipsData[i] = (WifiLocatorFriendship)tempFriendships.elementAt(i);
 		    }
 			_pendingFriendships.set(_pendingFriendshipsData);
-			_pendingFriendships.setSize(_pendingFriendshipsData.length);
+			_pendingFriendships.setSize( length);
 			
 			
 		}

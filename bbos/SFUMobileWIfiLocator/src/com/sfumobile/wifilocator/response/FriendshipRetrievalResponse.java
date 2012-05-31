@@ -29,9 +29,8 @@ public class FriendshipRetrievalResponse extends ResponseHandler {
 		if ( status == 0 ) {
 			JSONObject temp = null;
 			try {
-				JSONArray arr = (JSONArray) _data.get("requests");
+				JSONArray arr = _data.getJSONArray("requests");
 				int length = arr.length();
-				WifiLocatorFriendship tempFriendship;
 				for(int i = 0; i < length; i++){
 					temp = arr.getJSONObject(i);
 					
