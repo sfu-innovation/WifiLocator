@@ -31,7 +31,8 @@ public class FriendsResponse extends ResponseHandler {
 				friends.addElement(new WifiLocatorFriend(
 						  temp2.getString("friend_name"),
 						  temp2.getString("friend_location"),
-						  temp2.getString("last_update")));
+						  temp2.getString("last_update"),
+						  temp2.getString("map_name")));
 				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

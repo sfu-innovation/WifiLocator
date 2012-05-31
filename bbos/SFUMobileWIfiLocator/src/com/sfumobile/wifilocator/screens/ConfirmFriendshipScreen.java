@@ -20,8 +20,6 @@ public class ConfirmFriendshipScreen extends RequestDelegateScreen implements Fi
 	private ButtonField _confirmButton, _cancelButton;
 	private LabelField  _messageLabel, _resultLabel;
 	
-	private FriendshipConfirmRequest _req;
-	private RequestPackage           _package;
 	private FriendshipConfirmResponse _response;
 	public ConfirmFriendshipScreen( WifiLocatorFriendship friendship){
 		_friendship = friendship;

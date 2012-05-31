@@ -5,6 +5,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
+import com.sfumobile.wifilocator.entities.WifiLocatorData;
 import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.screens.test.WifiLocatorMenuItems;
 
@@ -64,7 +65,7 @@ public class WifiLocatorAddFriendScreen extends MainScreen implements FieldChang
 
 		// This encodes the text with a low level (%7) of error correction
 		try {
-			Encoder.encode(QR_CODE_CONTENTS+WifiLocatorUser.getInstance().getID(),
+			Encoder.encode(QR_CODE_CONTENTS+WifiLocatorData.getInstance().getUser().getID(),
 					ErrorCorrectionLevel.L,
 					_qrCode);
 		} catch (WriterException e) {
@@ -77,6 +78,10 @@ public class WifiLocatorAddFriendScreen extends MainScreen implements FieldChang
 		}
 	}
 
+	public boolean onClose(){
+		close();
+		return true;
+	}
 	public void fieldChanged(Field field, int context) {
 		if ( field == _scanButton ){
 			UiApplication.getUiApplication().pushScreen( 

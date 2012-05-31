@@ -8,6 +8,7 @@ import javax.microedition.media.MediaException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
+import com.sfumobile.wifilocator.entities.WifiLocatorData;
 import com.sfumobile.wifilocator.entities.WifiLocatorUser;
 import com.sfumobile.wifilocator.request.FriendshipRequest;
 import com.sfumobile.wifilocator.request.RequestPackage;
@@ -73,7 +74,7 @@ public class WifiLocatorQRCodeViewerScreen extends RequestDelegateScreen {
 	                	closeScanner();
 	                	Result res = (Result) decoded;
 	                	int friendid = Integer.parseInt(QRUtils.getTargetContact(res.getText()));
-	                    _req = new FriendshipRequest( WifiLocatorUser.getInstance().getID()
+	                    _req = new FriendshipRequest( 	WifiLocatorData.getInstance().getUser().getID()
 	                    		, friendid );
 	                    _package = new RequestPackage( _screen, _req );
 	                    SingleRequestLauncher.getInstance().sendRequest(_package);
