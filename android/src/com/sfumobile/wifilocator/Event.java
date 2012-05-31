@@ -8,6 +8,10 @@ public class Event {
 	private String _start_time;
 	private String _end_time;
 	
+	public Event(){
+		
+	}
+	
 	public Event(String name, String location, String organizer, String start_time, String end_time){
 		set_name(name);
 		set_location(location);

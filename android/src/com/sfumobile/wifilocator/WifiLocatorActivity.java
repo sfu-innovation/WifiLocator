@@ -39,7 +39,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
 	private String bssid, ssid;
 	private TextView bssidText, ssidText, zoneName;
-	private Button pollButton, friendButton, locButton;
+	private Button eventsButton, friendButton, locButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
@@ -66,12 +66,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         bssidText    = (TextView)this.findViewById(R.id.bssidText);
         ssidText     = (TextView)this.findViewById(R.id.ssidText);
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
-        pollButton   = (Button)this.findViewById(R.id.pollButton);
+        eventsButton   = (Button)this.findViewById(R.id.eventsButton);
         locButton    = (Button)this.findViewById(R.id.mapbutton);
         twitterIcon  = (ImageView)this.findViewById(R.id.twitterIcon);
         friendButton = (Button)this.findViewById(R.id.friendButton);
         
-        pollButton.setOnClickListener(this);
+        eventsButton.setOnClickListener(this);
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
         locButton.setOnClickListener(this);
@@ -112,7 +112,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     	else{
     		if(auto.getStatus() == AsyncTask.Status.PENDING || auto.isCancelled()){
 		        auto = (AutoPoll) new AutoPoll(this).execute();
-		        pollButton.setTag(1);
     		}
     	}
     }
@@ -120,21 +119,9 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	public void onClick(View src) {
 		Intent myIntent;
 		switch(src.getId()){
-		case R.id.pollButton:
-			final int status = (Integer) src.getTag();
-			
-       // 	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
-       // 	sl.sendRequest(this, _package);
-			if(status ==1){
-				pollButton.setText("Auto Poll");
-				auto.cancel(true);
-				src.setTag(1);
-			}else{
-				pollButton.setText("Stop Polling");
-				auto = new AutoPoll(this);
-		    	auto.execute();
-				src.setTag(0);
-			}
+		case R.id.eventsButton:
+    		myIntent = new Intent(src.getContext(),EventsActivity.class);
+    		startActivity(myIntent);
 			break;
 		case R.id.friendButton:
     		Intent nextScreen = new Intent(src.getContext(),Friends.class);
@@ -154,9 +141,9 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	
 	public void onStop(){
 		super.onStop();
-/*		if (auto!=null) {
+		if (auto!=null) {
 			auto.cancel(true);
-		}*/
+		}
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	

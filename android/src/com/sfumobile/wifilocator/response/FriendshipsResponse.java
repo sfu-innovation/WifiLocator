@@ -40,7 +40,6 @@ public class FriendshipsResponse extends ResponseHandler {
 		}else {
 			return new ArrayList<JSONObject>();
 		}
-
 	}
 	
 	public ArrayList<JSONObject> parseFriendRequests(JSONObject response, int type){

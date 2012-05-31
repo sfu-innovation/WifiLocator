@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FriendRequestsActivity extends RequestDelegateActivity implements OnClickListener{
+public class FriendRequestsActivity extends RequestDelegateActivity{
 	
 	FriendRequestAdapter adapter;
 	RequestHandler requestHandler;
@@ -34,7 +34,6 @@ public class FriendRequestsActivity extends RequestDelegateActivity implements O
 	private Handler handler;
 	private FriendshipsPendingRequest  _req;
 	private RequestPackage             _package;
-	private Button getPending;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,43 +42,32 @@ public class FriendRequestsActivity extends RequestDelegateActivity implements O
 		friendList = (ListView)this.findViewById(R.id.friendList);
 		requestHandler = new RequestHandler(this);
 		
-		getPending = (Button)findViewById(R.id.pendingButton);
 		handler = new Handler();
 		
 		_req = new FriendshipsPendingRequest( UserObject.getInstance().get_userID() );
 		_package = new RequestPackage(this, _req, handler);
 		
 		
-		if (PendingListObject.getInstance().get_data()!=null){
-			 adapter = new FriendRequestAdapter(this, PendingListObject.getInstance().get_data());
-			 friendList.setAdapter(adapter);	
-		}
+
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-	//	SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
-	//	launcher.sendRequest(this, _package );
+		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+		launcher.sendRequest(this, _package );
+		if (PendingListObject.getInstance().get_data()!=null){
+			 adapter = new FriendRequestAdapter(this, PendingListObject.getInstance().get_data());
+			 friendList.setAdapter(adapter);
+		}
 	}
 
 	
-	public void onClick(View v) {
-		Intent intent;
-		switch(v.getId()){
-		case R.id.pendingButton:
-			SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
-			launcher.sendRequest(this, _package );
-			break;
-		}
-	}
-	
-	
 	@Override
 	public void handleStringValue(int type, String val) {
+		System.out.println("HEY");
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
 			FriendshipsResponse _response = new FriendshipsResponse( val, type);
-			
 		    data = _response.handleResponse();		
 		    PendingListObject.getInstance().set_data(data);
 			adapter = new FriendRequestAdapter(this,data);

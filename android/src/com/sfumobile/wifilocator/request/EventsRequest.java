@@ -6,10 +6,10 @@ import android.os.Handler;
 
 public class EventsRequest extends Request{
 
-	private String _id;
+	private int _id;
 	private String _mac_address;
 	
-	public EventsRequest(String id, String mac_address) {
+	public EventsRequest(int id, String mac_address) {
 		super(RequestTypes.EVENTS_REQUEST);
 		_id = id;
 		_mac_address = mac_address;

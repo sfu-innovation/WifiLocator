@@ -12,7 +12,7 @@ import com.sfumobile.wifilocator.request.MapRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
-import com.sfumobile.wifilocator.response.ImageResponse;
+//import com.sfumobile.wifilocator.response.ImageResponse;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
