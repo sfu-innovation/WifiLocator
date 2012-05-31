@@ -64,6 +64,8 @@ def sendFriendRequest(self,json_obj):
 		#self.response.out.write("request_sent")
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps({"request_id" : request.key().id(), "status" : 0}))
+	
+	
 	except apiproxy_errors.OverQuotaError, message:
 		logging.error(message)
 		self.response.headers['Content-Type'] = "application/json"
@@ -97,17 +99,7 @@ def getFriendRequests(self, json_obj):
 			data["status"] = 0
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
-		return
-		
-	for requests in q:
-		friend = Users.get_by_id(requests.friend_id)
-		friendname = friend.short_name			
-		data["requests"].append({'friend_name' : friendname,
-							'request_id' : requests.key().id()})
 
-		data["status"] = 0
-	self.response.headers['Content-Type'] = "application/json"
-	self.response.out.write(json.dumps(data))		
 	except apiproxy_errors.OverQuotaError, message:
 		logging.error(message)
 		self.response.headers['Content-Type'] = "application/json"
