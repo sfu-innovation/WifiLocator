@@ -29,31 +29,24 @@ public class WifiLocatorFriendDetailScreen extends RequestDelegateScreen impleme
 	private ButtonField _backButton, refreshButton;
 	public WifiLocatorFriendDetailScreen(WifiLocatorFriend friend){
 		_friend = friend;
-		_nameField = new BasicEditField( "Name : ", "" , 1024, Field.NON_FOCUSABLE);
-		add(_nameField);
+		//_nameField = new BasicEditField( "Name : ", "" , 1024, Field.NON_FOCUSABLE);
+		//add(_nameField);
 		
 		_locationField = new BasicEditField( "Location : ", "" , 1024, Field.NON_FOCUSABLE);
 		add(_locationField);
 		
-		_timeField = new BasicEditField( "Last updated : ",  "" ,1024, Field.NON_FOCUSABLE);
-		add(_timeField);
-		
 		_mapField = new BitmapField();
 		add( _mapField );
 		
+		_timeField = new BasicEditField( "Last updated : ",  "" ,1024, Field.NON_FOCUSABLE);
+		add(_timeField);
+		
+		
+		
 		WifiLocatorMenuItems.popScreenMenuItem("Friends");
 		
-		HorizontalFieldManager hfm = new HorizontalFieldManager();
+		//HorizontalFieldManager hfm = new HorizontalFieldManager();
 		
-		refreshButton = new ButtonField("Refresh", Field.USE_ALL_WIDTH){
-			public int getPreferredWidth() {
-				return Display.getWidth();
-				}
-		};
-		
-		refreshButton.setChangeListener( this );
-		
-		hfm.add(refreshButton );
 		_backButton = new ButtonField("Back", Field.USE_ALL_WIDTH){
 			public int getPreferredWidth() {
 				return Display.getWidth();
@@ -61,8 +54,8 @@ public class WifiLocatorFriendDetailScreen extends RequestDelegateScreen impleme
 		};
 		
 		_backButton.setChangeListener( this );
-		hfm.add(_backButton);
-		setStatus( hfm );
+		//hfm.add(_backButton);
+		setStatus( _backButton );
 	}
 	
 	protected void onUiEngineAttached( boolean attached ) {
@@ -70,7 +63,7 @@ public class WifiLocatorFriendDetailScreen extends RequestDelegateScreen impleme
 	}
 	
 	public void refresh(){
-		_nameField.setText( _friend.getName());
+		setTitle( _friend.getFirstName()+" "+_friend.getLastName());
 		_locationField.setText( _friend.getLocation());
 		_timeField.setText( _friend.getTime());
 		
@@ -112,9 +105,6 @@ public class WifiLocatorFriendDetailScreen extends RequestDelegateScreen impleme
 	public void fieldChanged(Field field, int context) {
 		if ( field == _backButton ){
 			close();
-		}
-		else if ( field == refreshButton ){
-			
 		}
 		
 	}

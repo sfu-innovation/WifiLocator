@@ -1,15 +1,17 @@
 package com.sfumobile.wifilocator.entities;
 
 public class WifiLocatorFriend {
-	private String _name;
+	private String _firstName;
+	private String _lastName;
 	private String _location;
 	private String _time;
 	private String _map;
 	public String toString(){
-		return _name+" -> location : "+_location;
+		return _firstName+" "+_lastName+" ["+_location+"]";
 	}
-	public WifiLocatorFriend( String name, String location, String time, String map){
-		_name = name;
+	public WifiLocatorFriend( String firstName, String lastName, String location, String time, String map){
+		_firstName = firstName;
+		_lastName = lastName;
 		_location = location;
 		_time = time;
 		_map = map;
@@ -27,8 +29,12 @@ public class WifiLocatorFriend {
 		return _location;
 	}
 	
-	public String getName(){
-		return _name;
+	public String getFirstName(){
+		return _firstName;
+	}
+	
+	public String getLastName(){
+		return _lastName;
 	}
 	
 	public String getTime(){

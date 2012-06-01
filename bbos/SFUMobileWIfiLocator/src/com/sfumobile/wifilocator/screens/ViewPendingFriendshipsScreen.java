@@ -66,6 +66,13 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 		hfm.add( _backButton );
 		setStatus( hfm );
 	
+		WifiLocatorFriendship[] preloadedListValues = WifiLocatorData.getInstance().getFriendships();
+		if ( null != preloadedListValues ){
+			_pendingFriendshipsData = preloadedListValues;
+			_pendingFriendships.set( _pendingFriendshipsData );
+			_pendingFriendships.setSize( preloadedListValues.length );
+			_pendingFriendships.setEnabled( false );
+		}
 	}
 	
 	public boolean onClose(){
@@ -107,6 +114,7 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 	}
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
+			
 			_response = new FriendshipRetrievalResponse( val );
 		    Vector tempFriendships = (Vector)_response.handleResponse();
 		    int length = tempFriendships.size();
@@ -114,9 +122,10 @@ public class ViewPendingFriendshipsScreen extends RequestDelegateScreen implemen
 		    for(int i = 0; i < length; i++){
 		    	_pendingFriendshipsData[i] = (WifiLocatorFriendship)tempFriendships.elementAt(i);
 		    }
+		    WifiLocatorData.getInstance().setFriendships( _pendingFriendshipsData );
 			_pendingFriendships.set(_pendingFriendshipsData);
 			_pendingFriendships.setSize( length);
-			
+			_pendingFriendships.setEnabled( true );
 			
 		}
 		
