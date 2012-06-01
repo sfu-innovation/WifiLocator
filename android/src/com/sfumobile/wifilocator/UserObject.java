@@ -1,16 +1,16 @@
 package com.sfumobile.wifilocator;
 
-public final class User {
-	 private static User instance;
+public final class UserObject {
+	 private static UserObject instance;
 	 private String zoneName, mapPath, lastUpdate;
 	 private int user_id;
-	 private User(){
+	 private UserObject(){
 		 
 	 }
 	 
-	 public static User getInstance(){
+	 public static UserObject getInstance(){
 		 if (instance==null){
-			 instance = new User();
+			 instance = new UserObject();
 		 } 
 		 return instance;
 	 }

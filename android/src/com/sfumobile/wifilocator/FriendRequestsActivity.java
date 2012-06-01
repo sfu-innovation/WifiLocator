@@ -13,9 +13,15 @@ import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
 import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,10 +41,14 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 		setContentView(R.layout.friend_requests);
 		friendList = (ListView)this.findViewById(R.id.friendList);
 		requestHandler = new RequestHandler(this);
+		
 		handler = new Handler();
 		
-		_req = new FriendshipsPendingRequest( User.getInstance().get_userID() );
+		_req = new FriendshipsPendingRequest( UserObject.getInstance().get_userID() );
 		_package = new RequestPackage(this, _req, handler);
+		
+		
+
 	}
 
 	@Override
@@ -46,14 +56,20 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 		super.onStart();
 		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
 		launcher.sendRequest(this, _package );
+		if (PendingListObject.getInstance().get_data()!=null){
+			 adapter = new FriendRequestAdapter(this, PendingListObject.getInstance().get_data());
+			 friendList.setAdapter(adapter);
+		}
 	}
 
+	
 	@Override
 	public void handleStringValue(int type, String val) {
+		System.out.println("HEY");
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
 			FriendshipsResponse _response = new FriendshipsResponse( val, type);
-			
-		    data = _response.handleResponse();			
+		    data = _response.handleResponse();		
+		    PendingListObject.getInstance().set_data(data);
 			adapter = new FriendRequestAdapter(this,data);
 			friendList.setAdapter(adapter);	
 		}

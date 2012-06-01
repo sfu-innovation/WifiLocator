@@ -12,11 +12,24 @@ public abstract class  RequestDelegateActivity extends Activity {
 	public abstract void handleImageDataValue( int type, String data);
 	
 	public void handleByteValue( int type, String data ){
+		System.out.println("Handle byte type: " + Integer.toString(type));
+
 		switch( type ){
 		case RequestTypes.CONFIRM_FRIENDSHIP_REQUEST:
+			handleStringValue( type, data);
+			break;
 		case RequestTypes.GET_FRIENDS:
+			handleStringValue( type, data);
+			break;
 		case RequestTypes.GET_FRIENDSHIP_REQUESTS:
+			handleStringValue( type, data);
+			break;
 		case RequestTypes.FRIENDSHIP_REQUEST:
+			handleStringValue( type, data);
+			break;
+		case RequestTypes.EVENTS_REQUEST:
+			handleStringValue( type, data);
+			break;
 		case RequestTypes.ZONE:
 			handleStringValue( type, data);
 			break;

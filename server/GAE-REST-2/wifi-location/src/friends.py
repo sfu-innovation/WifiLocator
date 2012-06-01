@@ -34,7 +34,8 @@ def getFriendList(self, json_obj):
 				"WHERE user = :1"), user.key())
 		for item in q:
 			friend = Users.get_by_id(item.friend_id)
-			friendname = friend.short_name
+			friend_first_name = friend.first_name
+			friend_last_name = friend.last_name		
 			map_name = "unknown"
 			last_location = "unknown"
 			if friend.last_location is not None:
@@ -46,7 +47,9 @@ def getFriendList(self, json_obj):
 					map_name = str(zonemap[0].map_name)
 			
 			data["status"] = 0
-			data["friend_list"].append({'friend_name' : friendname,
+			data["friend_list"].append({
+								'first_name' : friend_first_name,
+								'last_name' : friend_last_name,
 							   'friend_location' : last_location,
 							   'last_update' : main.pretty_date(friend.last_update),
 							   'map_name' : map_name}
