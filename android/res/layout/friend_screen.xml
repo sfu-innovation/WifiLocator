@@ -12,6 +12,11 @@
         android:divider="@null" >
     </ExpandableListView>
 
+    <ImageView
+        android:id="@+id/qrImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
@@ -37,15 +42,5 @@
             android:text="@string/view_friend_requests" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/qrImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/getListButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/get_friend_list" />
 
 </LinearLayout>

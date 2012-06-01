@@ -66,6 +66,7 @@ public class FriendAdapter extends BaseExpandableListAdapter {
 		
 		TextView txtView = new TextView(_rd);
 		txtView.setLayoutParams(params);
+		txtView.setTextSize(20);
 		txtView.setPadding(60, 5, 0, 5);
 		return txtView;
 	}
@@ -80,7 +81,7 @@ public class FriendAdapter extends BaseExpandableListAdapter {
 		i.putExtra("map_name", map[groupPosition]);
 		TextView txtView = getGenericView();
 		
-		txtView.setTextSize(15);
+		txtView.setTextSize(20);
 		txtView.setText(getChild(groupPosition, childPosition).toString());
 		txtView.setOnClickListener(new View.OnClickListener() {
 			

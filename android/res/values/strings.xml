@@ -52,5 +52,6 @@
     <string name="organizer">Organizer:</string>
     <string name="start_time">Start Time:</string>
     <string name="end_time">End Time:</string>
+    <string name="qr_code_hide">Hide QR Code</string>
 
 </resources>

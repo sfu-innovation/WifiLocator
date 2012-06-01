@@ -37,8 +37,8 @@ import android.widget.Button;
 public class WifiLocatorActivity extends RequestDelegateActivity implements OnClickListener{
     
 
-	private String bssid, ssid;
-	private TextView bssidText, ssidText, zoneName;
+	private String bssid;
+	private TextView zoneName;
 	private Button eventsButton, friendButton, locButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
@@ -63,8 +63,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         setContentView(R.layout.main);
         UserObject.getInstance().set_userID(45006);
 
-        bssidText    = (TextView)this.findViewById(R.id.bssidText);
-        ssidText     = (TextView)this.findViewById(R.id.ssidText);
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
         eventsButton   = (Button)this.findViewById(R.id.eventsButton);
         locButton    = (Button)this.findViewById(R.id.mapbutton);
@@ -196,7 +194,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		if ( type == RequestTypes.ZONE){
 			_response = new LocationResponse( val );
 			 bssid     = wifiHandler.getBSSID();
-		     ssid      = wifiHandler.getSSID();
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
 		    	Log.d("zone request", data.toString());
@@ -207,26 +204,15 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 				Log.e("JSON Error:", e.getLocalizedMessage());
 			} finally {
 				zoneName.setText(UserObject.getInstance().get_zone());
-				bssidText.setText(bssid);
-				ssidText.setText(ssid);
 			}
 			
 		}
 		
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		outState.putString("bssid", (String) bssidText.getText());
-		outState.putString("ssid", (String) ssidText.getText());
-	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		bssidText.setText(savedInstanceState.getString("bssid"));
-		ssidText.setText(savedInstanceState.getString("ssid"));
 		zoneName.setText(UserObject.getInstance().get_zone());
 	}
 	

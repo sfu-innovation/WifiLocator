@@ -7,7 +7,7 @@
         android:layout_height="fill_parent"
         android:layout_width="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/textView1"
+        android:id="@+id/friendText"
         android:gravity="center_vertical"
         android:text="TextView"/>
 
