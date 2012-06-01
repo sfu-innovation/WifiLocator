@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import com.sfumobile.wifilocator.request.EventsRequest;
 import com.sfumobile.wifilocator.request.FriendListRequest;
 import com.sfumobile.wifilocator.request.FriendshipRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
@@ -20,6 +21,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -34,7 +36,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
-public class Friends extends RequestDelegateActivity implements OnClickListener{
+public class FriendsActivity extends RequestDelegateActivity implements OnClickListener{
 	
 	private FriendAdapter mAdapter;
 	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
@@ -47,6 +49,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	private static ArrayList<JSONObject> data;
 	private FriendListObject fl;
 	private boolean qrVisible;
+	private AutoPoll friendPoller;
 	
 	private FriendListRequest  _req;
 	private RequestPackage     _package;
@@ -68,8 +71,6 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		qrVisible = false;
 		
 		handler = new Handler();
-		_req = new FriendListRequest(UserObject.getInstance().get_userID());
-		_package = new RequestPackage(this, _req, handler);
 		
 		if (FriendListObject.getInstance().get_data()!=null){
 			 mAdapter = new FriendAdapter(this, FriendListObject.getInstance().get_data());
@@ -78,10 +79,17 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		
 	}
 	
-	public void onStart(){
+	@Override
+	protected void onStart(){
 		super.onStart();
-		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
-		launcher.sendRequest(this, _package );
+		friendPoller = new AutoPoll(this);
+		friendPoller.execute();
+	}
+	
+	@Override
+	protected void onStop(){
+		super.onStop();
+		friendPoller.cancel(true);
 	}
 
 	public void onRestart(){
@@ -233,6 +241,36 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	public void handleImageDataValue(int type, String data) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
+
+		RequestDelegateActivity _rd;
+		
+		public AutoPoll(RequestDelegateActivity rd){
+	        _rd = rd;
+		}
+		
+		@Override
+		protected Void doInBackground(String... params) {
+			
+			while(!isCancelled()) {
+		        try{
+		        	System.out.println("FriendPoller");
+		        	
+		    		_req = new FriendListRequest(UserObject.getInstance().get_userID());
+		    		_package = new RequestPackage(_rd, _req, handler);
+		    		SingleRequestLauncher launcher = SingleRequestLauncher.getInstance();
+		    		launcher.sendRequest(_rd, _package);
+		    		
+		        	Thread.sleep(1000*30);
+		        } catch (InterruptedException e) {
+		        	Thread.currentThread().destroy();
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
 	}
 
 }

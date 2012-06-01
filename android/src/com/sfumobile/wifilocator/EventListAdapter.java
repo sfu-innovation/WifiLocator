@@ -46,29 +46,39 @@ public class EventListAdapter extends BaseAdapter{
 		
 		convertView.setTag(holder);
 		} else {
-		holder = (ViewHolder) convertView.getTag();
+			holder = (ViewHolder) convertView.getTag();
 		}
 
+
+		if(events != null){
+			convertView.setOnClickListener(new OnClickListener() {
+				private int pos = position;
+				 
+				public void onClick(View v) {
+					Intent myIntent;
+					myIntent = new Intent(_rd, EventDetailsActivity.class);
+					myIntent.putExtra("com.sfumobile.wifilocator.Event", events.get(pos));
+					_rd.startActivity(myIntent);
+					
+				}
+				});
+	
+			holder.eventText.setText(events.get(position).get_name());
+		}
+		else{
+			holder.eventText.setText("No Events");
+		}
 		
-		convertView.setOnClickListener(new OnClickListener() {
-			private int pos = position;
-			 
-			public void onClick(View v) {
-				Intent myIntent;
-				myIntent = new Intent(_rd, EventDetailsActivity.class);
-				myIntent.putExtra("com.sfumobile.wifilocator.Event", events.get(pos));
-				_rd.startActivity(myIntent);
-				
-			}
-			});
-
-		holder.eventText.setText(events.get(position).get_name());
-
 		return convertView;
 	}
 		 
 	public int getCount() {
-		return events.size();
+		if(events != null){
+			return events.size();
+		}
+		else{
+			return 1;
+		}
 	}
 
 	public Object getItem(int index) {

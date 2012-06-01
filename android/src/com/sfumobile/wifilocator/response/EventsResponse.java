@@ -18,8 +18,20 @@ public class EventsResponse extends ResponseHandler{
 	public ArrayList<Event> handleResponse() {
 		ArrayList<Event> events = new ArrayList<Event>();
 		JSONArray event_response = null;
+		
+		int status = -1;
+		
 		try {
-			System.out.println("GETTING EVENTS!");
+			status = _data.getInt("status");
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+		
+		if(status == 1){
+			return null;
+		}
+		
+		try {
 			event_response = _data.getJSONArray("events");
 		} catch (JSONException e) {
 			e.printStackTrace();

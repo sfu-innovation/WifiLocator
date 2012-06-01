@@ -11,10 +11,4 @@
         android:layout_weight="0.60" >
     </ListView>
 
-    <Button
-        android:id="@+id/pendingButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pendingButton" />
-
 </LinearLayout>

@@ -122,7 +122,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     		startActivity(myIntent);
 			break;
 		case R.id.friendButton:
-    		Intent nextScreen = new Intent(this,Friends.class);
+    		Intent nextScreen = new Intent(this,FriendsActivity.class);
     		startActivity(nextScreen);
     		break;
 		case R.id.twitterIcon:
