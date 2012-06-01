@@ -25,7 +25,6 @@ public class MapUpdateThread extends Thread implements Runnable{
 
 		
 		public void run(){
-			System.out.println("Updating Map");
 			MapRequest req = new MapRequest(UserObject.getInstance().get_map());
 			image = getImage(req.getURL());
 			Display display = _rd.getWindowManager().getDefaultDisplay();
@@ -35,7 +34,6 @@ public class MapUpdateThread extends Thread implements Runnable{
 		}
 		
 		private Drawable getImage(String url){
-			System.out.println("[Downloading MAP from URL] - " + url);
 			try{
 				InputStream is = (InputStream) new URL(url).getContent();
 				Drawable d     = Drawable.createFromStream(is,  "src");

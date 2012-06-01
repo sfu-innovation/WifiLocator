@@ -160,7 +160,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		        	//Only poll the server if it has
 		        	System.out.println("Running");
 		        	if(bssidChanged()){
-		        		System.out.println("Updating Zone and Map");
 		        		updateZoneInfo(_rd);
 		        	}
 		        	Thread.sleep(1000);
