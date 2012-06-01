@@ -1,5 +1,7 @@
 package com.sfumobile.wifilocator;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.json.JSONException;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 
 import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.LocationRequest;
+import com.sfumobile.wifilocator.request.MapRequest;
 import com.sfumobile.wifilocator.request.RequestConstants;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
@@ -30,6 +33,9 @@ import android.widget.TextView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.Button;
 
 
@@ -39,22 +45,20 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
 	private String bssid;
 	private TextView zoneName;
-	private Button eventsButton, friendButton, locButton;
+	private Button eventsButton, friendButton;
 	private ImageView twitterIcon;
 	private AutoPoll auto;
 	private RequestHandler requestHandler;
 	private WifiHandler wifiHandler;
 	private AlertDialog alert;
 	private Handler handler;
-	private LocationRequest            _req;
+	private LocationRequest _req;
 	private RequestPackage             _package;
 	private LocationResponse _response;
+	private Drawable image;
+	private ImageView mapView;
 	
 	RequestDelegateActivity _rd;
-	
-	//public static final String USER = "Catherine"; //Hedy, 45006
-	//public static final int USER_ID = 28001;
-
 	
 	/** Called when the activity is first created. */
     @Override
@@ -64,15 +68,14 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         UserObject.getInstance().set_userID(45006);
 
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
-        eventsButton   = (Button)this.findViewById(R.id.eventsButton);
-        locButton    = (Button)this.findViewById(R.id.mapbutton);
+        eventsButton = (Button)this.findViewById(R.id.eventsButton);
         twitterIcon  = (ImageView)this.findViewById(R.id.twitterIcon);
         friendButton = (Button)this.findViewById(R.id.friendButton);
+        mapView      = (ImageView)this.findViewById(R.id.mapView);
         
         eventsButton.setOnClickListener(this);
         twitterIcon.setOnClickListener(this);
         friendButton.setOnClickListener(this);  
-        locButton.setOnClickListener(this);
         
         handler        = new Handler();
         requestHandler = new RequestHandler(this);
@@ -130,10 +133,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			myIntent.putExtra("zone", UserObject.getInstance().get_zone());
 			startActivity(myIntent);
 			break;
-		case R.id.mapbutton:
-			myIntent = new Intent(this, MapActivity.class);
-			myIntent.putExtra("map_name", UserObject.getInstance().get_map());
-			startActivity(myIntent);
 		}
 	}
 	
@@ -161,6 +160,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		        	//Only poll the server if it has
 		        	System.out.println("Running");
 		        	if(bssidChanged()){
+		        		System.out.println("Updating Zone and Map");
 		        		updateZoneInfo(_rd);
 		        	}
 		        	Thread.sleep(1000);
@@ -192,13 +192,16 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.ZONE){
+	    	Log.d("[RESPONSE DATA]", val);
 			_response = new LocationResponse( val );
 			 bssid     = wifiHandler.getBSSID();
 		    JSONObject data = (JSONObject)_response.handleResponse();			
 		    try{
-		    	Log.d("zone request", data.toString());
 				UserObject.getInstance().set_zone(data.getString("zone_name"));
-		        UserObject.getInstance().set_map(data.getString("map_name"));		
+		        UserObject.getInstance().set_map(data.getString("map_name"));
+		        System.out.println("USER MAP: " + UserObject.getInstance().get_map());
+		        MapUpdateThread mapThread = new MapUpdateThread(mapView, this);
+		        mapThread.start();
 		        
 			} catch (JSONException e) {
 				Log.e("JSON Error:", e.getLocalizedMessage());
@@ -233,4 +236,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 }
