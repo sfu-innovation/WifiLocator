@@ -92,9 +92,12 @@ def getFriendRequests(self, json_obj):
 			return
 		for requests in q:
 			friend = Users.get_by_id(requests.friend_id)
-			friendname = friend.short_name			
-			data["requests"].append({'friend_name' : friendname,
-								'request_id' : requests.key().id()})
+			friend_first_name = friend.first_name
+			friend_last_name = friend.last_name			
+			data["requests"].append({
+									'first_name' : friend_first_name,
+									'last_name' : friend_last_name,
+									'request_id' : requests.key().id()})
 
 			data["status"] = 0
 		self.response.headers['Content-Type'] = "application/json"
@@ -125,10 +128,12 @@ def getEvents(self, json_obj):
 	logging.debug("location: " + curr_zone.zone_name)
 	try:
 		curr_super_zone = curr_zone.super_zone
+
 		for events in curr_super_zone.event_super_zone:
+			#TODO: return super zone map
 			data["events"].append({'name' : events.name,
 								   'organizer' : events.organizer,
-								   'location(superzone)' : events.super_zone.super_zone_name,
+								   'location' : events.super_zone.super_zone_name,
 								   'start_time' :  datetime.ctime(events.start_time),
 								   'end_time' : datetime.ctime(events.end_time)})
 		data["status"] = 0

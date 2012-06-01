@@ -5,44 +5,45 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
-import com.sfumobile.wifilocator.request.RequestPackage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class FriendAdapter extends BaseExpandableListAdapter {
+public class FriendsAdapter extends BaseExpandableListAdapter {
 	private Context _rd;
 	private static ArrayList<JSONObject> _data;
-	private String[] friends, loc;
+	private String[] friends, loc, map;
 	private String[][] status;
 
 	
-	public FriendAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
+	public FriendsAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
 		_data = data;
 		_rd = rd;
+		int size = _data.size();
 		
-		friends = new String[_data.size()];
-		loc = new String[_data.size()];
+		friends = new String[size];
+		loc = new String[size];
+		map = new String[size];
 		try{
-			for (int i=0; i<_data.size(); i++){
-				friends[i] = _data.get(i).getString("friend_name");
+			for (int i=0; i<size; i++){
+				friends[i] = _data.get(i).getString("first_name")  + " " + _data.get(i).getString("last_name");
 				loc[i] = _data.get(i).getString("friend_location")+", "+data.get(i).getString("last_update");
+				map[i] = _data.get(i).getString("map_name");
 			}
 		} catch (JSONException jse) {
 			Log.e("JSON Exception", jse.toString());
 		}
 		
 		if (friends != null){
-			status = new String[loc.length][1];		
-			for (int i=0; i< loc.length; i++)
+			status = new String[size][1];		
+			for (int i=0; i< size; i++)
 				status[i][0] = loc[i];
 		}
 		
@@ -67,25 +68,21 @@ public class FriendAdapter extends BaseExpandableListAdapter {
 	}
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
-
-	//	View inflatedView = View.inflate(context, R.layout.friend_sub, null);
-	//	inflatedView.setPadding(50, 0, 0, 0);
-	//	TextView txtView = (TextView)inflatedView.findViewById(R.id.textView1);
 		
-	//	final Intent i = new Intent(getApplicationContext(), GetMap.class);
-	//	i.putExtra("zone", getChild(groupPosition, childPosition).toString());
+		final Intent i = new Intent(_rd, MapActivity.class);
+		i.putExtra("map_name", map[groupPosition]);
 		TextView txtView = getGenericView();
 		
 		txtView.setTextSize(15);
 		txtView.setText(getChild(groupPosition, childPosition).toString());
-	/*	txtView.setOnClickListener(new View.OnClickListener() {
+		txtView.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
 				// TODO Auto-generated method stub				
-				startActivity(i);
+				_rd.startActivity(i);
 			}
 		});
-		*/
+		
 		return txtView;
 	}
 

@@ -4,12 +4,10 @@ import java.util.Vector;
 
 import com.sfumobile.wifilocator.entities.WifiLocatorData;
 import com.sfumobile.wifilocator.entities.WifiLocatorEvent;
-import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 import com.sfumobile.wifilocator.request.EventsRequest;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.EventsResponse;
-import com.sfumobile.wifilocator.response.FriendshipRetrievalResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 import net.rim.device.api.system.Display;
@@ -52,6 +50,15 @@ public class WifiLocatorEventsScreen extends RequestDelegateScreen implements Fi
 	        }
 		};
 		add( _eventsList );
+		
+		WifiLocatorEvent[] preloadValues = WifiLocatorData.getInstance().getEvents();
+		if ( preloadValues != null ){
+			_eventsArr = preloadValues;
+			_eventsList.set( _eventsArr );
+			_eventsList.setSize( preloadValues.length );
+			_eventsList.setEnabled( false );
+		}
+		setTitle("Events");
 	}
 	
 	protected void onUiEngineAttached( boolean attached ) {
@@ -65,6 +72,7 @@ public class WifiLocatorEventsScreen extends RequestDelegateScreen implements Fi
 			Vector tempEvents = (Vector)_response.handleResponse();
 			int length = tempEvents.size();
 			_eventsArr = new WifiLocatorEvent[length];
+			_eventsList.setEnabled( true );
 			for(int i = 0; i < length; i++ ){
 				_eventsArr[i] = (WifiLocatorEvent)tempEvents.elementAt(i);
 			}
@@ -73,6 +81,11 @@ public class WifiLocatorEventsScreen extends RequestDelegateScreen implements Fi
 		}
 	}
 
+	public boolean onClose(){
+		WifiLocatorData.getInstance().setEvents( _eventsArr );
+		close();
+		return true;
+	}
 	public void handleIntValue(int type, int val) {
 		// TODO Auto-generated method stub
 		

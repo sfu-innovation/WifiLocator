@@ -39,6 +39,8 @@ public class WifiLocatorEventDetailsScreen extends RequestDelegateScreen impleme
 		add( _endTime );
 		refresh();
 		setStatus( _backButton );
+		
+		setTitle("Event Details");
 	}
 	
 	private void refresh(){

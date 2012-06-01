@@ -6,15 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
-import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 
-import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,22 +38,12 @@ public class FriendRequestAdapter extends BaseAdapter{
 	}
 	
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		// A ViewHolder keeps references to children views to avoid
-		// unneccessary calls
-		// to findViewById() on each row.
+
 		ViewHolder holder;
 		
-		// When convertView is not null, we can reuse it directly, there is
-		// no need
-		// to reinflate it. We only inflate a new View when the convertView
-		// supplied
-		// by ListView is null.
 		if (convertView == null) {
 		convertView = mInflater.inflate(R.layout.friend_request_line, null);
 		 
-		// Creates a ViewHolder and store references to the two children
-		// views
-		// we want to bind data to.
 		holder = new ViewHolder();
 		holder.friendText = (TextView) convertView.findViewById(R.id.friendNameText);
 		holder.confirmButton = (Button) convertView.findViewById(R.id.confirmButton);
@@ -77,7 +63,6 @@ public class FriendRequestAdapter extends BaseAdapter{
 			launcher.sendRequest(_rd, _package);
 			_data.remove(position);
 			notifyDataSetChanged();
-
 		 
 		}
 		});
@@ -101,7 +86,9 @@ public class FriendRequestAdapter extends BaseAdapter{
 		 
 		// Bind the data efficiently with the holder.
 		try {
-			holder.friendText.setText(_data.get(position).getString("friend_name"));
+			String last_name = _data.get(position).getString("last_name");
+			String first_name = _data.get(position).getString("first_name");
+			holder.friendText.setText(first_name + " " + last_name);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
