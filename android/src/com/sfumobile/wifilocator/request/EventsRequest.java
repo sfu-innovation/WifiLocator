@@ -2,8 +2,6 @@ package com.sfumobile.wifilocator.request;
 
 import com.sfumobile.wifilocator.types.RequestTypes;
 
-import android.os.Handler;
-
 public class EventsRequest extends Request{
 
 	private int _id;

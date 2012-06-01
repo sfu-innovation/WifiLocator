@@ -14,8 +14,6 @@ import com.sfumobile.wifilocator.WifiLocatorActivity;
 import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
-//import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
-
 public class FriendshipsResponse extends ResponseHandler {
 	private int _type;
 	public FriendshipsResponse(String data, int type){
@@ -32,7 +30,7 @@ public class FriendshipsResponse extends ResponseHandler {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();			//	zoneText.setText(zone);
+			e.printStackTrace();			
 		}
 		if ( status == 0 ) {
 			ArrayList<JSONObject> data = parseFriendRequests(_data, _type);

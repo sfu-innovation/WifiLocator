@@ -1,9 +1,6 @@
 package com.sfumobile.wifilocator;
 
 import java.util.ArrayList;
-
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
