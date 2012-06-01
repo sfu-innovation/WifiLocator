@@ -28,7 +28,13 @@ public class WifiHandler {
 	}
 
 	public String getBSSID(){
-		return wm.getConnectionInfo().getBSSID().toString();//"00:1f:45:64:17:d1";
+		try{
+			return wm.getConnectionInfo().getBSSID().toString();//"00:1f:45:64:17:d1";
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return "0";
+		}
 	}
 	
 	public String getSSID(){
