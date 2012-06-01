@@ -79,9 +79,6 @@ public class FriendsActivity extends RequestDelegateActivity implements OnClickL
 	//	launcher.sendRequest(this, _package );
 	}
 
-	public void onRestart(){
-		super.onRestart();
-	}
 
 	public void onClick(View v) {
 		Intent intent;

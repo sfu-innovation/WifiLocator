@@ -71,6 +71,7 @@ public class FriendsAdapter extends BaseExpandableListAdapter {
 		
 		final Intent i = new Intent(_rd, MapActivity.class);
 		i.putExtra("map_name", map[groupPosition]);
+		Log.d("map_name", map[groupPosition]);
 		TextView txtView = getGenericView();
 		
 		txtView.setTextSize(15);

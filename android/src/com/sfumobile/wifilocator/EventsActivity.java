@@ -45,8 +45,10 @@ public class EventsActivity extends RequestDelegateActivity{
 	public void handleStringValue(int type, String val) {
 		EventsResponse response = new EventsResponse(val);
 		events = response.handleResponse();
-	    eventAdapter = new EventListAdapter(this, events);
-	    eventsList.setAdapter(eventAdapter);
+		if (events.size() > 0){
+			eventAdapter = new EventListAdapter(this, events);
+			eventsList.setAdapter(eventAdapter);
+		}
 	}
 
 	@Override

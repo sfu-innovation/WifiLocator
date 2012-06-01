@@ -67,12 +67,12 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
         friendButton.setOnClickListener(this);  
         locButton.setOnClickListener(this);
         
+        Log.d("Test", "before marker create");
         handler        = new Handler();
         requestHandler = new RequestHandler(this);
         wifiHandler    = requestHandler.getWifiHandler();
         bssid          = "";
-        
-
+      
     	auto = new AutoPoll(this);
 
     }
@@ -196,6 +196,10 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 				ssidText.setText(ssid);
 			}	
 		}
+	}
+	
+	public void onRestart(){
+		super.onRestart();
 	}
 	
 	@Override

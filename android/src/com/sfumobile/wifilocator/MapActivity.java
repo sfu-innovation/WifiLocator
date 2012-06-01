@@ -28,6 +28,7 @@ public class MapActivity extends RequestDelegateActivity{
 		_req = new MapRequest(getIntent().getExtras().getString("map_name"));
 		
 		image = getImage(_req.getURL());
+		img.setImageDrawable(image);
 
 	}
 	
