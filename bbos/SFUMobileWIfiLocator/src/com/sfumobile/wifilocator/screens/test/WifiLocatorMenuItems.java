@@ -116,13 +116,6 @@ public class WifiLocatorMenuItems {
 		
 	}
 	
-	public static MenuItem addGetRequests(final ViewPendingFriendshipsScreen screen){
-		MenuItem _menuItem = null;
-		_menuItem = new MenuItem("request requests", 110, 10){
-			public void run(){
-				screen.foo();
-			}};
-		return _menuItem;
-	}
+	
 	
 }

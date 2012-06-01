@@ -41,6 +41,15 @@ class SetUser(webapp.RequestHandler):
 				Users(first_name = json_obj["first_name"], short_name = json_obj["short_name"], last_name = json_obj["last_name"]).put()
 				data = {'status' : 0, 'message' : 'user added successfully'}
 			elif json_obj["command"] == "deleteuser":
+				# delete all friend relationships associated with the user
+				# (Jordan: this case is WIP at the moment)
+				#friend_relationships = db.GqlQuery(("SELECT * FROM Friends " + "WHERE user_id = :1"), userobj[0].key())
+				#if friend_relationships.count() > 0:
+				#	friend_relationships[0].delete()
+				#for relationship in friend_relationships:
+				#	relationship.delete()
+
+				# delete user
 				userobj[0].delete()
 				data = {'status' : 0, 'message' : 'user deleted successfully'}
 			else:

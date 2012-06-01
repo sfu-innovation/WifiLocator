@@ -36,7 +36,7 @@ public class FriendsAdapter extends BaseExpandableListAdapter {
 		map = new String[_data.size()];
 		try{
 			for (int i=0; i<_data.size(); i++){
-				friends[i] = _data.get(i).getString("friend_name");
+				friends[i] = _data.get(i).getString("first_name")  + " " + _data.get(i).getString("last_name");
 				loc[i] = _data.get(i).getString("friend_location")+", "+data.get(i).getString("last_update");
 				map[i] = _data.get(i).getString("map_name");
 			}

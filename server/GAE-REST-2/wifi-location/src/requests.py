@@ -5,9 +5,10 @@ import urllib
 import wsgiref.handlers
 import csv
 import rest
+import logging
 from google.appengine.runtime import apiproxy_errors
 from django.utils import simplejson as json
-
+from datetime import datetime
 from src.models import *
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -63,8 +64,8 @@ def sendFriendRequest(self,json_obj):
 		#self.response.out.write("request_sent")
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps({"request_id" : request.key().id(), "status" : 0}))
-		
-
+	
+	
 	except apiproxy_errors.OverQuotaError, message:
 		logging.error(message)
 		self.response.headers['Content-Type'] = "application/json"
@@ -91,14 +92,56 @@ def getFriendRequests(self, json_obj):
 			return
 		for requests in q:
 			friend = Users.get_by_id(requests.friend_id)
-			friendname = friend.short_name			
-			data["requests"].append({'friend_name' : friendname,
-								'request_id' : requests.key().id()})
+			friend_first_name = friend.first_name
+			friend_last_name = friend.last_name			
+			data["requests"].append({
+									'first_name' : friend_first_name,
+									'last_name' : friend_last_name,
+									'request_id' : requests.key().id()})
 
 			data["status"] = 0
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
+
 	except apiproxy_errors.OverQuotaError, message:
 		logging.error(message)
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps({"status" : 10}))
+		
+def getEvents(self, json_obj):
+	data = dict()
+	user_obj = Users.get_by_id(int(json_obj["user_id"]))
+	zones = db.GqlQuery(("SELECT * FROM BSSIDZones " +
+		"WHERE mac_address = :1"), urllib.unquote_plus(json_obj["mac_address"]))	
+	if zones.count() == 0:
+		#BSSID UNKNOWN
+		data["status"] = 1
+
+		self.response.headers['Content-Type'] = "application/json"
+		self.response.out.write(json.dumps(data))
+		return
+	data["events"] = []
+	curr_zone = zones[0].zones
+	user_obj.last_location = curr_zone.key()
+	user_obj.put()
+	logging.debug("user information updated")
+	logging.debug("location: " + curr_zone.zone_name)
+	try:
+		curr_super_zone = curr_zone.super_zone
+
+		for events in curr_super_zone.event_super_zone:
+			#TODO: return super zone map
+			data["events"].append({'name' : events.name,
+								   'organizer' : events.organizer,
+								   'location' : events.super_zone.super_zone_name,
+								   'start_time' :  datetime.ctime(events.start_time),
+								   'end_time' : datetime.ctime(events.end_time)})
+		data["status"] = 0
+		self.response.headers['Content-Type'] = "application/json"
+		self.response.out.write(json.dumps(data))
+		
+	except: 
+	
+	
+		logging.debug("cant not get events")
+	

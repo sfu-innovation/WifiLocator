@@ -6,8 +6,6 @@ import wsgiref.handlers
 import csv
 import rest
 import logging
-import src.iso8601
-
 
 from src.models import *
 from src.friends import *
@@ -15,24 +13,28 @@ from src.zones import *
 from src.requests import *
 from src.users import *
 from src.accepts import *
-
+from src.importcsv import CSVImporter
 from django.utils import simplejson as json
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-
+from google.appengine.ext.db import djangoforms
 
 class MainPage(webapp.RequestHandler):
 	def get(self):
 		'''
-		areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
+		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_super_zone.csv')
+		areaReader = csv.reader(open(path,'rU'), delimiter=',')
 		
 		for row in areaReader:
-			Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+			tempzone = Areas.get_by_id(int(row[1]))
+			SuperZones(zone = tempzone, super_zone_name = row[0]).put()
+			#Areas(zone_id=int(row[0]),zone_name=row[1]).put()
+		print "imported super zone"
 	
-		
+	
 		macReader = csv.reader(open(('surrey_res.csv'),'rU'), delimiter=',')
 		
 
@@ -78,7 +80,25 @@ class MainPage(webapp.RequestHandler):
 		
 		print mytime
 		
-		'''	
+		
+		areas = db.GqlQuery("SELECT * "
+						"FROM Areas ")
+		for items in areas:
+			if items.zone_name[:9] == "Galleria4":
+				superzone = SuperZones.get_by_id(67001)
+				items.super_zone = superzone
+				items.put()
+			elif items.zone_name[:9] == "Galleria3":
+				superzone = SuperZones.get_by_id(66001)
+				items.super_zone = superzone
+				items.put()		
+		'''				
+		#SuperZones(super_zone_name = "Galleria 3").put()
+		
+		#g3_3 = Areas.get_by_id(2345)
+		#BSSIDZones(zones = g3_3, mac_address = "00:1f:45:64:0f:41").put()
+		super_zones = db.GqlQuery("SELECT * "
+					"FROM SuperZones ")
 		bssid_query = db.GqlQuery("SELECT * "
 				"FROM BSSIDZones ")
 		area_query = db.GqlQuery("SELECT * "
@@ -88,13 +108,20 @@ class MainPage(webapp.RequestHandler):
 					"FROM Users ")
 		friend_query = db.GqlQuery("SELECT * "
 					"FROM Friends ")
+					
+		event_query =  db.GqlQuery("SELECT * "
+					"FROM Events ")
+
+		
 		template_values = {
     		'bssid': bssid_query,
 			'areas': area_query,
 			'friends' : friend_query,
-			'users' : user_query
+			'users' : user_query,
+			'events' : event_query,
+			'super_zones' : super_zones
 		}
-		path = os.path.join(os.path.dirname(__file__), 'index.html')
+		path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'index.html')
 		self.response.out.write(template.render(path,template_values))
 
 
@@ -108,7 +135,13 @@ class RequestHandler(webapp.RequestHandler):
 			#print str(input)
 			#print "Json object recieved: ", input
 			logging.debug("JSON object recieved to RequestHandler: " + str(input))
-			
+		except:
+			# if json is empty
+			logging.error("No JSON received")
+			self.response.headers['Content-Type'] = "application/json"
+			self.response.out.write(json.dumps({"status" : 11}))
+			return
+		try:
 			#get a list of friends and friends info
 			if (request_type == "friendlist"):
 	
@@ -133,16 +166,15 @@ class RequestHandler(webapp.RequestHandler):
 				
 				getEvents(self, json_obj)
 			
-			else:
+			else: 	
 				logging.error("request type unknown")
 				self.response.headers['Content-Type'] = "application/json"
 				self.response.out.write(json.dumps({"status" : 12}))
 		except:
-			# if json is empty
-			logging.error("No JSON received")
+			logging.error("request fail")
 			self.response.headers['Content-Type'] = "application/json"
-			self.response.out.write(json.dumps({"status" : 11}))
-			
+			self.response.out.write(json.dumps({"status" : 13}))
+					
 
 class AcceptHandler(webapp.RequestHandler):
 	def post(self, accept_type):
@@ -159,46 +191,35 @@ class AcceptHandler(webapp.RequestHandler):
 			logging.error("No JSON received")
 			self.response.headers['Content-Type'] = "application/json"
 			self.response.out.write(json.dumps({"status" : 11}))
-			
-class CSVImporter(webapp.RequestHandler):
-	def get(self):
-		try:
-			surrey_zones = [3007,4006,7007,13004,14005,15005]
-			
-			for i in surrey_zones:
-			#areaReader = csv.reader(open(('surrey_data.csv'),'rU'), delimiter=',')
-				curr_zone = Areas.get_by_id(i)
-				#print curr_zone.key().id()
-				removelist = db.GqlQuery("SELECT * FROM BSSIDZones " + "WHERE zones = :1" , curr_zone)
-				#print removelist.count()
-				if removelist.count() > 0:
-				
-					for k in removelist:
-						db.delete(k)
-					print "zone: " + str(i) + " deleted"	
-				else: 
-					print "zone not found"
-					return
-			#for row in areaReader:
-			#	Areas(zone_id=int(row[0]),zone_name=row[1]).put()
-			#	print "areas imported"
-		except:
-			print "delete fail"	
-		try:
-			csvReader = csv.reader(open(('res.csv'),'rU'), delimiter=',')
-			for row in csvReader:
-				curr_area = Areas.all()
-				temp = curr_area.filter("zone_id =", (int(row[1])+20))
+					
 	
-				for area in temp:
-					#print "[" + str(area.zone_id) + "]"
-					BSSIDZones(zones = area, mac_address = row[0]).put()
-			print "bssid imported"
-		except:
-			print "import fail"
-		
-	
+class EventCreator(webapp.RequestHandler):
 
+	def get(self):
+		
+		template_values = {
+	    		'eventform' : EventForm()
+			}
+		path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'event.html')
+		self.response.out.write(template.render(path,template_values))
+	
+	def post(self):
+		data  = EventForm(data=self.request.POST)
+		if data.is_valid():
+			entity = data.save(commit = False)
+			entity.put()
+			print "event created"
+			self.redirect('/')
+		else:
+			template_values = {
+	    		'eventform' : data
+			}
+			path = os.path.join(os.path.dirname(__file__) + '/../templates/', 'event.html')
+			self.response.out.write(template.render(path,template_values))
+
+
+
+	
 def pretty_date(time=False):
 		"""
 		Get a datetime object or a int() Epoch timestamp and return a
@@ -244,16 +265,6 @@ def pretty_date(time=False):
 		
 
 	
-application = webapp.WSGIApplication([
-									('/', MainPage), 
-									('/request/(.*)', RequestHandler),
-									('/accept/(.*)', AcceptHandler),
-									('/getmap/(.*)', MapHandler),
-									('/rest/.*', rest.Dispatcher),
-									('/getuserid/', GetUserId),
-									('/setfriend/', SetFriend),
-									('/setuser/', SetUser)],
-									debug=True)
 
 
 
@@ -276,7 +287,18 @@ rest.Dispatcher.add_models_from_module(__name__)
 #rest.Dispatcher.authorizer = MyAuthorizer()
                                      
 def main():
-    run_wsgi_app(application)
+	application = webapp.WSGIApplication([
+										('/', MainPage), 
+										('/request/(.*)', RequestHandler),
+										('/accept/(.*)', AcceptHandler),
+										('/getmap/(.*)', MapHandler),
+										('/rest/.*', rest.Dispatcher),
+										('/getuserid/', GetUserId),
+										('/setfriend/', SetFriend),
+										('/setuser/', SetUser),
+										('/event', EventCreator)],
+										debug=True)
+	run_wsgi_app(application)
 
 if __name__ == "__friends__":
     main()

@@ -46,5 +46,11 @@
     <string name="view_friend_requests">View Friend Requests</string>
     <string name="reject">Reject</string>
     <string name="confirm">Confirm</string>
+    <string name="events">Events</string>
+    <string name="name">Name:</string>
+    <string name="location">Location:</string>
+    <string name="organizer">Organizer:</string>
+    <string name="start_time">Start Time:</string>
+    <string name="end_time">End Time:</string>
 
 </resources>
