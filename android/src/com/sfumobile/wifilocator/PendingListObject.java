@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public final class PendingListObject {
 	 private static PendingListObject instance;
-	 private ArrayList<JSONObject> fl;
+	 private ArrayList<JSONObject> fl = null;
 	 private PendingListObject(){
 		 
 	 }

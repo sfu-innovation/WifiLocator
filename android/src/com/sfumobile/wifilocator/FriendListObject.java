@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public final class FriendListObject {
 	 private static FriendListObject instance;
-	 private ArrayList<JSONObject> fl;
+	 private ArrayList<JSONObject> fl = null;
 	 private FriendListObject(){
 		 
 	 }

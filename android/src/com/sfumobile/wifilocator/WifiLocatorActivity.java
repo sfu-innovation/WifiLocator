@@ -1,23 +1,16 @@
 package com.sfumobile.wifilocator;
 
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.LocationRequest;
-import com.sfumobile.wifilocator.request.RequestConstants;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.WifiHandler;
-import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.response.LocationResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,8 +20,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
 
@@ -84,12 +75,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 
     	auto = new AutoPoll(this);
 
-
-        _req     = new LocationRequest(UserObject.getInstance().get_userID(), wifiHandler.getBSSID());
-    	_package = new RequestPackage(this, _req, handler);
-        
-     
-
     }
     
     public void onStart(){
@@ -122,9 +107,6 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 		switch(src.getId()){
 		case R.id.pollButton:
 			final int status = (Integer) src.getTag();
-			
-       // 	SingleRequestLauncher sl = SingleRequestLauncher.getInstance();
-       // 	sl.sendRequest(this, _package);
 			if(status ==1){
 				pollButton.setText("Auto Poll");
 				auto.cancel(true);
@@ -137,7 +119,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 			}
 			break;
 		case R.id.friendButton:
-    		Intent nextScreen = new Intent(src.getContext(),Friends.class);
+    		Intent nextScreen = new Intent(src.getContext(),FriendsActivity.class);
     		startActivity(nextScreen);
     		break;
 		case R.id.twitterIcon:
@@ -154,9 +136,9 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	
 	public void onStop(){
 		super.onStop();
-/*		if (auto!=null) {
+		if (auto!=null) {
 			auto.cancel(true);
-		}*/
+		}
 	}
 	
 	class AutoPoll extends AsyncTask<String, JSONObject, Void> {	
@@ -222,10 +204,8 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 				zoneName.setText(UserObject.getInstance().get_zone());
 				bssidText.setText(bssid);
 				ssidText.setText(ssid);
-			}
-			
+			}	
 		}
-		
 	}
 	
 	@Override

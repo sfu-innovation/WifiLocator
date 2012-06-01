@@ -19,14 +19,14 @@ import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-public class FriendAdapter extends BaseExpandableListAdapter {
+public class FriendsAdapter extends BaseExpandableListAdapter {
 	private Context _rd;
 	private static ArrayList<JSONObject> _data;
 	private String[] friends, loc, map;
 	private String[][] status;
 
 	
-	public FriendAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
+	public FriendsAdapter(RequestDelegateActivity rd, ArrayList<JSONObject> data){
 		_data = data;
 		_rd = rd;
 		Log.d("FriendAdapter", data.toString());

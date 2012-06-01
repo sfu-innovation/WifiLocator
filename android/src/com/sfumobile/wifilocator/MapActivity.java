@@ -7,12 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sfumobile.wifilocator.request.FriendListRequest;
-import com.sfumobile.wifilocator.request.HttpGET;
 import com.sfumobile.wifilocator.request.MapRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
-import com.sfumobile.wifilocator.response.ImageResponse;
+//import com.sfumobile.wifilocator.response.ImageResponse;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -22,7 +21,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
-
 
 public class MapActivity extends RequestDelegateActivity{
 	private Drawable image;
@@ -35,7 +33,7 @@ public class MapActivity extends RequestDelegateActivity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.zone_map);
-		img = (ImageView) findViewById(R.id.imageView1);
+		img = (ImageView) findViewById(R.id.mapview);
 		
 		handler = new Handler();
 		_req = new MapRequest(getIntent().getExtras().getString("map_name"));

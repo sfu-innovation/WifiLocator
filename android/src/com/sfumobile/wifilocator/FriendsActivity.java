@@ -34,9 +34,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
-public class Friends extends RequestDelegateActivity implements OnClickListener{
+public class FriendsActivity extends RequestDelegateActivity implements OnClickListener{
 	
-	private FriendAdapter mAdapter;
+	private FriendsAdapter mAdapter;
 	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton, getListButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
@@ -46,7 +46,6 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 	private final int ADD_FRIEND_DIALOG_ID = 0;
 	private Handler handler;
 	private static ArrayList<JSONObject> data;
-	private FriendListObject fl;
 	
 	private FriendListRequest  _req;
 	private RequestPackage     _package;
@@ -73,7 +72,7 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		_package = new RequestPackage(this, _req, handler);
 		
 		if (FriendListObject.getInstance().get_data()!=null){
-			 mAdapter = new FriendAdapter(this, FriendListObject.getInstance().get_data());
+			 mAdapter = new FriendsAdapter(this, FriendListObject.getInstance().get_data());
 			 friendList.setAdapter(mAdapter);	
 		}
 		
@@ -196,9 +195,9 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 		if(type == RequestTypes.GET_FRIENDS){
 			FriendshipsResponse _response = new FriendshipsResponse( val, type);
 		    data = _response.handleResponse();		
-		    fl.getInstance().set_data(data);
+		    
 		    Log.d("Friends", data.toString());
-		    mAdapter = new FriendAdapter(this, data);
+		    mAdapter = new FriendsAdapter(this, data);
 		    friendList.setAdapter(mAdapter);
 		}
 		else if(type == RequestTypes.FRIENDSHIP_REQUEST){
@@ -211,6 +210,11 @@ public class Friends extends RequestDelegateActivity implements OnClickListener{
 			
 		}
 	
+	}
+	
+	public void onStop(){
+		super.onStop();
+		FriendListObject.getInstance().set_data(data);
 	}
 
 	@Override
