@@ -14,6 +14,12 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+def unicode_csv_reader(utf8_data, dialect=csv.excel, **kwargs):
+    csv_reader = csv.reader(utf8_data, dialect=dialect, **kwargs)
+    for row in csv_reader:
+        yield [unicode(cell, 'utf-8') for cell in row]
+
+
 class CSVImporter(webapp.RequestHandler):
 	def get(self):
 		'''
@@ -50,10 +56,10 @@ class CSVImporter(webapp.RequestHandler):
 		'''
 		
 		
-		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_events_UTF_8.csv')
+		path = os.path.join(os.path.dirname(__file__) + '/../csv/', 'surrey_events_IATSU.csv')
 		csvReader = csv.reader(open(path,'rU'), delimiter=',')
 		#read the first row of header
-		#header = csvReader.next()
+		header = csvReader.next()
 		#print header[5]
 		
 		for row in csvReader:
@@ -78,8 +84,11 @@ class CSVImporter(webapp.RequestHandler):
 					 contact_email = row[4],
 					 start_time = formated_start_time,
 					 end_time = formated_end_time,
-					 #description = row[7].decode("utf-8"))
+					 description = row[7],
 					 super_zone = superzone)
+					 
+				if row[9] != None:
+					temp.location = row[9]
 				temp.put()
 
 			else:
@@ -89,9 +98,11 @@ class CSVImporter(webapp.RequestHandler):
 						 contact_name = row[3],
 						 contact_email = row[4],
 						 start_time = formated_start_time,
-						 end_time = formated_end_time)
-						 #description = row[7],
+						 end_time = formated_end_time,
+						 description = row[7])
 						 #super_zone = superzone)
+				if row[9] != None:
+					temp.location = row[9]
 				temp.put()
 		print "Event: " + row[0] + " is added."
 		#print "event imported"
