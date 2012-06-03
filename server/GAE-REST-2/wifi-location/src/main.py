@@ -284,6 +284,8 @@ rest.Dispatcher.add_models_from_module(__name__)
 # use custom authentication/authorization
 #rest.Dispatcher.authenticator = MyAuthenticator()
 #rest.Dispatcher.authorizer = MyAuthorizer()
+
+#('/import', CSVImporter)
                                      
 def main():
 	application = webapp.WSGIApplication([
@@ -295,8 +297,7 @@ def main():
 										('/getuserid/', GetUserId),
 										('/setfriend/', SetFriend),
 										('/setuser/', SetUser),
-										('/event', EventCreator),
-										('/import', CSVImporter)],
+										('/event', EventCreator)],
 										debug=True)
 	run_wsgi_app(application)
 
