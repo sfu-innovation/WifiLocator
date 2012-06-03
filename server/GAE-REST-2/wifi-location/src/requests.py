@@ -135,7 +135,9 @@ def getEvents(self, json_obj):
 								   'organizer' : events.organizer,
 								   'location' : events.super_zone.super_zone_name,
 								   'start_time' :  datetime.ctime(events.start_time),
-								   'end_time' : datetime.ctime(events.end_time)})
+								   'end_time' : datetime.ctime(events.end_time),
+								   'location' : events.location,
+								   'description' : events.description})
 		data["status"] = 0
 		self.response.headers['Content-Type'] = "application/json"
 		self.response.out.write(json.dumps(data))
