@@ -8,6 +8,7 @@ public class Event implements Parcelable{
 	private String _location;
 	private String _organizer;
 	private String _name;
+	private String _description;
 	private String _start_time;
 	private String _end_time;
 	
@@ -19,9 +20,10 @@ public class Event implements Parcelable{
 		readFromParcel(in);
 	}
 	
-	public Event(String name, String location, String organizer, String start_time, String end_time){
+	public Event(String name, String location, String description, String organizer, String start_time, String end_time){
 		set_name(name);
 		set_location(location);
+		set_description(description);
 		set_organizer(organizer);
 		set_start_time(start_time);
 		set_end_time(end_time);
@@ -75,6 +77,7 @@ public class Event implements Parcelable{
 	public void writeToParcel(Parcel parcel, int flagss) {
 		parcel.writeString(_name);
 		parcel.writeString(_location);
+		parcel.writeString(_description);
 		parcel.writeString(_organizer);
 		parcel.writeString(_start_time);
 		parcel.writeString(_end_time);
@@ -88,6 +91,14 @@ public class Event implements Parcelable{
 		_end_time = parcel.readString();
 	}
 	
+	public String get_description() {
+		return _description;
+	}
+
+	public void set_description(String _description) {
+		this._description = _description;
+	}
+
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
 		public Event createFromParcel(Parcel in) {
 			return new Event(in);

@@ -8,7 +8,7 @@ import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 public class EventDetailsActivity extends RequestDelegateActivity{
 
 	private Event _event;
-	private TextView nameText, locationText, organizerText, startTimeText, endTimeText;
+	private TextView nameText, locationText, descriptionText, organizerText, startTimeText, endTimeText;
 
 	
 	@Override
@@ -26,6 +26,7 @@ public class EventDetailsActivity extends RequestDelegateActivity{
 		
 		nameText = (TextView)findViewById(R.id.nameText);
 		locationText = (TextView)findViewById(R.id.locationText);
+		descriptionText = (TextView)findViewById(R.id.descriptionText);
 		organizerText = (TextView)findViewById(R.id.organizerText);
 		startTimeText = (TextView)findViewById(R.id.startTimeText);
 		endTimeText = (TextView)findViewById(R.id.endTimeText);
@@ -38,6 +39,7 @@ public class EventDetailsActivity extends RequestDelegateActivity{
 		super.onStart();
 		nameText.setText(_event.get_name());
 		locationText.setText(_event.get_location());
+		descriptionText.setText(_event.get_description());
 		organizerText.setText(_event.get_organizer());
 		startTimeText.setText(_event.get_start_time());
 		endTimeText.setText(_event.get_end_time());

@@ -53,5 +53,6 @@
     <string name="start_time">Start Time:</string>
     <string name="end_time">End Time:</string>
     <string name="qr_code_hide">Hide QR Code</string>
+    <string name="description_label">Description:</string>
 
 </resources>
