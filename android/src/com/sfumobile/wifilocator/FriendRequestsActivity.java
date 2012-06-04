@@ -11,7 +11,7 @@ import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
-import com.sfumobile.wifilocator.response.FriendshipsResponse;
+import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.content.Intent;
@@ -70,7 +70,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 	@Override
 	public void handleStringValue(int type, String val) {
 		if ( type == RequestTypes.GET_FRIENDSHIP_REQUESTS){
-			FriendshipsResponse _response = new FriendshipsResponse( val, type);
+			FriendshipsPendingResponse _response = new FriendshipsPendingResponse( val, type);
 		    data = _response.handleResponse();		
 		    PendingListObject.getInstance().set_data(data);
 			adapter = new FriendRequestAdapter(this, data);

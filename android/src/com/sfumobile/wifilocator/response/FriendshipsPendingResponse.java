@@ -18,6 +18,7 @@ public class FriendshipsPendingResponse extends ResponseHandler {
 	public FriendshipsPendingResponse(String data, int type){
 		super(data);
 		_type = type;
+		Log.d("RESPONSE", data);
 	}
 
 	public ArrayList<JSONObject> handleResponse() {
