@@ -2,17 +2,12 @@ package com.sfumobile.wifilocator.response;
 
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
-
-import com.sfumobile.wifilocator.WifiLocatorActivity;
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
-import com.sfumobile.wifilocator.types.RequestTypes;
 
 //import com.sfumobile.wifilocator.entities.WifiLocatorFriendship;
 

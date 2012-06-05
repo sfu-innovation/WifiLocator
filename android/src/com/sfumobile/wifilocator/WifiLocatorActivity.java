@@ -1,26 +1,17 @@
 package com.sfumobile.wifilocator;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.LocationRequest;
-import com.sfumobile.wifilocator.request.MapRequest;
-import com.sfumobile.wifilocator.request.RequestConstants;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 import com.sfumobile.wifilocator.request.WifiHandler;
-import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.response.LocationResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,11 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.Button;
 
@@ -55,6 +42,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
 	private LocationRequest _req;
 	private RequestPackage             _package;
 	private LocationResponse _response;
+	@SuppressWarnings("unused")
 	private Drawable image;
 	private ImageView mapView;
 	

@@ -17,27 +17,20 @@ public class FriendsResponse extends ResponseHandler {
 		Vector friends = new Vector();
 		JSONArray temp = null;
 		try {
-			
 			temp =  _data.getJSONArray("friend_list");
+			JSONObject tempFriendship = null;
+			for(int  i = 0; i < temp.length(); i++){
+					tempFriendship = temp.getJSONObject(i);
+					friends.addElement(new WifiLocatorFriend(
+						tempFriendship.getString("first_name"),
+						tempFriendship.getString("last_name"),
+						tempFriendship.getString("friend_location"),
+						tempFriendship.getString("last_update"),
+						tempFriendship.getString("map_name")));
+			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		JSONObject temp2 = null;
-		for(int  i = 0; i < temp.length(); i++){
-			try {
-				temp2 = temp.getJSONObject(i);
-				friends.addElement(new WifiLocatorFriend(
-						  temp2.getString("friend_name"),
-						  temp2.getString("friend_location"),
-						  temp2.getString("last_update"),
-						  temp2.getString("map_name")));
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		return friends;
 	}

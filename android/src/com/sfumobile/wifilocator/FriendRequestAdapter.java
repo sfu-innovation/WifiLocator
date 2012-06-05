@@ -6,13 +6,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sfumobile.wifilocator.request.FriendshipConfirmRequest;
-import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
-import com.sfumobile.wifilocator.request.RequestHandler;
 import com.sfumobile.wifilocator.request.RequestPackage;
 import com.sfumobile.wifilocator.request.SingleRequestLauncher;
 
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;

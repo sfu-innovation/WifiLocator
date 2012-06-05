@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import com.sfumobile.wifilocator.Event;
 
 public class EventsResponse extends ResponseHandler{
-	
+	private int events_size;
 	public EventsResponse(String data) {
 		super(data);
 	}
@@ -33,10 +33,13 @@ public class EventsResponse extends ResponseHandler{
 		
 		try {
 			event_response = _data.getJSONArray("events");
+			events_size = event_response.length();
 		} catch (JSONException e) {
 			e.printStackTrace();
+			events_size = 0;
 		}
-		for(int i = 0; i < event_response.length(); i++){
+
+		for(int i = 0; i < events_size; i++){
 			try {
 				JSONObject jsonEvent = event_response.getJSONObject(i);
 				Event event = new Event();

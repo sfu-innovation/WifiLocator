@@ -20,7 +20,6 @@ from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.ext.db import djangoforms
 
 class MainPage(webapp.RequestHandler):
 	def get(self):
@@ -285,6 +284,8 @@ rest.Dispatcher.add_models_from_module(__name__)
 # use custom authentication/authorization
 #rest.Dispatcher.authenticator = MyAuthenticator()
 #rest.Dispatcher.authorizer = MyAuthorizer()
+
+#('/import', CSVImporter)
                                      
 def main():
 	application = webapp.WSGIApplication([

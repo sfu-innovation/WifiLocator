@@ -1,11 +1,9 @@
 package com.sfumobile.wifilocator;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.request.EventsRequest;
 import com.sfumobile.wifilocator.request.FriendListRequest;
 import com.sfumobile.wifilocator.request.FriendshipRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
@@ -16,15 +14,12 @@ import com.sfumobile.wifilocator.response.FriendshipsResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -33,12 +28,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 public class FriendsActivity extends RequestDelegateActivity implements OnClickListener{
 	
-	private FriendAdapter mAdapter;
+	private FriendsAdapter mAdapter;
 	private Button addFriendButton, friendRequestsButton, addButton, cancelButton, scanButton, qrButton;
 	private EditText friendIDText;
 	private Dialog addFriendDialog;
@@ -73,7 +67,7 @@ public class FriendsActivity extends RequestDelegateActivity implements OnClickL
 		handler = new Handler();
 		
 		if (FriendListObject.getInstance().get_data()!=null){
-			 mAdapter = new FriendAdapter(this, FriendListObject.getInstance().get_data());
+			 mAdapter = new FriendsAdapter(this, FriendListObject.getInstance().get_data());
 			 friendList.setAdapter(mAdapter);	
 		}
 		
@@ -210,7 +204,7 @@ public class FriendsActivity extends RequestDelegateActivity implements OnClickL
 		    data = _response.handleResponse();		
 		    fl.getInstance().set_data(data);
 		    Log.d("Friends", data.toString());
-		    mAdapter = new FriendAdapter(this, data);
+		    mAdapter = new FriendsAdapter(this, data);
 		    friendList.setAdapter(mAdapter);
 		}
 		else if(type == RequestTypes.FRIENDSHIP_REQUEST){

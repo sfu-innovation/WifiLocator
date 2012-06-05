@@ -45,14 +45,8 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen implements F
 	private ButtonField _backButton;
 	public WifiLocatorFriendsScreen(){
 		_screen = this;
-		//addMenuItem(WifiLocatorMenuItems.popScreenMenuItem("Tweets"));
-	//	addMenuItem(WifiLocatorMenuItems.enablePollingMenuItem());
-	//	addMenuItem(WifiLocatorMenuItems.disablePollingMenuItem());
-	//	addMenuItem(WifiLocatorMenuItems.QRCodeMenuItem());
-	//	addMenuItem(WifiLocatorMenuItems.QRViewMenuItem());
-	//	addMenuItem(WifiLocatorMenuItems.AddFriendRequestsViewMenuItem());
 		
-		addMenuItem( new MenuItem("UPDATE FRIENDS", 110, 10){
+	/*	addMenuItem( new MenuItem("UPDATE FRIENDS", 110, 10){
 			public void run(){
 				FriendsRequest friendsRequest = new FriendsRequest(WifiLocatorUser.getInstance().getID());
 				RequestPackage _friendsRequestPackage = new RequestPackage(_screen, friendsRequest);
@@ -61,14 +55,6 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen implements F
 			}
 			
 		});
-		
-		// if we backed out of friedns andn wanna go back in we should have values before
-		// the new ones get loaded in!
-	/*	WifiLocatorFriend[] placeHolderFriends = WifiLocatorData.getInstance().getFriends();
-		if ( null != placeHolderFriends && placeHolderFriends.length > 0 ){
-			_friendsList.set( placeHolderFriends );
-			_friendsList.setSize( placeHolderFriends.length );
-		}
 		*/
 		setTitle("Friends");
 		
@@ -82,37 +68,51 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen implements F
 		
 		setStatus( _backButton );
 		
+		// if we backed out of friedns andn wanna go back in we should have values before
+		// the new ones get loaded in!
+		
+		_friendsList = new ObjectListField(){
+			public void drawListRow(ListField list,
+                    Graphics g,
+                    int index,
+                    int y,
+                    int width) {
+        if (index == 0) {
+            g.drawText("Add New Friend", 0, y);
+        } else {
+        	
+        	WifiLocatorFriend tempFriend = friendsArray[index];
+            g.drawText(tempFriend.getFirstName()+" "+tempFriend.getLastName(), 0, y);
+        }                
+    }
+			protected boolean navigationClick(int status, int time) {
+				
+	            int index = _friendsList.getSelectedIndex();
+	            if ( index == 0 ){
+	            	UiApplication.getUiApplication().pushScreen( new WifiLocatorAddFriendScreen());
+	            }
+	            else {
+	            	UiApplication.getUiApplication().pushScreen( new WifiLocatorFriendDetailScreen(friendsArray[index]));
+	            }
+	            return true;
+	        }
+		};
+		
+		WifiLocatorFriend[] placeHolderFriends = WifiLocatorData.getInstance().getFriends();
+		if ( null != placeHolderFriends ){
+			_friendsList.set( placeHolderFriends );
+			_friendsList.setSize( placeHolderFriends.length );
+			_friendsList.setEnabled ( false );
+		}
+		
+		
+		
 	}
 	
 	protected void onUiEngineAttached( boolean attached ) {
 		if ( attached ){
 			
-			_friendsList = new ObjectListField(){
-				public void drawListRow(ListField list,
-                        Graphics g,
-                        int index,
-                        int y,
-                        int width) {
-            if (index == 0) {
-                g.drawText("Add New Friend", 0, y);
-            } else {
-            	
-            	WifiLocatorFriend tempFriend = friendsArray[index];
-                g.drawText(tempFriend.getName(), 0, y);
-            }                
-        }
-				protected boolean navigationClick(int status, int time) {
-					
-		            int index = _friendsList.getSelectedIndex();
-		            if ( index == 0 ){
-		            	UiApplication.getUiApplication().pushScreen( new WifiLocatorAddFriendScreen());
-		            }
-		            else {
-		            	UiApplication.getUiApplication().pushScreen( new WifiLocatorFriendDetailScreen(friendsArray[index]));
-		            }
-		            return true;
-		        }
-			};
+			
 			_friendsList.set(friendsArray);;
 			add( _friendsList );
 			
@@ -146,6 +146,7 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen implements F
 	public void handleStringValue(int type, String val) {
 		System.out.println("[SFUMOBILE] - Handling a string - "+val);
 		if ( type == RequestTypes.GET_FRIENDS){
+			_friendsList.setEnabled ( true );
 		_friends = (Vector)(new FriendsResponse(val).handleResponse());
 		
 		int length = _friends.size()+1;
@@ -161,6 +162,11 @@ public class WifiLocatorFriendsScreen extends RequestDelegateScreen implements F
 		
 	}
 
+	public boolean onClose(){
+		WifiLocatorData.getInstance().setFriends( friendsArray );
+		close();
+		return true;
+	}
 	public void handleIntValue(int type, int val) {
 		// TODO Auto-generated method stub
 		

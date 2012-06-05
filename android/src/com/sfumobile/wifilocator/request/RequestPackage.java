@@ -1,6 +1,5 @@
 package com.sfumobile.wifilocator.request;
 
-import android.app.Activity;
 import android.os.Handler;
 
 import com.sfumobile.wifilocator.types.RequestTypes;
@@ -21,7 +20,7 @@ public class RequestPackage {
 		wifiHandler = new WifiHandler(_rd);
 	}
 		
-	private boolean contains( String[] list, String val ){
+	/*private boolean contains( String[] list, String val ){
 		int length = list.length;
 		boolean retVal = false;
 		for(int i = 0; i < length; i++){
@@ -31,7 +30,7 @@ public class RequestPackage {
 			}
 		}
 		return retVal;
-	}
+	}*/
 	public void init() {
 		System.out.println("[SFUMOBILE] - starting init");
 		if (wifiHandler.wifiEnabled()){
@@ -63,17 +62,6 @@ public class RequestPackage {
 				_thread.start();
 			}
 		}
-		/*
-		else {
-			String reasonString = null;
-			switch( WLANContext.isAssociated()){
-			case WLANContext.WLAN_RADIO_NOT_CONNECTED:
-					reasonString = "Not Connected to a network"; break;
-			case WLANContext.WLAN_RADIO_OFF:
-				    reasonString = "Wifi not on"; break;
-			}
-			System.out.println("[SFUMOBILE] error - "+WLANContext.isAssociated()  + " - "+reasonString);
-			_rd.handleError(RequestTypes.ZONE, WLANContext.isAssociated(), reasonString);
-		}*/
+
 	}
 }
