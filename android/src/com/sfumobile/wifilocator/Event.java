@@ -86,6 +86,7 @@ public class Event implements Parcelable{
 	public void readFromParcel(Parcel parcel){
 		_name = parcel.readString();
 		_location = parcel.readString();
+		_description = parcel.readString();
 		_organizer = parcel.readString();
 		_start_time = parcel.readString();
 		_end_time = parcel.readString();

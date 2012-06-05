@@ -65,7 +65,7 @@ public class WifiLocatorActivity extends RequestDelegateActivity implements OnCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        UserObject.getInstance().set_userID(45006);
+        UserObject.getInstance().set_userID(30001);
 
         zoneName     = (TextView)this.findViewById(R.id.zoneName);
         eventsButton = (Button)this.findViewById(R.id.eventsButton);

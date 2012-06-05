@@ -1,127 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/nameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/nameText"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/locationLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/location"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/locationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <TextView
-            android:id="@+id/descriptionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/description_label"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/descriptionText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/organizerLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/organizer"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/organizerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/startTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/start_time"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/startTimeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/endTimeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/end_time"
-            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
-
-        <TextView
-            android:id="@+id/endTimeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
-
-</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical" >
+		
+	    <LinearLayout
+	        android:id="@+id/linearLayout1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/nameLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/name"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/nameText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1" android:layout_marginBottom="10dp"/>
+	    </LinearLayout>
+		
+	    <LinearLayout
+	        android:id="@+id/linearLayout2"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/locationLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/location"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/locationText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" android:layout_marginBottom="10dp"/>
+	    </LinearLayout>
+	
+	    <LinearLayout
+	        android:id="@+id/linearLayout6"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/descriptionLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/description_label"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/descriptionText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" android:layout_marginBottom="10dp"/>
+	
+	    </LinearLayout>
+		
+	    <LinearLayout
+	        android:id="@+id/linearLayout3"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/organizerLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/organizer"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/organizerText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" android:layout_marginBottom="10dp"/>
+	    </LinearLayout>
+		
+	    <LinearLayout
+	        android:id="@+id/linearLayout4"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/startTimeLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/start_time"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/startTimeText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" android:layout_marginBottom="10dp"/>
+	    </LinearLayout>
+		
+	    <LinearLayout
+	        android:id="@+id/linearLayout5"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" android:layout_weight="1">
+	
+	        <TextView
+	            android:id="@+id/endTimeLabel"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/end_time"
+	            android:textAppearance="?android:attr/textAppearanceLarge" android:paddingRight="5dp"/>
+	
+	        <TextView
+	            android:id="@+id/endTimeText"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_weight="1" android:layout_marginBottom="10dp"/>
+	    </LinearLayout>
+	
+	</LinearLayout>
+</ScrollView>

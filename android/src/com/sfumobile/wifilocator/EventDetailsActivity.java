@@ -1,6 +1,7 @@
 package com.sfumobile.wifilocator;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
@@ -37,6 +38,8 @@ public class EventDetailsActivity extends RequestDelegateActivity{
 	@Override
 	protected void onStart() {
 		super.onStart();
+		Log.d("Populating List", _event.get_description());
+		Log.d("Populating List", _event.get_organizer());
 		nameText.setText(_event.get_name());
 		locationText.setText(_event.get_location());
 		descriptionText.setText(_event.get_description());
