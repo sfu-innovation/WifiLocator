@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-import com.sfumobile.wifilocator.request.EventsRequest;
 import com.sfumobile.wifilocator.request.FriendshipsPendingRequest;
 import com.sfumobile.wifilocator.request.RequestDelegateActivity;
 import com.sfumobile.wifilocator.request.RequestHandler;
@@ -14,9 +13,6 @@ import com.sfumobile.wifilocator.response.FriendshipConfirmResponse;
 import com.sfumobile.wifilocator.response.FriendshipsPendingResponse;
 import com.sfumobile.wifilocator.types.RequestTypes;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -71,7 +67,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 		    data = _response.handleResponse();		
 		    PendingListObject.getInstance().set_data(data);
 			adapter = new FriendRequestAdapter(this, data);
-			friendList.setAdapter(adapter);	
+			friendList.setAdapter(adapter);
 		}
 		else if(type == RequestTypes.CONFIRM_FRIENDSHIP_REQUEST){
 			FriendshipConfirmResponse _response = new FriendshipConfirmResponse( val );
@@ -79,6 +75,7 @@ public class FriendRequestsActivity extends RequestDelegateActivity{
 			Toast t = Toast.makeText(this, message, Toast.LENGTH_LONG);
 			t.setGravity(Gravity.CENTER, 0, 0);
 			t.show();
+			friendList.invalidateViews();
 		}
 	}
 
