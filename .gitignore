@@ -70,3 +70,15 @@ server/GAE-REST-2/wifi-location/src/zones.pyc
 server/GAE-REST-2/wifi-location/src/users.pyc
 
 server/GAE-REST-2/wifi-location/.DS_Store
+
+server/GAE-REST-2/wifi-location/templates/.DS_Store
+
+*.DS_Store
+
+server/.DS_Store
+
+server/GAE-REST-2/.DS_Store
+
+server/GAE-REST-2/wifi-location/src/.DS_Store
+
+ios/wifilocator/wifilocator.xcodeproj/project.xcworkspace/xcuserdata/user.xcuserdatad/UserInterfaceState.xcuserstate
